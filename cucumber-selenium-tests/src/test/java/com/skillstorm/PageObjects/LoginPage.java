@@ -7,18 +7,27 @@
 
 package com.skillstorm.PageObjects;
 
+import java.time.Duration;
+
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.Components.Form;
 import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
+import com.skillstorm.Utilities.Authenticator;
+import com.skillstorm.Utilities.UserData.User;
 
 public class LoginPage extends Page{
 //#region Static fields
     // Names
     public static final String IN_USERNAME_NAME = "Username Field";
     public static final String IN_PASSWORD_NAME = "Password Field";
+
     public static final String BTN_SUBMIT_NAME = "Submit";
     public static final String BTN_GOOGLE_SIGNIN_NAME = "Sign In With Google";
     public static final String BTN_CREATE_ACCOUNT_NAME = "Create Account";
@@ -33,6 +42,8 @@ public class LoginPage extends Page{
     public static final String BTN_GOOGLE_SIGNIN_ID = "btnGoogleSignIn";
     public static final String BTN_CREATE_ACCOUNT_ID = "linkRegister";
     public static final String BTN_SHOW_PASSWORD_ID = "btnShowLoginPassword";
+
+    public static final String ALT_LOGIN_ID = "loginAlert";
 //#endregion
 
     private Form formLogin;
@@ -54,8 +65,22 @@ public class LoginPage extends Page{
         formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)));
     }
 
-    public boolean login(){
-        
+    public boolean login(User user){
+        // Complete the form
+        formLogin.sendInput(IN_USERNAME_NAME, user.getUsername());
+        formLogin.sendInput(IN_PASSWORD_NAME, user.getPassword());
+        formLogin.submit();
+
+        // Check for success
+        boolean foundAlert = false;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10));
+        try {
+            wait.until(ExpectedConditions.alertIsPresent());
+            foundAlert = true;
+        } catch (TimeoutException eTO) {
+            foundAlert = false;
+        }
+        return foundAlert;
     }
 
     /**
