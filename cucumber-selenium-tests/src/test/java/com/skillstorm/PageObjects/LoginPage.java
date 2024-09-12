@@ -14,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -48,8 +49,13 @@ public class LoginPage extends Page{
 
     private Form formLogin;
 
+    @FindBy(id = BTN_GOOGLE_SIGNIN_ID)
     private WebElement btnGoogleSignIn;
+
+    @FindBy(id = BTN_CREATE_ACCOUNT_ID)
     private WebElement btnCreateAccount;
+
+    @FindBy(id = BTN_SHOW_PASSWORD_ID)
     private WebElement btnShowPassword;
 
     public LoginPage(WebDriver driver) {
