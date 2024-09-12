@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 
 public class Footer implements Component {
     private WebDriver driver;
-
+    
     private WebElement btnAboutUs;
     private WebElement btnContact;
     private WebElement btnServices;

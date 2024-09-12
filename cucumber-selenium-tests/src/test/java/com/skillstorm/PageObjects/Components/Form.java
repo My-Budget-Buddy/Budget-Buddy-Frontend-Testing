@@ -10,6 +10,7 @@ package com.skillstorm.PageObjects.Components;
 
 import java.util.HashMap;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -30,6 +31,16 @@ public class Form {
      */
     public void setInput(WebElement element, String fieldName){
         inputs.put(fieldName, element);
+    }
+
+    /**
+     * Stores an element as a field, or overwrites an existing field.
+     * @param elementId ID of the element to store
+     * @param fieldName What to store the field as.
+     */
+    public void setInput(String elementId, String fieldName){
+        WebElement element = driver.findElement(By.id(elementId));
+        setInput(element, fieldName);
     }
 
     /**
