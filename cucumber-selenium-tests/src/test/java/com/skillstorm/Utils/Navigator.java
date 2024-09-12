@@ -1,4 +1,4 @@
-package com.skillstorm.Utilities;
+package com.skillstorm.Utils;
 
 import org.openqa.selenium.WebDriver;
 

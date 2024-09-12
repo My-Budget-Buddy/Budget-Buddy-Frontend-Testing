@@ -6,7 +6,7 @@
  *      in.
  */
 
-package com.skillstorm.Utilities.UserData;
+package com.skillstorm.Utils.UserData;
 
 public class User {
     private UserType type;

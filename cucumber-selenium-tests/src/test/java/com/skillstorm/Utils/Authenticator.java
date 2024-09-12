@@ -1,7 +1,7 @@
-package com.skillstorm.Utilities;
+package com.skillstorm.Utils;
 
-import com.skillstorm.Utilities.UserData.User;
-import com.skillstorm.Utilities.UserData.UserType;
+import com.skillstorm.Utils.UserData.User;
+import com.skillstorm.Utils.UserData.UserType;
 
 public class Authenticator {
 //#region Static Fields

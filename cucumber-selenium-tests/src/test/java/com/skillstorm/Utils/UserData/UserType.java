@@ -5,7 +5,7 @@
  *      Defines the different user types used in testing.
  */
 
-package com.skillstorm.Utilities.UserData;
+package com.skillstorm.Utils.UserData;
 
 public enum UserType {
     PERSISTANT,     // Should be created before all tests and destroyed after all tests, login information should be kept the same.
