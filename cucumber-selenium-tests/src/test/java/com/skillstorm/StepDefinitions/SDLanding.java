@@ -1,6 +1,13 @@
 package com.skillstorm.StepDefinitions;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.LandingPage;
+import com.skillstorm.Utilities.Navigator;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -9,25 +16,22 @@ import io.cucumber.java.en.Then;
 
 public class SDLanding {
 
-    private WebDriver driver;
+    WebDriver driver;
+    WebDriverWait wait;
+    Navigator navigator;
+    LandingPage page;
 
     @Before
-    public void setup() {
-        /** TODO: implement setup methods
-         *      1. set up driver
-         *      2. set up waiter?
-         *      3. set up users/databases?
-         */
-        
+    public void setUp() {
+        driver = WebDriverSingleton.getDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        navigator = new Navigator(driver);
+        page = new LandingPage(driver);
     }
 
     @After
-    public void teardown() {
-        /** TODO: implement teardown methods
-         *      1. set up driver
-         *      2. set up waiter
-         *      3. set up users/databases?
-         */
+    public void tearDown() {
+        WebDriverSingleton.quitDriver();
     }
 
     /**
@@ -39,7 +43,7 @@ public class SDLanding {
 
     @Given("I am logged out")
     public void iAmLoggedOut() {
-    throw new UnsupportedOperationException("Unimplemented method 'iAmLoggedOut'");
+        throw new UnsupportedOperationException("Unimplemented method 'iAmLoggedOut'");
     }
 
     @Given("I am logged in")
