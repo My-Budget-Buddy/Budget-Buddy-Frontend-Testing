@@ -9,12 +9,15 @@
 package com.skillstorm.PageObjects.Components;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Form {
+import com.skillstorm.PageObjects.Interfaces.Component;
+
+public class Form implements Component{
     private WebDriver driver;
 
     private HashMap<String, WebElement> inputs = new HashMap<>();
@@ -90,5 +93,29 @@ public class Form {
      */
     public void submit(){
         btnSubmit.click();
+    }
+
+    @Override
+    public List<Component> getChildComponents() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+    }
+
+    @Override
+    public WebElement getWebElement(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElement'");
     }
 }
