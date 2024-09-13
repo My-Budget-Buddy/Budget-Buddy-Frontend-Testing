@@ -74,9 +74,14 @@ public class LoginPage extends Page{
 
         formLogin.setInput(IN_USERNAME_ID, IN_USERNAME_NAME);
         formLogin.setInput(IN_PASSWORD_ID, IN_PASSWORD_NAME);
-        formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)));
+        formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)), BTN_SUBMIT_NAME);
     }
 
+    /**
+     * Enters information for a given user into the login form and submits it.
+     * @param user  User data to put into the form.
+     * @return      Success rate of the login attempt.
+     */
     public boolean login(User user){
         // Complete the form
         formLogin.sendInput(IN_USERNAME_NAME, user.getUsername());
