@@ -24,7 +24,7 @@ Feature: Features on the transaction history page
     
     Scenario:
         Given I am on the Transaction History page
-        Then I can see the list of all my transactions
+        Then I can see the list of all my past transactions
 
 #-----------------------------UPDATE---------------------------#
     
