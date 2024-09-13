@@ -8,6 +8,7 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -20,6 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.Components.Form;
 import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
+import com.skillstorm.PageObjects.Interfaces.Component;
 import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.UserData.User;
 
@@ -129,5 +131,35 @@ public class LoginPage extends Page{
      */
     private void clickBtnGoogleSignIn() {
         btnGoogleSignIn.click();
+    }
+
+    @Override
+    public List<Component> getChildComponents() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+    }
+
+    @Override
+    public WebElement getWebElement(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElement'");
+    }
+
+    @Override
+    public List<WebElement> getButtons() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getButtons'");
     }
 }

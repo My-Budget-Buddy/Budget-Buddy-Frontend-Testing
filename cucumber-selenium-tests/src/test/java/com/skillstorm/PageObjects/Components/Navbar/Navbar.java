@@ -10,9 +10,10 @@ package com.skillstorm.PageObjects.Components.Navbar;
 
 import org.openqa.selenium.WebDriver;
 
-import com.skillstorm.PageObjects.Components.Component;
+import com.skillstorm.PageObjects.Interfaces.ButtonContainer;
+import com.skillstorm.PageObjects.Interfaces.Component;
 
-public abstract class Navbar implements Component {
+public abstract class Navbar implements Component, ButtonContainer {
     private WebDriver driver;
 
     public Navbar(WebDriver driver){
