@@ -45,21 +45,35 @@ public class LandingNavbar extends Navbar{
         getWebElement(name).click();
     }
 
+    /**
+     * LandingNavbar has no child components.
+     * @return null.
+     */
     @Override
     public List<Component> getChildComponents() {
         return null;
     }
 
+    /**
+     * LandingNavbar has no child components.
+     * @return null.
+     */
     @Override
     public Component getChildComponent(String name) {
         return null;
     }
 
+    /**
+     * Returns the buttons existent in LandingNavbar
+     */
     @Override
     public List<WebElement> getWebElements() {
         return getButtons();
     }
 
+    /**
+     * Returns a web element based on the name given.
+     */
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
@@ -74,6 +88,9 @@ public class LandingNavbar extends Navbar{
         }
     }
 
+    /**
+     * Returns the buttons existent in LandingNavbar
+     */
     @Override
     public List<WebElement> getButtons() {
         return Arrays.asList(btnLanding, btnLogin, btnRegister);

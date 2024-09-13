@@ -61,31 +61,52 @@ public class Footer implements Component, ButtonContainer {
     private WebElement btnEmail;
 //#endregion
 
+    /**
+     * Maps the button names in the static fields to a click action.
+     * @param name Name of the button to click.
+     */
     @Override
     public void clickButton(String name) {
         getWebElement(name).click();
     }
 
+    /**
+     * Returns all buttons in the footer
+     */
     @Override
     public List<WebElement> getButtons() {
         return Arrays.asList(btnAboutUs, btnContact, btnEmail, btnPhone, btnServices, btnSupport);
     }
 
+    /**
+     * Footer has no child components.
+     * @return null
+     */
     @Override
     public List<Component> getChildComponents() {
         return null;
     }
 
+    /**
+     * Footer has no child components.
+     * @return null
+     */
     @Override
     public Component getChildComponent(String name) {
         return null;
     }
 
+    /**
+     * Returns all buttons in the footer.
+     */
     @Override
     public List<WebElement> getWebElements() {
         return Arrays.asList(btnAboutUs, btnContact, btnEmail, btnPhone, btnServices, btnSupport);
     }
 
+    /**
+     * Maps the button names in the static fields to a button web element.
+     */
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
