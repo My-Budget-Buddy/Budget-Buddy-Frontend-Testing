@@ -1,6 +1,10 @@
 package com.skillstorm.StepDefinitions;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
+
+import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.Utilities.Navigator;
 
 
@@ -19,8 +24,15 @@ public class GenericStepDefinitions{
     WebDriverWait wait;
     Navigator navigator = new Navigator(driver);
 
-    public GenericStepDefinitions(WebDriver driver) {
-        this.driver = driver;
+    @Before
+    public void setUp() {
+        driver = WebDriverSingleton.getDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    @After
+    public void tearDown() {
+        WebDriverSingleton.quitDriver();
     }
 
     /*
