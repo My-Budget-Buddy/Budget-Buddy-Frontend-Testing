@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.Utilities.Navigator;
@@ -22,12 +23,13 @@ public class GenericStepDefinitions{
 
     WebDriver driver;
     WebDriverWait wait;
-    Navigator navigator = new Navigator(driver);
+    Navigator navigator;
 
     @Before
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        navigator = new Navigator(driver);
     }
 
     @After
@@ -91,10 +93,17 @@ public class GenericStepDefinitions{
     }
 
     /*
-     * General use definition for page redirection. Works exactly the same as iAmOnThePage()
+     * General use definition for checking page redirection.
+     * -------------------------------------------------------------------------------------------------------------
+     * Parameters:
+     * pageName - the name of the page you have redirected to
+     * -------------------------------------------------------------------------------------------------------------
+     * Notes:
+     * The page name must match the way it is written in Navigator.java
+     * Grabs the url mapped to that pageName key as defined in Navigator.java
      */
     @Then("I am redirected to the {string} page")
     public void iAmRedirectedToThePage(String pageName){
-        navigator.navigateTo(pageName);
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(pageName)));
     }
 }
