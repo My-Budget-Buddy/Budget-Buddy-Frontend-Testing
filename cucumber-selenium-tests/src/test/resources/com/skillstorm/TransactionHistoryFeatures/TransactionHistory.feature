@@ -11,10 +11,10 @@ Feature: Features on the transaction history page
 #-----------------------------CREATE---------------------------#
 
     Scenario Outline:
-        Given I am on the "Transaction History" page
-        When I click the "Add Transactions" button
+        Given I am on the Transaction History page
+        When I click the Add Transactions button
         And I fill in the "<name>", "<account>", "<amount>", and "<category>" #might make it so its default the name you picked
-        And I click the "Submit" button
+        And I click the Submit button
         Then I can see the new transaction in my list
     Examples:
         |name|account|amount|category|
@@ -23,17 +23,17 @@ Feature: Features on the transaction history page
 #-----------------------------READ---------------------------#
     
     Scenario:
-        Given I am on the "Transaction History" page
+        Given I am on the Transaction History page
         Then I can see the list of all my transactions
 
 #-----------------------------UPDATE---------------------------#
     
     Scenario Outline:
-        Given I am on the "Transaction History" page
+        Given I am on the Transaction History page
         When I click on a transaction in the graph view
-        And I click the "Edit Transaction" button
+        And I click the Edit Transaction button
         And I update the "<name>", "<account>", "<amount>", and "<category>" #might make it so its default the name you picked
-        And I click the "Submit" button
+        And I click the Submit button
         Then I can see the updated transaction in my list
     Examples:
         |name|account|amount|category|
@@ -42,12 +42,12 @@ Feature: Features on the transaction history page
 #-----------------------------DELETE---------------------------#
     
     Scenario:
-        Given I am on the "Transaction History" page
-        When I click the "Trash Icon" button
+        Given I am on the Transaction History page
+        When I click the Trash Icon button
         Then the transaction is not in the list
 
 #-----------------------------GRAPHICAL SUMMARY---------------------------#
     
     Scenario:
-        Given I am on the "Transaction History" page
+        Given I am on the Transaction History page
         Then I can see a graphical summary of my transaction history
