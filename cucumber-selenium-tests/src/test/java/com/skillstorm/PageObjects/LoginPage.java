@@ -21,8 +21,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.PageObjects.Components.Footer;
 import com.skillstorm.PageObjects.Components.Form;
-import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.UserData.User;
@@ -31,6 +32,7 @@ public class LoginPage extends Page{
 //#region Static fields
     // Names
     public static final String FORM_LOGIN_NAME = "Login form";
+    public static final String FOOTER_NAME = "Footer";
 
     public static final String IN_USERNAME_NAME = "Username Field";
     public static final String IN_PASSWORD_NAME = "Password Field";
@@ -54,6 +56,7 @@ public class LoginPage extends Page{
 //#endregion
 
     private Form formLogin;
+    private Footer footer;
 
     @FindBy(id = BTN_GOOGLE_SIGNIN_ID)
     private WebElement btnGoogleSignIn;
@@ -67,7 +70,7 @@ public class LoginPage extends Page{
     public LoginPage(WebDriver driver) {
         super(driver);
 
-        navbar = new LoggedOutNavbar(driver);
+        navbar = new LandingNavbar(driver);
 
         // Initialize form and add elements
         formLogin = new Form(driver);
@@ -106,40 +109,10 @@ public class LoginPage extends Page{
      */
     @Override
     public void clickButton(String name) {
-        switch (name) {
-            case BTN_SUBMIT_NAME:
-                formLogin.submit();
-                break;
-            case BTN_GOOGLE_SIGNIN_NAME:
-                clickBtnGoogleSignIn();
-            case BTN_CREATE_ACCOUNT_NAME:
-                clickBtnCreateAccount();
-            case BTN_SHOW_PASSWORD_NAME:
-                clickBtnShowPassword();
-            default:
-                throw new IllegalArgumentException("Button '" + name + "' does not exist.");
-        }
-    }
+        WebElement button = getWebElement(name);
 
-    /**
-     * Clicks the show password button.
-     */
-    private void clickBtnShowPassword() {
-        btnShowPassword.click();
-    }
-
-    /**
-     * Clicks the register button.
-     */
-    private void clickBtnCreateAccount() {
-        btnCreateAccount.click();
-    }
-
-    /**
-     * Clicks the google sign in button.
-     */
-    private void clickBtnGoogleSignIn() {
-        btnGoogleSignIn.click();
+        if(button == null) throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        button.click();
     }
 
     /**
@@ -147,7 +120,7 @@ public class LoginPage extends Page{
      */
     @Override
     public List<Component> getChildComponents() {
-        return Arrays.asList(formLogin);
+        return Arrays.asList(formLogin, footer);
     }
 
     /**
@@ -158,6 +131,7 @@ public class LoginPage extends Page{
     @Override
     public Component getChildComponent(String name) {
         if(name.equals(FORM_LOGIN_NAME)) return formLogin;  // Directly exists here
+        if(name.equals(FOOTER_NAME)) return footer;
 
         // Couldn't find.
         return null;
