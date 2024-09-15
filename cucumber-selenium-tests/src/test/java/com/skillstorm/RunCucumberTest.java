@@ -5,7 +5,7 @@ import io.cucumber.testng.CucumberOptions;
 
 // cucumberoptions used for testng
 @CucumberOptions(
-    features = "classpath:com/skillstorm/", 
+    features = "classpath:com/skillstorm/TransactionFeatures/transaction.feature", 
     glue = "com.skillstorm",
     plugin = {"pretty", "html:target/cucumber-reports.html"} 
 )
