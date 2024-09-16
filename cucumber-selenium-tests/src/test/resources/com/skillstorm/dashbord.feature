@@ -23,18 +23,18 @@ Feature:
     Scenario: DB3 - looking at transaction info
         Given I have recent transactions
         Given I am on the "Dashboard" page
-        When I click the "Transaction Arrow" button
+        When I click the "btnTransactionArrow" button
         Then A pop up of the transaction appears
 
 
     Scenario: DB4 - checking transaction button redirection
         Given I am on the "Dashboard" page
-        When I click the "View All Transactions" Button
+        When I click the "btnViewAllTransactions" button
         Then I am redirected to the "Transactions" page
 
 
     Scenario: DB5 - looking at Budget overview
         Given I have a budget plan
-        Given I am on the "Dashboard" Page
+        Given I am on the "Dashboard" page
         Then I can see budget information
 
