@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Interfaces.Component;
 
@@ -65,6 +66,8 @@ public class DashboardNavbar extends Navbar {
         nameElementMap.put(BTN_SPENDINGS_NAME, btnSpendings);
         nameElementMap.put(BTN_TRANSACTIONS_NAME, btnTransactions);
         nameElementMap.put(BTN_TAX_NAME, btnTax);
+
+        PageFactory.initElements(driver, this);
     }
 
     @Override
