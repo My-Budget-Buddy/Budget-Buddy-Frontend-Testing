@@ -9,14 +9,14 @@ Feature: Landing Page Scenerios
   
   Scenario: LA2 - Login Button
     Given I am on the “Landing” page
-    And I am logged out
+    And I am logged out of Landing
     When I click the “Login” button
     Then I am redirected to the “Login” page
 
   
   Scenario: LA3 - Register Button
     Given I am on the “Landing” page
-    And I am logged out
+    And I am logged out of Landing
     When I click the “Register” button
     Then I am redirected to the “Register” page
 
@@ -28,14 +28,14 @@ Feature: Landing Page Scenerios
   
   Scenario: LA5 - Log out on Landing Page
     Given I am on the “Landing” page
-    And I am logged in
+    And I am logged in on Landing
     When I click the “Log Out” button
     Then I should see the logged out navbar
 
   
   Scenario: LA6 - Go to Dashboard from Landing
     Given I am on the “Landing” page
-    And I am logged in
+    And I am logged in on Landing
     When I click the “Dashboard” button
     Then I am redirected to the “Dashboard” page
 

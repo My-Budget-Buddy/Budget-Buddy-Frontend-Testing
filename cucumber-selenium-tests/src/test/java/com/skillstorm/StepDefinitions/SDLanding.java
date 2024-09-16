@@ -3,14 +3,18 @@ package com.skillstorm.StepDefinitions;
 import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.LandingPage;
+import com.skillstorm.PageObjects.Components.Navbar.Navbar;
 import com.skillstorm.Utilities.Navigator;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -26,7 +30,7 @@ public class SDLanding {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         navigator = new Navigator(driver);
-        page = new LandingPage(driver);
+        // page = new LandingPage(driver);
     }
 
     @After
@@ -41,14 +45,23 @@ public class SDLanding {
      *      @Then("I am redirected to {string} page")
      */
 
-    @Given("I am logged out")
-    public void iAmLoggedOut() {
-        throw new UnsupportedOperationException("Unimplemented method 'iAmLoggedOut'");
+    @And("I am logged out of Landing")
+    public void iAmLoggedOutOfLanding() {
+        if (page == null) {
+            page = new LandingPage(driver);
+        }
+        Navbar navbar = (Navbar) page.getChildComponent(LandingPage.CMP_LANDING_NAVBAR_NAME);
+        // Assert.assertTrue(
+        //     page.getChildComponent(LandingPage.CMP_LANDING_NAVBAR_NAME)
+        //     .getWebElement(null)
+        // );
     }
 
-    @Given("I am logged in")
-    public void iAmLoggedIn() {
-    throw new UnsupportedOperationException("Unimplemented method 'iAmLoggedIn'");
+    @And("I am logged in on Landing")
+    public void iAmLoggedInOnLanding() {
+        if (page == null) {
+            page = new LandingPage(driver);
+        }
     }
 
     @Then("I can see general info about Budget Buddy")

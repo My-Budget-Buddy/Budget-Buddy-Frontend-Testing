@@ -6,6 +6,7 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Components.Footer;
 import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
@@ -41,11 +42,16 @@ public class LandingPage extends Page {
         super(driver);
         footer = new Footer();
         landingNavbar = new LoggedOutNavbar(driver);
+        PageFactory.initElements(driver, this);
     }
     
-    /////////// PRIVATE FUNCTIONS /////////////////////
+    /////////// FUNCTIONS /////////////////////
     private void clickBtnGetStarted() {
         btnGetStarted.click();
+    }
+
+    public void reloadElements() {
+        PageFactory.initElements(driver, this);
     }
 
     /////////// OVERRIDE IMPLEMENTATIONS //////////////
