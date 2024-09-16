@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.skillstorm.PageObjects.Interfaces.Component;
+import com.skillstorm.Utilities.UserData.LoginStatus;
 
 public class LandingNavbar extends Navbar{
 //#region Static fields
@@ -21,6 +22,8 @@ public class LandingNavbar extends Navbar{
     public static final String BTN_LANDING_ID = "";
     public static final String BTN_LOGIN_ID = "";
     public static final String BTN_REGISTER_ID = "";
+    public static final String BTN_DASHBOARD_ID = "";
+    public static final String BTN_LOGOUT_ID = "";
 
     // Names
     public static final String BTN_LANDING_NAME = "Navbar Budget Buddy Icon";
@@ -28,9 +31,16 @@ public class LandingNavbar extends Navbar{
     public static final String BTN_REGISTER_NAME = "Navbar Register";
 //#endregion
 
+    private LoginStatus loginStatus;
+
+    // WebElements
     private WebElement btnLanding;
+
     private WebElement btnLogin;
     private WebElement btnRegister;
+
+    private WebElement btnDashboard;
+    private WebElement btnLogout;
 
     public LandingNavbar(WebDriver driver) {
         super(driver);
