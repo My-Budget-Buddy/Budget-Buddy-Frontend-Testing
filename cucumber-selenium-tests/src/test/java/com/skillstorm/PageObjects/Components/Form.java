@@ -8,17 +8,23 @@
 
 package com.skillstorm.PageObjects.Components;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Form {
+import com.skillstorm.PageObjects.Interfaces.Component;
+
+import javafx.util.Pair;
+
+public class Form implements Component{
     private WebDriver driver;
 
     private HashMap<String, WebElement> inputs = new HashMap<>();
-    private WebElement btnSubmit;
+    private Pair<String, WebElement> btnSubmit;
 
     public Form(WebDriver driver){
         this.driver = driver;
@@ -74,21 +80,62 @@ public class Form {
      * @return  Submit button.
      */
     public WebElement getBtnSubmit(){
-        return btnSubmit;
+        return btnSubmit.getValue();
     } 
 
     /**
      * Sets the submit button.
      * @param btnSubmit New submit button.
      */
-    public void setBtnSubmit(WebElement btnSubmit){
-        this.btnSubmit = btnSubmit;
+    public void setBtnSubmit(WebElement btnSubmit, String name){
+        this.btnSubmit = new Pair<String,WebElement>(name, btnSubmit);
     }
 
     /**
      * Submits the form.
      */
     public void submit(){
-        btnSubmit.click();
+        btnSubmit.getValue().click();
+    }
+
+    /**
+     * Returns null since Form has no child components.
+     */
+    @Override
+    public List<Component> getChildComponents() {
+        return null;    // Form only has WebElements, no Components
+    }
+
+    /**
+     * Returns null since Form has no child components.
+     */
+    @Override
+    public Component getChildComponent(String name) {
+        return null;    // Form only has WebElements, no Components
+    }
+
+    /**
+     * Returns the form's WebElements. 
+     */
+    @Override
+    public List<WebElement> getWebElements() {
+        // Local webelements
+        List<WebElement> webElements = new ArrayList<WebElement>(inputs.values());
+        webElements.add(getBtnSubmit());
+
+        return webElements;
+    }
+
+    /**
+     * Returns a named WebElement.
+     */
+    @Override
+    public WebElement getWebElement(String name) {
+        // Check this component
+        if(inputs.containsKey(name)) return inputs.get(name);
+        if(name.equals(btnSubmit.getKey())) return btnSubmit.getValue();
+
+        // Not found.
+        return null;
     }
 }
