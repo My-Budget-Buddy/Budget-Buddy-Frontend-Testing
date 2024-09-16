@@ -44,7 +44,7 @@ Feature: Features on the transactions page
         Given I am on the "Login" page
         And I login
         Given I am on the Transactions page
-        When I click the "deleteBtn" button
+        When I click the Trash Icon button
         Then the transaction is not in the list
 
 #-----------------------------CATEGORY---------------------------#
