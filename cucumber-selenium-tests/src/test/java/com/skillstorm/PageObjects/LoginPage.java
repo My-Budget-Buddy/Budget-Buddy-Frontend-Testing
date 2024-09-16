@@ -8,6 +8,8 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.Alert;
@@ -19,8 +21,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.PageObjects.Components.Footer;
 import com.skillstorm.PageObjects.Components.Form;
-import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.UserData.User;
@@ -28,6 +31,9 @@ import com.skillstorm.Utilities.UserData.User;
 public class LoginPage extends Page{
 //#region Static fields
     // Names
+    public static final String FORM_LOGIN_NAME = "Login form";
+    public static final String FOOTER_NAME = "Footer";
+
     public static final String IN_USERNAME_NAME = "Username Field";
     public static final String IN_PASSWORD_NAME = "Password Field";
 
@@ -50,6 +56,7 @@ public class LoginPage extends Page{
 //#endregion
 
     private Form formLogin;
+    private Footer footer;
 
     @FindBy(id = BTN_GOOGLE_SIGNIN_ID)
     private WebElement btnGoogleSignIn;
@@ -63,16 +70,21 @@ public class LoginPage extends Page{
     public LoginPage(WebDriver driver) {
         super(driver);
 
-        navbar = new LoggedOutNavbar(driver);
+        navbar = new LandingNavbar(driver);
 
         // Initialize form and add elements
         formLogin = new Form(driver);
 
         formLogin.setInput(IN_USERNAME_ID, IN_USERNAME_NAME);
         formLogin.setInput(IN_PASSWORD_ID, IN_PASSWORD_NAME);
-        formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)));
+        formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)), BTN_SUBMIT_NAME);
     }
 
+    /**
+     * Enters information for a given user into the login form and submits it.
+     * @param user  User data to put into the form.
+     * @return      Success rate of the login attempt.
+     */
     public boolean login(User user){
         // Complete the form
         formLogin.sendInput(IN_USERNAME_NAME, user.getUsername());
@@ -97,69 +109,83 @@ public class LoginPage extends Page{
      */
     @Override
     public void clickButton(String name) {
-        switch (name) {
-            case BTN_SUBMIT_NAME:
-                formLogin.submit();
-                break;
-            case BTN_GOOGLE_SIGNIN_NAME:
-                clickBtnGoogleSignIn();
-            case BTN_CREATE_ACCOUNT_NAME:
-                clickBtnCreateAccount();
-            case BTN_SHOW_PASSWORD_NAME:
-                clickBtnShowPassword();
-            default:
-                throw new IllegalArgumentException("Button '" + name + "' does not exist.");
-        }
+        WebElement button = getWebElement(name);
+
+        if(button == null) throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        button.click();
     }
 
     /**
-     * Clicks the show password button.
+     * Retrieves all Components directly under this Component.
      */
-    private void clickBtnShowPassword() {
-        btnShowPassword.click();
-    }
-
-    /**
-     * Clicks the register button.
-     */
-    private void clickBtnCreateAccount() {
-        btnCreateAccount.click();
-    }
-
-    /**
-     * Clicks the google sign in button.
-     */
-    private void clickBtnGoogleSignIn() {
-        btnGoogleSignIn.click();
-    }
-
     @Override
     public List<Component> getChildComponents() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+        return Arrays.asList(formLogin, footer);
     }
 
+    /**
+     * Retrieves a component given a name. Does not search child components.
+     * @param name  Name of the component to retrieve.
+     * @return      Component tied to that name, or null if not found.
+     */
     @Override
     public Component getChildComponent(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+        if(name.equals(FORM_LOGIN_NAME)) return formLogin;  // Directly exists here
+        if(name.equals(FOOTER_NAME)) return footer;
+
+        // Couldn't find.
+        return null;
     }
 
+    /**
+     * Retrieves all WebElements in this component and child components.
+     */
     @Override
     public List<WebElement> getWebElements() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+        List<WebElement> webElements = new ArrayList<WebElement>();
+
+        // Add this Component's web elements
+        webElements.add(btnCreateAccount);
+        webElements.add(btnGoogleSignIn);
+        webElements.add(btnShowPassword);
+
+        // Add child components' web elements
+        for (Component component : getChildComponents()) {
+            for (WebElement webElement : component.getWebElements()) {
+                webElements.add(webElement);
+            }
+        }
+
+        return webElements;
     }
 
+    /**
+     * Retrieves a WebElement given a name. Searches child components as well.
+     * @param name  Name of the WebElement to search for.
+     * @return      WebElement tied to that name, or null if not found.
+     */
     @Override
     public WebElement getWebElement(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWebElement'");
+        // Check in this component
+        if(name.equals(BTN_CREATE_ACCOUNT_NAME)) return btnCreateAccount;
+        else if(name.equals(BTN_GOOGLE_SIGNIN_NAME)) return btnGoogleSignIn;
+        else if(name.equals(BTN_SHOW_PASSWORD_NAME)) return btnShowPassword;
+
+        // Check in sub-components
+        for (Component component : getChildComponents()) {
+            WebElement found = component.getWebElement(name);
+            if(found != null) return found;
+        }
+
+        // Not found.
+        return null;
     }
 
+    /**
+     * Returns all buttons directly inside of this component.
+     */
     @Override
     public List<WebElement> getButtons() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getButtons'");
+        return Arrays.asList(btnCreateAccount, btnGoogleSignIn, btnShowPassword);
     }
 }
