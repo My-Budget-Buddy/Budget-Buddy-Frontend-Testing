@@ -3,7 +3,7 @@ Feature: Dashboard to analyze spending habits and income
 
     Scenario: Navigate to "Spending Month" page when clicking "See Current Month" button
         Given I am on the "Spending" page
-        When I click the "see-current-month-button" button
+        When I click the "See Current Month" button
         Then I am redirected to the "SpendingMonth" page
 
     Scenario: See all expected displays on the Spending page when values exist
