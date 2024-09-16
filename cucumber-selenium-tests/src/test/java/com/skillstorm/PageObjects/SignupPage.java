@@ -17,6 +17,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -67,6 +68,10 @@ public class SignupPage extends Page {
 
     // --- CONSTRUCTORS ---
 
+    /**
+     * Initializes all necessary parts of the page.
+     * @param driver Driver
+     */
     public SignupPage(WebDriver driver) {
         super(driver);
 
@@ -83,6 +88,9 @@ public class SignupPage extends Page {
 
         // Initialize footer
         footer = new Footer(driver);
+
+        // Page initialization
+        PageFactory.initElements(driver, this);
     }
 
     // --- UNIQUE METHODS ---
@@ -121,11 +129,17 @@ public class SignupPage extends Page {
 
     // --- INTERFACE METHODS ---
 
+    /**
+     * Returns a list of direct child components.
+     */
     @Override
     public List<Component> getChildComponents() {
         return Arrays.asList(signupForm, footer, navbar);
     }
 
+    /**
+     * Finds a direct child given a name.
+     */
     @Override
     public Component getChildComponent(String name) {
         switch (name) {
@@ -140,6 +154,9 @@ public class SignupPage extends Page {
         }
     }
 
+    /**
+     * Returns a List of all WebElements within this component. Searches sub-components as well.
+     */
     @Override
     public List<WebElement> getWebElements() {
         // Add from here
@@ -156,6 +173,10 @@ public class SignupPage extends Page {
         return webElements;
     }
 
+    /**
+     * Returns a WebElement given a name. Searches sub-components as well.
+     * @return WebElement requested, or null if not found.
+     */
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
@@ -176,11 +197,17 @@ public class SignupPage extends Page {
         return null;
     }
 
+    /**
+     * Returns a list of all buttons directly under this component.
+     */
     @Override
     public List<WebElement> getButtons() {
         return Arrays.asList(btnGoogleSignIn, btnLogin, btnShowPassword);
     }
 
+    /**
+     * Clicks a button given a name.
+     */
     @Override
     public void clickButton(String name) {
         WebElement button = getWebElement(name);
