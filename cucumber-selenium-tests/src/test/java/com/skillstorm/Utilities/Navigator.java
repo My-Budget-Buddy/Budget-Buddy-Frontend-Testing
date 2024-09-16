@@ -1,5 +1,8 @@
 package com.skillstorm.Utilities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 
 public class Navigator {
@@ -36,10 +39,25 @@ public class Navigator {
     public static final String URL_ERROR= "";
 //#endregion
 
+    Map<String, String> pageUrlMap = new HashMap<>();
     private WebDriver driver;
 
     public Navigator(WebDriver driver){
         this.driver = driver;
+        pageUrlMap.put(PGNAME_ACCOUNTS, URL_ACCOUNTS);
+        pageUrlMap.put(PGNAME_LOGIN, URL_LOGIN);
+        pageUrlMap.put(PGNAME_LANDING, URL_LANDING);
+        pageUrlMap.put(PGNAME_SIGNUP, URL_SIGNUP);
+        pageUrlMap.put(PGNAME_DASHBOARD, URL_DASHBOARD);
+        pageUrlMap.put(PGNAME_BUDGET, URL_BUDGET);
+        pageUrlMap.put(PGNAME_SPENDING, URL_SPENDING);
+        pageUrlMap.put(PGNAME_SPENDINGMONTH, URL_SPENDINGMONTH);
+        pageUrlMap.put(PGNAME_TRANSACTIONS, URL_TRANSACTIONS);
+        pageUrlMap.put(PGNAME_TRANSACTIONSHISTORY, URL_TRANSACTIONSHISTORY);
+        pageUrlMap.put(PGNAME_TAX, URL_TAX);
+        pageUrlMap.put(PGNAME_TAXEDITVIEW, URL_TAXEDITVIEW);
+        pageUrlMap.put(PGNAME_TAXRESULTS, URL_TAXRESULTS);
+        pageUrlMap.put(PGNAME_ERROR, URL_ERROR);
     }
 
     /**
@@ -94,6 +112,10 @@ public class Navigator {
             default:
                 throw new IllegalArgumentException("Page '" + pageName + "' does not exist.");
         }
+    }
+
+    public String getURL(String pageName){
+        return pageUrlMap.get(pageName);
     }
 
     private void navigateToTransactionsHistory() {
