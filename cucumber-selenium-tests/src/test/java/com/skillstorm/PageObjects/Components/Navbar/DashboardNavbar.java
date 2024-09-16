@@ -9,6 +9,7 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.skillstorm.PageObjects.Interfaces.Component;
 
@@ -37,12 +38,20 @@ public class DashboardNavbar extends Navbar {
 
     Map<String, WebElement> nameElementMap = new HashMap<String, WebElement>();
 
+    // WebElements
+    @FindBy(id=BTN_LANDING_ID)
     private WebElement btnLanding;
+    @FindBy(id=BTN_DASHBOARD_ID)
     private WebElement btnDashboard;
+    @FindBy(id=BTN_ACCOUNTS_ID)
     private WebElement btnAccounts;
+    @FindBy(id=BTN_BUDGETS_ID)
     private WebElement btnBudgets;
+    @FindBy(id=BTN_SPENDINGS_ID)
     private WebElement btnSpendings;
+    @FindBy(id=BTN_TRANSACTIONS_ID)
     private WebElement btnTransactions;
+    @FindBy(id=BTN_TAX_ID)
     private WebElement btnTax;
 
     public DashboardNavbar(WebDriver driver) {

@@ -29,6 +29,8 @@ public class LandingNavbar extends Navbar{
     public static final String BTN_LANDING_NAME = "Navbar Budget Buddy Icon";
     public static final String BTN_LOGIN_NAME = "Navbar Log In";
     public static final String BTN_REGISTER_NAME = "Navbar Register";
+    public static final String BTN_DASHBOARD_NAME = "";
+    public static final String BTN_LOGOUT_NAME = "";
 //#endregion
 
     private LoginStatus loginStatus;
