@@ -1,17 +1,13 @@
 @spending-page
 Feature: Dashboard to analyze spending habits and income
 
-    Scenario Outline: Navigate to "Spending Month" page when clicking "See Current Month" button
-        Given I am on the <pageName> page
-        When I click the <buttonName> button
-        Then I will be navigated to the <navigatedPageName> page
+    Scenario: Navigate to "Spending Month" page when clicking "See Current Month" button
+        Given I am on the "Spending" page
+        When I click the "see-current-month-button" button
+        Then I am redirected to the "SpendingMonth" page
 
-        Examples:
-            | pageName | buttonName      | navigatedPageName |
-            | Spending | SeeCurrentMonth | SpendingMonth     |
-
-    Scenario Outline: See all expected displays on the Spending page when values exist
-        Given I am on the <pageName> page
+    Scenario: See all expected displays on the Spending page when values exist
+        Given I am on the "Spending" page
         Then I can see the spendings for the week card
         And I can see the deposits for the week card
         And I can see the annual total spent for the week card
@@ -20,7 +16,3 @@ Feature: Dashboard to analyze spending habits and income
         And I can see the top three cateogries of spending
         And I can see the top three purchases
         And I can see the top vendors
-
-        Examples:
-            | pageName |
-            | Spending |
