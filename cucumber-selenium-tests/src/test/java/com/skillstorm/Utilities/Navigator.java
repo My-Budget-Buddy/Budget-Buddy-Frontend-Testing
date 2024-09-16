@@ -12,7 +12,7 @@ public class Navigator {
     public static final String PGNAME_SIGNUP= "Signup";
     public static final String PGNAME_DASHBOARD= "Dashboard";
     public static final String PGNAME_ACCOUNTS= "Accounts";
-    public static final String PGNAME_BUDGET= "Budget";
+    public static final String PGNAME_BUDGET= "Budgets";
     public static final String PGNAME_SPENDING= "Spending";
     public static final String PGNAME_SPENDINGMONTH= "SpendingMonth";
     public static final String PGNAME_TRANSACTIONS= "Transactions";
@@ -28,7 +28,7 @@ public class Navigator {
     public static final String URL_SIGNUP= "";
     public static final String URL_DASHBOARD= "";
     public static final String URL_ACCOUNTS= "";
-    public static final String URL_BUDGET= "";
+    public static final String URL_BUDGET= "http://localhost:5173/dashboard/budgets";
     public static final String URL_SPENDING= "";
     public static final String URL_SPENDINGMONTH= "";
     public static final String URL_TRANSACTIONS= "";
@@ -179,8 +179,7 @@ public class Navigator {
     }
 
     private void navigateToBudget() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToBudget'");
+        driver.get(URL_BUDGET);
     }
 
     private void navigateToAccounts() {
