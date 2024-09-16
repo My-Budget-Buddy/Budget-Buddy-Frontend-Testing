@@ -11,9 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.WebDriverSingleton;
+
 public class TransactionPage {
-    
-    WebDriver driver;
+
+    WebDriver driver = WebDriverSingleton.getDriver();
     private static final String transactionsUrl = "http://localhost:5173/dashboard/transactions";
 
     // Locators for Transaction Page Elements
@@ -123,53 +125,54 @@ public class TransactionPage {
     @FindBy(xpath = "//*[@id=\"root\"]/div[1]/div/div[1]/a[5]")
     private WebElement transactionsTab;
 
-    private int tableSizeBeforeDeletion = 0;
+    private int tableSizeBeforeDeletion;
 
     // Constructor
-    public TransactionPage(WebDriver driver) {
-        this.driver = driver;
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+    public TransactionPage() {
         PageFactory.initElements(driver, this);
     }
 
+    // Helper method to wait for element visibility
+    private WebElement waitForElement(WebElement element, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
 
     public void logIn() {
-        emailField.sendKeys("joseph.sam@gmail.com");
-        passwordField.sendKeys("password1");
-        logInBtn.click();
+        waitForElement(emailField, 10).sendKeys("joseph.sam@gmail.com");
+        waitForElement(passwordField, 10).sendKeys("password1");
+        waitForElement(logInBtn, 10).click();
     }
 
     public void clickTab() {
-        transactionsTab.click();
+        waitForElement(transactionsTab, 10).click();
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Navigation Methods
     public void getTransactionsUrl() {
-        this.driver.navigate().to(transactionsUrl);
+        driver.navigate().to(transactionsUrl);
     }
 
-    //General methods
+    // General methods
     public String getCurrentUrl() {
-        return this.driver.getCurrentUrl();
+        return driver.getCurrentUrl();
     }
 
-    public void clickSubmitBtn() {
-        submitBtn.click();
-    }
 
     // Create Transaction Methods
-    public void triggerAddTransactionModal() {
-        addTransactionModal.click();
-    }
-
     public String setName(String name) {
-        vendorNameField.sendKeys(name);
+        waitForElement(vendorNameField, 10).sendKeys(name);
         return name;
     }
 
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            accountDropdown.click();
+            waitForElement(accountDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
@@ -177,14 +180,14 @@ public class TransactionPage {
     }
 
     public String setAmount(String amount) {
-        amountField.clear();
+        waitForElement(amountField, 10).clear();
         amountField.sendKeys(amount);
         return amount;
     }
 
     public String setCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            accountDropdown.click();
+            waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
@@ -192,83 +195,65 @@ public class TransactionPage {
     }
 
     public String verifyTransactionDetails() {
-        return transactionsTableFirstRow.getText();
+        return waitForElement(transactionsTableFirstRow, 10).getText();
     }
 
     // Read Transaction Methods
     public Boolean printTransactionTable() {
-        System.out.println(transactionsTable.getText());
+        System.out.println(waitForElement(transactionsTable, 10).getText());
         return transactionsTable.isDisplayed();
     }
 
     // Update Transaction Methods
-    public void clickEditIcon() {
-        editBtn.click();
-    }
 
     public void updateName(String name) {
-        editTransactionNameField.clear();
+        waitForElement(editTransactionNameField, 10).clear();
         editTransactionNameField.sendKeys(name);
     }
 
     public void updateAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            editTransactionAccountField.click();
+            waitForElement(editTransactionAccountField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
     }
 
     public void updateAmount(String amount) {
-        editTransactionAmountField.clear();
+        waitForElement(editTransactionAmountField, 10).clear();
         editTransactionAmountField.sendKeys(amount);
     }
 
     public void updateCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            editTransactionCategoryField.click();
+            waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
     }
 
-    public void clickEditSubmitBtn() {
-        editSubmitBtn.click();
-    }
-
     // Delete Transaction Methods
     public void clickDeleteBtn() {
         tableSizeBeforeDeletion = transactionsTable.getText().length();
-        deleteBtn.click();
+        System.out.println(tableSizeBeforeDeletion + " before");
+        waitForElement(deleteBtn, 10).click();
     }
 
     public Boolean confirmDeletion() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        //wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(transactionsTable, transactionsTable.getText())));
-        try {
-            Thread.sleep(5000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         int tableSizeAfterDeletion = transactionsTable.getText().length();
-        System.out.println(tableSizeBeforeDeletion);
-        System.out.println(tableSizeAfterDeletion);
+        System.out.println(tableSizeAfterDeletion + " after");
         return tableSizeBeforeDeletion > tableSizeAfterDeletion;
     }
 
     // Category Methods
-    public void clickAllCategories() {
-        allCategoriesDropDown.click();
-    }
 
     public void selectACategory(String category) {
         if (category != null && !category.isEmpty()) {
-            allCategoriesDropDown.click();
+            waitForElement(allCategoriesDropDown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='allCategoriesDropDown']/option[text()='" + category + "']"));
             option.click();
         }
     }
-
     public void printOutCategoryColumn() {
         List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[3]"));
         for (WebElement cell : categoryColumnValues) {

@@ -1,7 +1,6 @@
 package com.skillstorm.StepDefinitions;
 
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -33,7 +32,7 @@ public class SDTransactions {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
 
-        this.transactions = new TransactionPage(driver);
+        this.transactions = new TransactionPage();
 
         transactionContent =  new String[4];
     }
@@ -49,14 +48,10 @@ public class SDTransactions {
     /**
      * Login Scenario Definitions
      */
-    // @Given("I am on the login page")
-    // public void logInPage() {
-    //     this.transactions.loginPage();
-    // }
-
     @And("I login")
     public void login() {
         this.transactions.logIn();
+        //this.loginPage.login(user);
     }
 
     /**
@@ -70,18 +65,9 @@ public class SDTransactions {
         Assert.assertEquals(actualUrl, expectedUrl);
     }
 
-    // @And("I click the Submit button")
-    // public void iClickTheSubmitButton() {
-    //     this.transactions.clickSubmitBtn();
-    // }
-
     /**
      * Create Transaction Scenario Definitions
      */
-    @When("I click the Add Transactions button")
-    public void iClickTheAddTransactionButton() {
-        this.transactions.triggerAddTransactionModal();
-    }
 
     @And("I fill in the {string}, {string}, {string}, and {string}")
     public void andIFillInThe(String name, String account, String amount, String category) {
@@ -109,10 +95,6 @@ public class SDTransactions {
     /**
      * Update Transaction Scenario Definitions
      */
-    @When("I click the Pencil Icon button")
-    public void iClickThePencilIconButton() {
-        this.transactions.clickEditIcon();
-    }
 
     @And("I update the {string}, {string}, {string}, and {string}")
     public void andIUpdateThe(String name, String account, String amount, String category) {
@@ -120,11 +102,6 @@ public class SDTransactions {
         this.transactions.updateAccount(account);
         this.transactions.updateAmount(amount);
         this.transactions.updateCategory(category);
-    }
-
-    @And("I click the edit Submit button")
-    public void iClickTheEditSubmitButton() {
-        this.transactions.clickEditSubmitBtn();
     }
 
     /**
@@ -144,10 +121,6 @@ public class SDTransactions {
     /**
      * Category Filter Scenario Definitions
      */
-    @When("I click the All Categories button")
-    public void iClickTheAllCategoriesButton() {
-        this.transactions.clickAllCategories();
-    }
 
     @And("I click a {string} to filter based on")
     public void iClickToFilterBasedOn(String category) {
