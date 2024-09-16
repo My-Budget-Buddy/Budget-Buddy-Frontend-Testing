@@ -9,8 +9,12 @@ import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.LandingPage;
+import com.skillstorm.PageObjects.LoginPage;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.Navbar;
 import com.skillstorm.Utilities.Navigator;
+import com.skillstorm.Utilities.UserData.User;
+import com.skillstorm.Utilities.UserData.UserType;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -24,6 +28,7 @@ public class SDLanding {
     WebDriverWait wait;
     Navigator navigator;
     LandingPage page;
+    User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
 
     @Before
     public void setUp() {
@@ -36,6 +41,8 @@ public class SDLanding {
     @After
     public void tearDown() {
         WebDriverSingleton.quitDriver();
+        wait = null;
+        navigator = null;
     }
 
     /**
@@ -45,23 +52,16 @@ public class SDLanding {
      *      @Then("I am redirected to {string} page")
      */
 
-    @And("I am logged out of Landing")
-    public void iAmLoggedOutOfLanding() {
-        if (page == null) {
-            page = new LandingPage(driver);
-        }
-        Navbar navbar = (Navbar) page.getChildComponent(LandingPage.CMP_LANDING_NAVBAR_NAME);
-        // Assert.assertTrue(
-        //     page.getChildComponent(LandingPage.CMP_LANDING_NAVBAR_NAME)
-        //     .getWebElement(null)
-        // );
+    @And("I am logged out on Landing Page")
+    public void iAmLoggedOut() { 
+
     }
 
-    @And("I am logged in on Landing")
-    public void iAmLoggedInOnLanding() {
-        if (page == null) {
-            page = new LandingPage(driver);
-        }
+    @And("I am logged in on Landing Page")
+    public void iAmLoggedIn() {
+        navigator.navigateTo(Navigator.PGNAME_LOGIN);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(user);        
     }
 
     @Then("I can see general info about Budget Buddy")

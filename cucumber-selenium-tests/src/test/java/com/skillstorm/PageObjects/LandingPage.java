@@ -1,6 +1,7 @@
 package com.skillstorm.PageObjects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Components.Footer;
-import com.skillstorm.PageObjects.Components.Navbar.LoggedOutNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
 public class LandingPage extends Page {
@@ -33,7 +34,7 @@ public class LandingPage extends Page {
 
     //Child Components
     private Footer footer;
-    private LoggedOutNavbar landingNavbar;
+    private LandingNavbar landingNavbar;
 
 //#END Attributes
 
@@ -41,7 +42,7 @@ public class LandingPage extends Page {
     public LandingPage(WebDriver driver) {
         super(driver);
         footer = new Footer();
-        landingNavbar = new LoggedOutNavbar(driver);
+        landingNavbar = new LandingNavbar(driver);
         PageFactory.initElements(driver, this);
     }
     
@@ -57,10 +58,10 @@ public class LandingPage extends Page {
     /////////// OVERRIDE IMPLEMENTATIONS //////////////
     @Override
     public List<Component> getChildComponents() {
-        List<Component> components = new ArrayList<>();
-        components.add(footer);
-        components.add(landingNavbar);
-        return components;
+        return Arrays.asList(
+            footer, 
+            landingNavbar
+        );
     }
 
     @Override
@@ -94,9 +95,7 @@ public class LandingPage extends Page {
 
     @Override
     public List<WebElement> getButtons() {
-        List<WebElement> buttons = new ArrayList<>();
-        buttons.add(btnGetStarted);
-        return buttons;
+        return Arrays.asList(btnGetStarted);
     }
 
     @Override
