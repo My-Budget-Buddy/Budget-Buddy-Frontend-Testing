@@ -1,0 +1,90 @@
+package com.skillstorm.PageObjects.Components.Navbar;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import com.skillstorm.PageObjects.Interfaces.Component;
+
+public class DashboardNavbar extends Navbar {
+//#region Static fields
+
+    // IDs
+    public static final String BTN_LANDING_ID = "navbar-landing";
+    public static final String BTN_DASHBOARD_ID = "navbar-dashboard";
+    public static final String BTN_ACCOUNTS_ID = "navbar-accounts";
+    public static final String BTN_BUDGETS_ID = "navbar-budgets";
+    public static final String BTN_SPENDINGS_ID = "navbar-spending";
+    public static final String BTN_TRANSACTIONS_ID = "navbar-transactions";
+    public static final String BTN_TAX_ID = "navbar-tax";
+
+    // Names
+    public static final String BTN_LANDING_NAME = "Navbar Budget Buddy Icon";
+    public static final String BTN_DASHBOARD_NAME = "Dashboard";
+    public static final String BTN_ACCOUNTS_NAME = "Accounts";
+    public static final String BTN_BUDGETS_NAME = "Budgets";
+    public static final String BTN_SPENDINGS_NAME = "Spendings";
+    public static final String BTN_TRANSACTIONS_NAME = "Transactions";
+    public static final String BTN_TAX_NAME = "Tax";
+
+//#endregion
+
+    Map<String, WebElement> nameElementMap = new HashMap<String, WebElement>();
+
+    private WebElement btnLanding;
+    private WebElement btnDashboard;
+    private WebElement btnAccounts;
+    private WebElement btnBudgets;
+    private WebElement btnSpendings;
+    private WebElement btnTransactions;
+    private WebElement btnTax;
+
+    public DashboardNavbar(WebDriver driver) {
+        super(driver);
+
+        // Map web elements.
+        nameElementMap.put(BTN_LANDING_NAME, btnLanding);
+        nameElementMap.put(BTN_DASHBOARD_NAME, btnDashboard);
+        nameElementMap.put(BTN_ACCOUNTS_NAME, btnAccounts);
+        nameElementMap.put(BTN_BUDGETS_NAME, btnBudgets);
+        nameElementMap.put(BTN_SPENDINGS_NAME, btnSpendings);
+        nameElementMap.put(BTN_TRANSACTIONS_NAME, btnTransactions);
+        nameElementMap.put(BTN_TAX_NAME, btnTax);
+    }
+
+    @Override
+    public List<Component> getChildComponents() {
+        return null;
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        return null;
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        return new ArrayList<WebElement>(nameElementMap.values());
+    }
+
+    @Override
+    public WebElement getWebElement(String name) {
+        return nameElementMap.get(name);
+    }
+
+    @Override
+    public List<WebElement> getButtons() {
+        return getWebElements();
+    }
+
+    @Override
+    public void clickButton(String name) {
+        nameElementMap.get(name).click();
+    }
+}
