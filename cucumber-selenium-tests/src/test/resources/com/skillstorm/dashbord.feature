@@ -3,9 +3,10 @@ Feature:
     Scenario: DB1 - looking at drop down options when logged in
         Given I have multiple "<objects>"
         And I am on the "Dashboard" page
-        When click on "<option>" option
+        When I click on "<option>" option
         Then I can see a list of my "<objects>"
 
+        Examples:
         | objects           | option        |
         | Checking Accounts | Checkings     |
         | Savings Accounts  | Savings       |

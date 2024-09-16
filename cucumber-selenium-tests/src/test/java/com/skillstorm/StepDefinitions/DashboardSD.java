@@ -65,9 +65,7 @@ public class DashboardSD {
 
         wait.until( (p) -> {
             try {
-                System.out.println("we made it here 1");
                 LoginPage testLoginPage = new LoginPage(driver);
-                System.out.println("we made it here 2");
                 return testLoginPage.getWebElements() != null;
             } catch (NoSuchElementException e){
                 return false;
