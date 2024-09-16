@@ -7,17 +7,24 @@
 
 package com.skillstorm.PageObjects;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.Components.Footer;
 import com.skillstorm.PageObjects.Components.Form;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
+import com.skillstorm.Utilities.UserData.User;
 
 public class SignupPage extends Page {
 //#region Static Fields
@@ -58,25 +65,66 @@ public class SignupPage extends Page {
     @FindBy(id=BTN_LOGIN_ID)
     private WebElement btnLogin;
 
+    // --- CONSTRUCTORS ---
+
     public SignupPage(WebDriver driver) {
         super(driver);
 
-        // TODO: INITIALIZE NAVBAR
+        // Initialize navbar
+        navbar = new LandingNavbar(driver);
 
         // Initialize form
         signupForm = new Form(driver);
         signupForm.setInput(IN_USERNAME_ID, IN_USERNAME_NAME);
         signupForm.setInput(IN_PASSWORD_ID, IN_PASSWORD_NAME);
         signupForm.setInput(IN_CONFIRMPASSWORD_ID, IN_PASSWORD_NAME);
-        //signupForm.setBtnSubmit(BTN_CREATEACCOUNT_ID);
+        WebElement btnSubmit = driver.findElement(By.id(BTN_CREATEACCOUNT_ID));
+        signupForm.setBtnSubmit(btnSubmit, BTN_CREATEACCOUNT_NAME);
 
-        // TODO: INITIALIZE FOOTER
+        // Initialize footer
+        footer = new Footer(driver);
     }
 
-    // @Override
-    // public List<Component> getChildComponents() {
-    //     return Arrays.asList(signupForm, footer, navbar);
-    // }
+    // --- UNIQUE METHODS ---
+
+    /**
+     * Performs the process of signing up.
+     * @param user  User to sign up.
+     * @return      Results of the signup process.
+     */
+    public boolean signup(User user){
+        // Fill fields and submit.
+        signupForm.sendInput(IN_USERNAME_NAME, user.getUsername());
+        signupForm.sendInput(IN_PASSWORD_NAME, user.getPassword());
+        signupForm.sendInput(IN_CONFIRMPASSWORD_NAME, user.getPassword());
+        signupForm.submit();
+
+        // Check results
+        return !checkForAlerts();
+    }
+
+    /**
+     * Checks if an alert pops up within 10ms
+     * @return  Alert presence status.
+     */
+    public boolean checkForAlerts(){
+        boolean foundAlert = false;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10));
+        try {
+            wait.until(ExpectedConditions.alertIsPresent());
+            foundAlert = true;
+        } catch (TimeoutException eTO) {
+            foundAlert = false;
+        }
+        return foundAlert;
+    }
+
+    // --- INTERFACE METHODS ---
+
+    @Override
+    public List<Component> getChildComponents() {
+        return Arrays.asList(signupForm, footer, navbar);
+    }
 
     @Override
     public Component getChildComponent(String name) {
