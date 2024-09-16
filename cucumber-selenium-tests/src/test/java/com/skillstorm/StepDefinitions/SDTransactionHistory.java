@@ -1,22 +1,49 @@
 package com.skillstorm.StepDefinitions;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.TransactionHistoryPage;
+import com.skillstorm.PageObjects.TransactionPage;
+import com.skillstorm.Utilities.Navigator;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 
 public class SDTransactionHistory {
+    WebDriver driver;
+    WebDriverWait wait;
+    Navigator navigator;
     private TransactionHistoryPage transactionHistory;
+    private String[] transactionHistoryContent;
     
     
+    /**
+     * Set up the ChromeDriver and initialize TransactionPage.
+     */
     @Before("@transactionhistory")
-    public void before(){
-        ChromeOptions options = new ChromeOptions();
-        WebDriver driver = new ChromeDriver(options);
+    public void setUp() {
+        driver = WebDriverSingleton.getDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        navigator = new Navigator(driver);
+
+        this.transactionHistory = new TransactionHistoryPage();
+
+        transactionHistoryContent =  new String[4];
+    }
+
+    /**
+     * Tear down the WebDriver after each test.
+     */
+    @After("@transactionhistory")
+    public void tearDown() {
+        WebDriverSingleton.quitDriver();
     }
 
     //start general
