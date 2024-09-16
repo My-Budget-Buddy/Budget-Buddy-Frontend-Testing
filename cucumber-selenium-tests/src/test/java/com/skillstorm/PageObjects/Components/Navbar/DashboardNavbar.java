@@ -1,3 +1,11 @@
+/**
+ * By: Aaron Huggins
+ * 
+ * Description:
+ *      Represents the blue navbar that shows on the left of the screen when
+ *      a user is signed in.
+ */
+
 package com.skillstorm.PageObjects.Components.Navbar;
 
 import java.util.ArrayList;
@@ -70,31 +78,49 @@ public class DashboardNavbar extends Navbar {
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * DashboardNavbar has no child components.
+     */
     @Override
     public List<Component> getChildComponents() {
         return null;
     }
 
+    /**
+     * DashboardNavbar has no child components.
+     */
     @Override
     public Component getChildComponent(String name) {
         return null;
     }
 
+    /**
+     * Returns all of the buttons on the navbar.
+     */
     @Override
     public List<WebElement> getWebElements() {
         return new ArrayList<WebElement>(nameElementMap.values());
     }
 
+    /**
+     * Returns a specific button from the navbar, or null if it doesn't exist.
+     */
     @Override
     public WebElement getWebElement(String name) {
         return nameElementMap.get(name);
     }
 
+    /**
+     * Returns all of the buttons on the navbar.
+     */
     @Override
     public List<WebElement> getButtons() {
         return getWebElements();
     }
 
+    /**
+     * Clicks a given button.
+     */
     @Override
     public void clickButton(String name) {
         nameElementMap.get(name).click();

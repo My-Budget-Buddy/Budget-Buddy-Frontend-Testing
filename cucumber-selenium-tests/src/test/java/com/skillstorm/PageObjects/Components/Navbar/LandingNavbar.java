@@ -2,7 +2,9 @@
  * By: Aaron Huggins
  * 
  * Description:
- *      Represents the Navbar that appears when a user is logged out.
+ *      Represents the white navbar that appears when the user is either:
+ *          - Logged out
+ *          - On the landing page.
  */
 
 package com.skillstorm.PageObjects.Components.Navbar;
