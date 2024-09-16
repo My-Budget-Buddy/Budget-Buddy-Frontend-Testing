@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TransactionPage {
     
@@ -130,15 +132,6 @@ public class TransactionPage {
         PageFactory.initElements(driver, this);
     }
 
-    // Quit driver
-    public void quit() {
-        this.driver.quit();
-    }
-
-    // Login Methods
-    public void loginPage() {
-        this.driver.get("http://localhost:5173/login");
-    }
 
     public void logIn() {
         emailField.sendKeys("joseph.sam@gmail.com");
@@ -250,7 +243,16 @@ public class TransactionPage {
     }
 
     public Boolean confirmDeletion() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        //wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(transactionsTable, transactionsTable.getText())));
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int tableSizeAfterDeletion = transactionsTable.getText().length();
+        System.out.println(tableSizeBeforeDeletion);
+        System.out.println(tableSizeAfterDeletion);
         return tableSizeBeforeDeletion > tableSizeAfterDeletion;
     }
 
@@ -261,14 +263,14 @@ public class TransactionPage {
 
     public void selectACategory(String category) {
         if (category != null && !category.isEmpty()) {
-            accountDropdown.click();
+            allCategoriesDropDown.click();
             WebElement option = driver.findElement(By.xpath("//*[@id='allCategoriesDropDown']/option[text()='" + category + "']"));
             option.click();
         }
     }
 
     public void printOutCategoryColumn() {
-        List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[2]"));
+        List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[3]"));
         for (WebElement cell : categoryColumnValues) {
             System.out.println(cell.getText());
         }

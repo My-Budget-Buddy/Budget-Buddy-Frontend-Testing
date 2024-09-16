@@ -2,8 +2,15 @@ package com.skillstorm.StepDefinitions;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.TransactionPage;
+import com.skillstorm.Utilities.Navigator;
+
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -11,6 +18,9 @@ import io.cucumber.java.en.*;
 
 public class SDTransactions {
 
+    WebDriver driver;
+    WebDriverWait wait;
+    Navigator navigator;
     private TransactionPage transactions;
     private String[] transactionContent;
 
@@ -18,31 +28,31 @@ public class SDTransactions {
      * Set up the ChromeDriver and initialize TransactionPage.
      */
     @Before("@transaction")
-    public void before() {
-        ChromeOptions options = new ChromeOptions();
-        WebDriver driver = new ChromeDriver(options);
+    public void setUp() {
+        driver = WebDriverSingleton.getDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        navigator = new Navigator(driver);
 
         this.transactions = new TransactionPage(driver);
 
-        //storing the content of the transaction for later testing
-        transactionContent = new String[4];
+        transactionContent =  new String[4];
     }
 
     /**
      * Tear down the WebDriver after each test.
      */
     @After("@transaction")
-    public void after() {
-        this.transactions.quit();
+    public void tearDown() {
+        WebDriverSingleton.quitDriver();
     }
 
     /**
      * Login Scenario Definitions
      */
-    @Given("I am on the login page")
-    public void logInPage() {
-        this.transactions.loginPage();
-    }
+    // @Given("I am on the login page")
+    // public void logInPage() {
+    //     this.transactions.loginPage();
+    // }
 
     @And("I login")
     public void login() {
@@ -60,10 +70,10 @@ public class SDTransactions {
         Assert.assertEquals(actualUrl, expectedUrl);
     }
 
-    @And("I click the Submit button")
-    public void iClickTheSubmitButton() {
-        this.transactions.clickSubmitBtn();
-    }
+    // @And("I click the Submit button")
+    // public void iClickTheSubmitButton() {
+    //     this.transactions.clickSubmitBtn();
+    // }
 
     /**
      * Create Transaction Scenario Definitions
