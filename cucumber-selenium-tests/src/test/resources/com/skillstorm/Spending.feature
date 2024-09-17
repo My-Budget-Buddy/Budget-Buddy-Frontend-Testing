@@ -10,11 +10,8 @@ Feature: Dashboard to analyze spending habits and income
     Scenario: See all expected displays on the Spending page when values exist
         Given Spending: I am logged in
         And Spending: I am on the "Spending" page
-        Then I can see the spendings for the week card
-        And I can see the deposits for the week card
-        And I can see the annual total spent for the week card
-        And I can see the spendings graph for the year
-        And I can see the category expenses table
-        And I can see the top three cateogries of spending
-        And I can see the top three purchases
-        And I can see the top vendors
+        Then I can see the three cards: spent this week, deposited this week, and Annual Total Spent
+        And I can see the spendings and earned graph for the year
+        And I can see the pie chart of spending categories
+        And I can see the spending categories table
+        And I can see the top categories of spending, top three purchases, and top three vendors

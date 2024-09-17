@@ -1,5 +1,6 @@
 package com.skillstorm.StepDefinitions;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
@@ -58,5 +59,30 @@ public class SpendingSD {
     @Then("Spending: I am redirected to the {string} page")
     public void  iAmRedirectedToTheSpendingMonthPage(String pageName) {
         Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(pageName)));
+    }
+
+    @Then("I can see the three cards: spent this week, deposited this week, and Annual Total Spent")
+    public void iCanSeeTheSpendingsForTheWeekCard() {
+        Assert.assertTrue(driver.findElement(By.id("spending-header-cards")).isDisplayed());
+    }
+    
+    @And("I can see the spendings and earned graph for the year")
+    public void iCanSeeTheSpendingsEarningsYearGraph() {
+        Assert.assertTrue(driver.findElement(By.id("spending-earnings-graph")).isDisplayed());
+    }
+
+    @And("I can see the pie chart of spending categories")
+    public void iCanSeeThePieChartOfSpendingCategories() {
+        Assert.assertTrue(driver.findElement(By.id("spending-pie-chart")).isDisplayed());
+    }
+
+    @And("I can see the spending categories table")
+    public void iCanSeeTheSpendingCategoriesTable() {
+        Assert.assertTrue(driver.findElement(By.xpath("/html/body/div[1]/div[1]/main/div/div/section/div[4]/div[1]/div[2]/table")).isDisplayed());
+    }
+
+    @And("I can see the top categories of spending, top three purchases, and top three vendors")
+    public void iCanSeeTheTopCategoriesOfSpendingPurchasesAndVendors() {
+        Assert.assertTrue(driver.findElement(By.id("top-categories-purchases-vendors")).isDisplayed());
     }
 }
