@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.Interfaces.Component;
 
@@ -23,8 +25,11 @@ public class SpendingPage extends Page {
 
 //#endregion
 
-    @FindBy(id=BTN_SEECURRENTMONTH_ID)
+    @FindBy(id = BTN_SEECURRENTMONTH_ID)
     private WebElement btnSeeCurrentMonth;
+
+    @FindBy(xpath = "/html/body/div/div[1]/div/div/a[4]")
+    private WebElement spendingsTab;
 
     /**
      * Initializes the driver and sets an implicit wait 
@@ -33,6 +38,21 @@ public class SpendingPage extends Page {
         super(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
+    }
+
+    // Helper method to wait for element visibility
+    private WebElement waitForElement(WebElement element, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void clickTab() {
+        waitForElement(spendingsTab, 10).click();
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -97,7 +117,18 @@ public class SpendingPage extends Page {
     public void clickButton(String name) {
         WebElement button = getWebElement(name);
         
-        if(button != null) button.click();
-        else throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        if(button != null) {
+            waitForElement(button, 10).click();
+        }
+        else {
+            throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        }
+
+        // give time for page to load
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
