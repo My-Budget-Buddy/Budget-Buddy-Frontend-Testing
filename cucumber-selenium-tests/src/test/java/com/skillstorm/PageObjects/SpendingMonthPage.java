@@ -15,22 +15,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
-public class SpendingPage extends Page {
+public class SpendingMonthPage extends Page {
 //#region Static Fields
 
     // Components
     public static final String CMP_DASHBOARDNAVBAR_NAME = "Navbar";
 
     // IDs
-    public static final String BTN_SEECURRENTMONTH_ID = "see-current-month-button";
+    public static final String BTN_BACKTOSPENDING_ID = "back-to-spending-btn";
 
     // Names
-    public static final String BTN_SEECURRENTMONTH_NAME = "See Current Month";
+    public static final String BTN_BACKTOANNUALSPENDING_NAME = "Back to Annual Spending Overview";
 
 //#endregion
 
-    @FindBy(id = BTN_SEECURRENTMONTH_ID)
-    private WebElement btnSeeCurrentMonth;
+    @FindBy(id = BTN_BACKTOSPENDING_ID)
+    private WebElement btnBackToSpending;
 
     @FindBy(xpath = "/html/body/div[1]/div[1]/div/div[1]/a[4]")
     private WebElement spendingsTab;
@@ -41,7 +41,7 @@ public class SpendingPage extends Page {
     /**
      * Initializes the driver and sets an implicit wait 
      */
-    public SpendingPage(WebDriver driver){
+    public SpendingMonthPage(WebDriver driver){
         super(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
@@ -83,7 +83,7 @@ public class SpendingPage extends Page {
     @Override
     public List<WebElement> getWebElements() {
         ArrayList<WebElement> webElements = new ArrayList<WebElement>();
-        webElements.add(btnSeeCurrentMonth);
+        webElements.add(btnBackToSpending);
 
         for(Component component : getChildComponents()){
             webElements.addAll(component.getWebElements());
@@ -99,8 +99,8 @@ public class SpendingPage extends Page {
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
-            case BTN_SEECURRENTMONTH_NAME:
-                return btnSeeCurrentMonth;
+            case BTN_BACKTOANNUALSPENDING_NAME:
+                return btnBackToSpending;
             default:
                 for (Component component : getChildComponents()) {
                     WebElement webElement = component.getWebElement(name);
@@ -117,7 +117,7 @@ public class SpendingPage extends Page {
      */
     @Override
     public List<WebElement> getButtons() {
-        return Arrays.asList(btnSeeCurrentMonth);
+        return Arrays.asList(btnBackToSpending);
     }
 
     /**
