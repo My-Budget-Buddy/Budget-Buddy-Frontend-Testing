@@ -18,13 +18,14 @@ import com.skillstorm.PageObjects.Interfaces.Component;
 public class DashboardPage extends Page {
 //#region Static fields
 
-    //Components
+    //Names
     public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";
     public static final String NAME_TRANSACTION_ARROW = "Transaction Arrow";
-    public static final String NAME_ACCORDION_CHECKING = "Checkings";
-    public static final String NAME_ACCORDION_SAVINGS = "Savings";
-    public static final String NAME_ACCORDION_CREDIT_CARDS = "Credit Cards"; 
-    public static final String NAME_ACCORDION_INVESTMENTS = "Investments";   
+    public static final String NAME_ACCORDION_CHECKING_BTN = "Checkings";
+    public static final String NAME_ACCORDION_SAVINGS_BTN = "Savings";
+    public static final String NAME_ACCORDION_CREDIT_CARDS_BTN = "Credit Cards"; 
+    public static final String NAME_ACCORDION_INVESTMENTS_BTN = "Investments";  
+    public final String NAME_TRANSACTION_ARROW_OVERLAY = "Recent Transaction"; 
 
     // Button IDs
     private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
@@ -33,8 +34,14 @@ public class DashboardPage extends Page {
     private final String ACCORDION_INVESTMENTS_LOCATOR = "button[data-testid='accordionButton_investment']";
     private final String BTN_TRANSCATION_ARROWS_ID = "btnTransactionArrow";
 
-    // Other WebElement IDs
+    // Table IDs
+    private final String ACCORDION_CHECKING_TABLE_ID = "checking";
+    private final String ACCORDION_SAVINGS_TABLE_ID = "savings";
+    private final String ACCORDION_CREDIT_CARDS_TABLE_ID = "credit";
+    private final String ACCORDION_INVESTMENTS_TABLE_ID = "investment";
 
+    // Other WebElement IDs
+    private final String TRANSACTION_ARROW_OVERLAY_ID = "transaction-info-modal";
 
 //#END Static Fields
 
@@ -42,7 +49,7 @@ public class DashboardPage extends Page {
 
     Map<String, WebElement> nameElementMap = new HashMap<String, WebElement>();
 
-    //Web Elements
+    //Web Elements - Account Accordion Buttons
     @FindBy(css = ACCORDION_CHECKING_LOCATOR)
     private WebElement btnAccordianChecking;
 
@@ -55,8 +62,26 @@ public class DashboardPage extends Page {
     @FindBy(css = ACCORDION_INVESTMENTS_LOCATOR)
     private WebElement btnAccordianInvestments;
 
+    //Web Elements - Hidden Elements
+    @FindBy(id = ACCORDION_CHECKING_TABLE_ID)
+    private WebElement tableChecking;
+
+    @FindBy(id = ACCORDION_SAVINGS_TABLE_ID)
+    private WebElement tableSavings;
+
+    @FindBy(id = ACCORDION_CREDIT_CARDS_TABLE_ID)
+    private WebElement tableCreditCards;
+
+    @FindBy(id = ACCORDION_INVESTMENTS_TABLE_ID)
+    private WebElement tableInvestments;
+
+    @FindBy(id = TRANSACTION_ARROW_OVERLAY_ID)
+    private WebElement transactionArrowOverlay;
+
+    //Web Elements - Transaction Arrow Buttons
     @FindBy(id = BTN_TRANSCATION_ARROWS_ID)
     private List<WebElement> btnTransactionButtons;
+
 
     //Child Components
     //TODO: Navbar???
@@ -73,12 +98,39 @@ public class DashboardPage extends Page {
         //TODO: Navbar??
 
         //Map WebElements
-        nameElementMap.put(NAME_ACCORDION_CHECKING, btnAccordianChecking);
-        nameElementMap.put(NAME_ACCORDION_SAVINGS, btnAccordianSavings);
-        nameElementMap.put(NAME_ACCORDION_CREDIT_CARDS, btnAccordianCreditCards);
-        nameElementMap.put(NAME_ACCORDION_INVESTMENTS, btnAccordianInvestments);
+        nameElementMap.put(NAME_ACCORDION_CHECKING_BTN, btnAccordianChecking);
+        nameElementMap.put(NAME_ACCORDION_SAVINGS_BTN, btnAccordianSavings);
+        nameElementMap.put(NAME_ACCORDION_CREDIT_CARDS_BTN, btnAccordianCreditCards);
+        nameElementMap.put(NAME_ACCORDION_INVESTMENTS_BTN, btnAccordianInvestments);
+        nameElementMap.put(ACCORDION_CHECKING_TABLE_ID, tableChecking);
+        nameElementMap.put(ACCORDION_SAVINGS_TABLE_ID, tableSavings);   
+        nameElementMap.put(ACCORDION_CREDIT_CARDS_TABLE_ID, tableCreditCards);  
+        nameElementMap.put(ACCORDION_INVESTMENTS_TABLE_ID, tableInvestments); 
+        nameElementMap.put(NAME_TRANSACTION_ARROW_OVERLAY, transactionArrowOverlay); 
         nameElementMap.put(NAME_TRANSACTION_ARROW, btnTransactionButtons.get(0)); //just the first arrow button
         //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
+    }
+
+    ////////// UNIQUE METHODS ////////////////////
+
+    /**
+     * Retrieves the table name associated with a button name.
+     * @param btnName - name of the button to retrieve the table name for.
+     * @return - name of the table associated with the button.
+     */
+    public String getTableNameFromButtonName(String btnName) {
+        switch (btnName) {
+            case NAME_ACCORDION_CHECKING_BTN:
+                return ACCORDION_CHECKING_TABLE_ID;
+            case NAME_ACCORDION_SAVINGS_BTN:
+                return ACCORDION_SAVINGS_TABLE_ID;
+            case NAME_ACCORDION_CREDIT_CARDS_BTN:
+                return ACCORDION_CREDIT_CARDS_TABLE_ID;
+            case NAME_ACCORDION_INVESTMENTS_BTN:
+                return ACCORDION_INVESTMENTS_TABLE_ID;
+            default:
+                throw new IllegalArgumentException("Button name not recognized.");
+        }
     }
 
 
@@ -119,8 +171,11 @@ public class DashboardPage extends Page {
      */
     @Override
     public List<WebElement> getWebElements() {
-        // Get all buttons
-        List<WebElement> webElements = getButtons();
+        // Get all web elements in this component
+        List<WebElement> webElements = new ArrayList<WebElement>();
+        for (WebElement webElement : nameElementMap.values()) {
+            webElements.add(webElement);
+        }
 
         // Add child components' web elements
         for (Component component : getChildComponents()) {
@@ -170,12 +225,4 @@ public class DashboardPage extends Page {
         return buttons;
     }
 
-    public void printElements() {
-        List<WebElement> allElements = getWebElements();
-        System.out.print("[ ");
-        for (WebElement element : allElements) {
-            System.out.print(element + ", ");
-        }
-        System.out.print(" ]\n");
-    }
 }

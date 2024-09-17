@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.log.Log;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 
 import com.skillstorm.WebDriverSingleton;
@@ -62,21 +63,10 @@ public class DashboardSD {
      */
     @Given("I have multiple {string}")
     public void iHaveMulitple(String ojbects) {
-        navigator.navigateTo(Navigator.PGNAME_LOGIN);
-
-        // wait.until( (p) -> {
-        //     try {
-        //         LoginPage testLoginPage = new LoginPage(driver);
-        //         return testLoginPage.getWebElements() != null;
-        //     } catch (NoSuchElementException e){
-        //         return false;
-        //     }
-        // });
-        
+        //Load "seasoned" user who has lots of accounts
+        navigator.navigateTo(Navigator.PGNAME_LOGIN);       
         LoginPage loginPage = new LoginPage(driver); 
         loginPage.login(user);
-        
-        
     }
 
     /**
@@ -85,7 +75,7 @@ public class DashboardSD {
     @Given("I have a budget plan")
     public void iHaveABudgetPlan() {
 
-        //Load "seasoned" user who has lots of transactions
+        //Load "seasoned" user who has a budget plan
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(user);
@@ -100,12 +90,10 @@ public class DashboardSD {
     @Given("I have recent transactions")
     public void iHaveRecentTransactions() {
         
-        //Login with recent user
+        //load "seasoned" user who has recent transactions
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(user);
-        
-        //TODO: create some transactions
 
     }
 
@@ -126,6 +114,10 @@ public class DashboardSD {
         wait.until(ExpectedConditions.urlMatches(Navigator.URL_DASHBOARD));
         page = new DashboardPage(driver);
 
+        //check to make sure the accordian table is currently not displayed
+        String tableName = page.getTableNameFromButtonName(accordianBtnName);
+        Assert.assertFalse(page.getWebElement(tableName).isDisplayed());
+
         //click on the appropriate object
         page.clickButton(accordianBtnName);
     }
@@ -142,9 +134,11 @@ public class DashboardSD {
      *      | Investments       | Investments   |
      * 
      */
-    @Then("I can see a list of my {string}")
-    public void iCanSeeAListOfMy(String objects) {
-        
+    @Then("I can see a the {string} table")
+    public void iCanSeeAListOfMy(String obj) {
+        wait.until(ExpectedConditions.visibilityOf(
+            page.getWebElement(obj)
+        ));
     }
 
     @Then("I see a Current Spending Table")
@@ -154,17 +148,21 @@ public class DashboardSD {
 
     @Then("The spending line reflects my spending")
     public void theSpendingLineReflectsMySpending() {
-
+        //TODO: Implement this
     }
 
     @Then("A pop up of the transaction appears")
     public void aPopUpOfTheTransactionAppears() {
-
+        if (page == null) page = new DashboardPage(driver);
+        //Check to see if the Transaction Modal is displayed Over the page
+        wait.until(ExpectedConditions.visibilityOf(
+            page.getWebElement(page.NAME_TRANSACTION_ARROW_OVERLAY)
+        ));
     }
 
     @Then("I can see budget information")
     public void iCanSeeBudgetInformation() {
-
+        //TODO: Implement this
     }
 
 
