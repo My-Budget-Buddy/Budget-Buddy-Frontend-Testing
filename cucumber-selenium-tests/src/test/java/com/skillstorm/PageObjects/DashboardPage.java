@@ -12,20 +12,26 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.Navbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
 public class DashboardPage extends Page {
 //#region Static fields
 
     //Components
-    public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";    
+    public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";
+    public static final String NAME_TRANSACTION_ARROW = "Transaction Arrow";
+    public static final String NAME_ACCORDION_CHECKING = "Checkings";
+    public static final String NAME_ACCORDION_SAVINGS = "Savings";
+    public static final String NAME_ACCORDION_CREDIT_CARDS = "Credit Cards"; 
+    public static final String NAME_ACCORDION_INVESTMENTS = "Investments";   
 
     // Button IDs
-    public static final String ACCORDION_CHECKING_LOCATOR = "h4[data-testid='accordionButton_checking']";
-    public static final String ACCORDION_SAVINGS_LOCATOR = "h4[data-testid='accordionButton_savings]";
-    public static final String ACCORDION_CREDIT_CARDS_LOCATOR = "h4[data-testid='accordionButton_credit']";
-    public static final String ACCORDION_INVESTMENTS_LOCATOR = "h4[data-testid='accordionButton_investment']";
-    public static final String BTN_TRANSCATION_ARROWS_ID = "btnTransactionArrow";
+    private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
+    private final String ACCORDION_SAVINGS_LOCATOR = "button[data-testid='accordionButton_savings']";
+    private final String ACCORDION_CREDIT_CARDS_LOCATOR = "button[data-testid='accordionButton_credit']";
+    private final String ACCORDION_INVESTMENTS_LOCATOR = "button[data-testid='accordionButton_investment']";
+    private final String BTN_TRANSCATION_ARROWS_ID = "btnTransactionArrow";
 
     // Other WebElement IDs
 
@@ -53,26 +59,26 @@ public class DashboardPage extends Page {
     private List<WebElement> btnTransactionButtons;
 
     //Child Components
-    private LandingNavbar landingNavbar;
+    //TODO: Navbar???
 
 //#END Attributes
 
     /////////// CONSTRUCTORS //////////////////////////   
     public DashboardPage(WebDriver driver) {
         super(driver);
-
-        //Map WebElements
-        nameElementMap.put(ACCORDION_CHECKING_LOCATOR, btnAccordianChecking);
-        nameElementMap.put(ACCORDION_CREDIT_CARDS_LOCATOR, btnAccordianChecking);
-        nameElementMap.put(ACCORDION_INVESTMENTS_LOCATOR, btnAccordianChecking);
-        nameElementMap.put(ACCORDION_SAVINGS_LOCATOR, btnAccordianChecking);
-        //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
-
-        //load components
-        this.landingNavbar = new LandingNavbar(driver);
-
         //initialize WebElements
         PageFactory.initElements(driver, this);
+
+        //load components
+        //TODO: Navbar??
+
+        //Map WebElements
+        nameElementMap.put(NAME_ACCORDION_CHECKING, btnAccordianChecking);
+        nameElementMap.put(NAME_ACCORDION_SAVINGS, btnAccordianSavings);
+        nameElementMap.put(NAME_ACCORDION_CREDIT_CARDS, btnAccordianCreditCards);
+        nameElementMap.put(NAME_ACCORDION_INVESTMENTS, btnAccordianInvestments);
+        nameElementMap.put(NAME_TRANSACTION_ARROW, btnTransactionButtons.get(0)); //just the first arrow button
+        //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
     }
 
 
@@ -94,7 +100,7 @@ public class DashboardPage extends Page {
      */
     @Override
     public List<Component> getChildComponents() {
-        return Arrays.asList(landingNavbar);
+        return new ArrayList<Component>(); //Arrays.asList(navbar);???
     }
 
     /**
@@ -104,12 +110,8 @@ public class DashboardPage extends Page {
      */
     @Override
     public Component getChildComponent(String name) {
-        switch (name) {
-            case CMP_LANDING_NAVBAR_NAME:
-                return landingNavbar;
-            default:
-                return null;
-        }
+        return null;
+        //TODO: Navbar???
     }
 
     /**
@@ -117,7 +119,7 @@ public class DashboardPage extends Page {
      */
     @Override
     public List<WebElement> getWebElements() {
-        //get all buttons
+        // Get all buttons
         List<WebElement> webElements = getButtons();
 
         // Add child components' web elements
@@ -146,18 +148,9 @@ public class DashboardPage extends Page {
                 if(found != null) return found;
             }
         }
-        
+
         //check in main componenets
-        switch (name) {
-            
-                //only return first button if list of transaction arrows
-            case BTN_TRANSCATION_ARROWS_ID:
-                return btnTransactionButtons.get(0);
-            
-                //for any other name, check if that component exists, or return null
-            default:
-                return nameElementMap.get(name);
-        }
+        return nameElementMap.get(name);
     }
 
     /**
@@ -177,5 +170,12 @@ public class DashboardPage extends Page {
         return buttons;
     }
 
-    
+    public void printElements() {
+        List<WebElement> allElements = getWebElements();
+        System.out.print("[ ");
+        for (WebElement element : allElements) {
+            System.out.print(element + ", ");
+        }
+        System.out.print(" ]\n");
+    }
 }

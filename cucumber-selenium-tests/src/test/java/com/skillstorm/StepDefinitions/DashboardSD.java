@@ -5,10 +5,12 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.bidi.log.Log;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 
 import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
@@ -25,6 +27,7 @@ public class DashboardSD {
     WebDriver driver;
     WebDriverWait wait;
     Navigator navigator;
+    DashboardPage page;
     User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
 
     @BeforeClass
@@ -42,6 +45,7 @@ public class DashboardSD {
     @After
     public void scenarioTearDown() {
         WebDriverSingleton.quitDriver();
+        page = null;
     }
 
 
@@ -117,12 +121,13 @@ public class DashboardSD {
      * 
      */
     @When("I click on {string} option")
-    public void iClickOnOption (String option) {
-        //TODO: Load Dashboard page if hasn't been loaded yet (check to make sure on correct page)
+    public void iClickOnOption (String accordianBtnName) {
+        //Load Dashboard page (check to make sure on correct page)
+        wait.until(ExpectedConditions.urlMatches(Navigator.URL_DASHBOARD));
+        page = new DashboardPage(driver);
 
-        //TODO: click on the appropriate object
-        //page.clickButton(option) ???
-        //wait for 5 seconds to see if it worked
+        //click on the appropriate object
+        page.clickButton(accordianBtnName);
     }
 
 
@@ -139,7 +144,7 @@ public class DashboardSD {
      */
     @Then("I can see a list of my {string}")
     public void iCanSeeAListOfMy(String objects) {
-
+        
     }
 
     @Then("I see a Current Spending Table")
