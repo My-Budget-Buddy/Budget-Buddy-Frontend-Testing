@@ -24,13 +24,13 @@ public class Navigator {
 
     public static final String URL = "";
     public static final String URL_LANDING= "";
-    public static final String URL_LOGIN= "";
+    public static final String URL_LOGIN= "http://localhost:5173/login";
     public static final String URL_SIGNUP= "";
     public static final String URL_DASHBOARD= "";
     public static final String URL_ACCOUNTS= "";
     public static final String URL_BUDGET= "";
-    public static final String URL_SPENDING= "";
-    public static final String URL_SPENDINGMONTH= "";
+    public static final String URL_SPENDING= "http://localhost:5173/dashboard/spending";
+    public static final String URL_SPENDINGMONTH= "http://localhost:5173/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= "";
     public static final String URL_TRANSACTIONSHISTORY= "";
     public static final String URL_TAX= "";
@@ -144,13 +144,21 @@ public class Navigator {
     }
 
     private void navigateToSpendingMonth() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSpendingMonth'");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.driver.get(URL_SPENDINGMONTH);
     }
 
     private void navigateToSpending() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSpending'");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.driver.get(URL_SPENDING);
     }
 
     private void navigateToSignup() {
@@ -159,8 +167,12 @@ public class Navigator {
     }
 
     private void navigateToLogin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToLogin'");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.driver.get(URL_LOGIN);
     }
 
     private void navigateToLanding() {
