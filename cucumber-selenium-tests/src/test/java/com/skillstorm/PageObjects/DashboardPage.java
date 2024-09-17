@@ -2,11 +2,14 @@ package com.skillstorm.PageObjects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
@@ -30,6 +33,10 @@ public class DashboardPage extends Page {
 //#END Static Fields
 
 //#region Attributes
+
+    Map<String, WebElement> nameElementMap = new HashMap<String, WebElement>();
+
+    //Web Elements
     @FindBy(css = ACCORDION_CHECKING_LOCATOR)
     private WebElement btnAccordianChecking;
 
@@ -53,7 +60,19 @@ public class DashboardPage extends Page {
     /////////// CONSTRUCTORS //////////////////////////   
     public DashboardPage(WebDriver driver) {
         super(driver);
+
+        //Map WebElements
+        nameElementMap.put(ACCORDION_CHECKING_LOCATOR, btnAccordianChecking);
+        nameElementMap.put(ACCORDION_CREDIT_CARDS_LOCATOR, btnAccordianChecking);
+        nameElementMap.put(ACCORDION_INVESTMENTS_LOCATOR, btnAccordianChecking);
+        nameElementMap.put(ACCORDION_SAVINGS_LOCATOR, btnAccordianChecking);
+        //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
+
+        //load components
         this.landingNavbar = new LandingNavbar(driver);
+
+        //initialize WebElements
+        PageFactory.initElements(driver, this);
     }
 
 
@@ -98,6 +117,7 @@ public class DashboardPage extends Page {
      */
     @Override
     public List<WebElement> getWebElements() {
+        //get all buttons
         List<WebElement> webElements = getButtons();
 
         // Add child components' web elements
@@ -119,21 +139,6 @@ public class DashboardPage extends Page {
      */
     @Override
     public WebElement getWebElement(String name) {
-        switch (name) {
-            case ACCORDION_CHECKING_LOCATOR:
-                return btnAccordianChecking;
-            case ACCORDION_SAVINGS_LOCATOR:
-                return btnAccordianSavings;
-            case ACCORDION_CREDIT_CARDS_LOCATOR:
-                return btnAccordianCreditCards;
-            case ACCORDION_INVESTMENTS_LOCATOR:
-                return btnAccordianInvestments;
-            case BTN_TRANSCATION_ARROWS_ID:
-                return btnTransactionButtons.get(0);
-            default:
-                break;
-        }
-
         // Check in sub-components
         for (Component component : getChildComponents()) {
             if(component != null) {
@@ -141,9 +146,18 @@ public class DashboardPage extends Page {
                 if(found != null) return found;
             }
         }
-
-        // Not found.
-        return null;
+        
+        //check in main componenets
+        switch (name) {
+            
+                //only return first button if list of transaction arrows
+            case BTN_TRANSCATION_ARROWS_ID:
+                return btnTransactionButtons.get(0);
+            
+                //for any other name, check if that component exists, or return null
+            default:
+                return nameElementMap.get(name);
+        }
     }
 
     /**

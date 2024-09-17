@@ -25,7 +25,7 @@ public class DashboardSD {
     WebDriver driver;
     WebDriverWait wait;
     Navigator navigator;
-    User user;
+    User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
 
     @BeforeClass
     public void setUp() {
@@ -42,9 +42,6 @@ public class DashboardSD {
     @After
     public void scenarioTearDown() {
         WebDriverSingleton.quitDriver();
-        if (user != null && user.getType() != UserType.PERSISTANT) {
-            user = null;
-        }
     }
 
 
@@ -63,20 +60,15 @@ public class DashboardSD {
     public void iHaveMulitple(String ojbects) {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
 
-        wait.until( (p) -> {
-            try {
-                LoginPage testLoginPage = new LoginPage(driver);
-                return testLoginPage.getWebElements() != null;
-            } catch (NoSuchElementException e){
-                return false;
-            }
-        });
+        // wait.until( (p) -> {
+        //     try {
+        //         LoginPage testLoginPage = new LoginPage(driver);
+        //         return testLoginPage.getWebElements() != null;
+        //     } catch (NoSuchElementException e){
+        //         return false;
+        //     }
+        // });
         
-
-        if (user == null) {
-            //create a "seasoned user" that already has multiple accounts
-            user = new User(UserType.NONPERSISTANT, "joseph.sam@gmail.com", "password1");
-        }
         LoginPage loginPage = new LoginPage(driver); 
         loginPage.login(user);
         
@@ -88,13 +80,13 @@ public class DashboardSD {
      */
     @Given("I have a budget plan")
     public void iHaveABudgetPlan() {
+
+        //Load "seasoned" user who has lots of transactions
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        if (user == null) {
-            //create a "seasoned user" that already has multiple accounts
-            user = new User(UserType.NONPERSISTANT, "joseph.sam@gmail.com", "password1");
-        } 
         loginPage.login(user);
+
+        //TODO: create a budget plan
 
     }
 
@@ -103,13 +95,13 @@ public class DashboardSD {
      */
     @Given("I have recent transactions")
     public void iHaveRecentTransactions() {
+        
+        //Login with recent user
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        if (user == null) {
-            //create a "seasoned user" that already has multiple accounts
-            user = new User(UserType.NONPERSISTANT, "joseph.sam@gmail.com", "password1");
-        } 
         loginPage.login(user);
+        
+        //TODO: create some transactions
 
     }
 
@@ -126,7 +118,11 @@ public class DashboardSD {
      */
     @When("I click on {string} option")
     public void iClickOnOption (String option) {
-            
+        //TODO: Load Dashboard page if hasn't been loaded yet (check to make sure on correct page)
+
+        //TODO: click on the appropriate object
+        //page.clickButton(option) ???
+        //wait for 5 seconds to see if it worked
     }
 
 
