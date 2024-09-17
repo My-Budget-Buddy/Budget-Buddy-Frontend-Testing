@@ -4,17 +4,29 @@ package com.skillstorm.PageObjects;
 
 
 import java.time.Duration;
-import org.openqa.selenium.support.ui.Select;
+import java.util.List;
+
+
+
+
+import com.skillstorm.PageObjects.Interfaces.Component;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class TaxPage {
+import java.util.HashMap;
+import java.util.Map;
+
+public class TaxPage extends Page {
     private WebDriver driver;
 
     public TaxPage(WebDriver driver) {
+        super(driver); // Explicitly invoke the constructor of the superclass
         this.driver = driver;
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         PageFactory.initElements(driver, this);
@@ -62,7 +74,7 @@ public class TaxPage {
     private WebElement PICityNameField;
 
     @FindBy(name = "state")
-    private Select PIStateNameField;
+    private WebElement PIStateNameField;
 
     @FindBy(name = "zip")
     private WebElement PIZipcodeField;
@@ -145,14 +157,14 @@ public class TaxPage {
     @FindBy(id = "deduction-delete-button")
     private WebElement deductDeleteButton;
 
-    @FindBy(id = "deduction-Add-button")
+    @FindBy(id = "deduction-add-button")
     private WebElement deductAddButton;
 
     @FindBy(id = "deduction-submit-button")
     private WebElement deductSubmitButton;
 
     @FindBy(name = "deddeduction")
-    private Select deductDeductionTypeField;
+    private WebElement deductDeductionTypeField;
 
     @FindBy(name = "dedamountSpent")
     private WebElement deductDeductionAmountField;
@@ -160,20 +172,20 @@ public class TaxPage {
     //webelements from tax estimator form - Review and submit
 
 
-    @FindBy(id = "deduction-save-button")
+    @FindBy(id = "dreview-w2-prev-button")
     private WebElement reviewW2PreviousButton;
 
-    @FindBy(id = "deduction-save-button")
+    @FindBy(id = "review-w2-next-button")
     private WebElement reviewW2NextButton;
 
-    @FindBy(id = "deduction-save-button")
+    @FindBy(id = "review-deduct-prev-button")
     private WebElement reviewDeductPreviousButton;
 
-    @FindBy(id = "deduction-save-button")
+    @FindBy(id = "review-deduct-next-button")
     private WebElement reviewDeductNextButton;
 
-    @FindBy(id = "deduction-save-button")
-    private WebElement reviewSaveButton;
+    @FindBy(id = "review-submit-button")
+    private WebElement reviewSubmitButton;
 
 
     //Login Page
@@ -211,20 +223,57 @@ public class TaxPage {
         taxLink.click();
     }
 
-    public void checkForListOfExistingTaxEstimationRecords() {
+    public boolean checkForListOfExistingTaxEstimationRecords() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         
-        taxLink.click();
+        return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
+
+    }
+
+    @Override
+    public void clickButton(String name) {
+        WebElement button = getWebElement(name);
+
+        if(button == null) throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+    wait.until(d -> button.isDisplayed());
+    try {
+        Thread.sleep(300);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+        button.click();
+        
+    }
+
+    public void clickDeleteOrEdit(String button){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        clickButton(button);
 
     }
 
 
+
     public boolean checkIfDeleteWorked(){
-        return driver.findElements(By.xpath("//div[text()='SINGLE']")).size() > 0;
+        driver.navigate().refresh();
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
+    }
+
+    public void clickMainEditButton(String buttonName){
+        clickButton(buttonName);
     }
 
     public void fillOutPersonalInformation(String firstName, String lastName, String streetAddress,
@@ -234,17 +283,25 @@ public class TaxPage {
             PIStreetNameField.sendKeys(streetAddress);
             PICityNameField.sendKeys(city);
             PIZipcodeField.sendKeys(zipcode);
-            PIStateNameField.selectByValue(state);
+            PIStateNameField.sendKeys(state);
             PIDOBField.sendKeys(DOB);
-            PIStateNameField.selectByValue(SSN);
-            PISaveButton.click();
-            nextButton.click();
+            PISSNField.sendKeys(SSN);
+            
     }
+
+    public void clickPIsubmitButton(String pisave, String next){
+        clickButton(pisave);
+            clickButton(next);
+    }
+
+    public void clickW2StarterButtons(String w2add, String w2edit){
+        clickButton(w2add);
+        clickButton(w2edit);
+    }
+    
 
     public void fillOutW2Information(String state,String employer,String wages,String federalTax,String stateTax,String SSNtax,
                                          String medicareTax){
-            w2AddButton.click();
-            w2EditButton.click();
             w2StateField.sendKeys(state);
             w2EmployerField.sendKeys(employer);
             w2WageField.sendKeys(wages);
@@ -252,8 +309,12 @@ public class TaxPage {
             w2StateIncomeTaxWithheldField.sendKeys(stateTax);
             w2SocialSecurityTaxWithheldField.sendKeys(SSNtax);
             w2medicareTaxWithheldField.sendKeys(medicareTax);
-            w2SaveButton.click();
-            nextButton.click();
+            
+    }
+
+    public void clickW2submitButton(String w2submit, String next){
+        clickButton(w2submit);
+        clickButton(next);
     }
 
     public void fillOutOtherIncomeInformation(String longTermCapitalGains,String shortTermGains,String otherInvestments,
@@ -261,24 +322,101 @@ public class TaxPage {
                 
             OILongTermCaptialGainsField.sendKeys(longTermCapitalGains);
             OIShortTermCaptialGainsField.sendKeys(shortTermGains);
-            OIOtherInvestmentIncomeField.sendKeys(netBusinessIncome);
+            OINetBusinessIncomeField.sendKeys(netBusinessIncome);
+            OIOtherInvestmentIncomeField.sendKeys(otherInvestments);
             OIAdditionalIncomeField.sendKeys(additionalIncome);
-            OISaveButton.click();
-            nextButton.click();
+     }
+
+     public void clickOtherIncomeSubmitButton(String oisave, String next){
+        clickButton(oisave);
+        clickButton(next);
+     }
+
+     public void clickDeductionsStarterButtons(String deductAdd, String deductEdit){
+        clickButton(deductAdd);
+        clickButton(deductEdit);
      }
 
      public void fillOutDeductions(String deductionType,String deductionAmount ){
-                deductAddButton.click();
-                deductEditButton.click();
-                deductDeductionTypeField.selectByValue(deductionAmount);
+                deductDeductionTypeField.sendKeys(deductionType);
                 deductDeductionAmountField.sendKeys(deductionAmount);
-                deductSaveButton.click();
-                nextButton.click();
+     }
+
+     public void clickDeductionsSubmitButton(String deductSubmit, String next){
+        clickButton(deductSubmit);
+        clickButton(next);
+     }
+
+     public void clickReviewAndSubmit(String reviewSubmit){
+        clickButton(reviewSubmit);
      }
 
     public boolean CheckForEstimationResultsPage(){
+        
+        return driver.findElements(By.xpath("//div[contains(text(),'Congratulations')]")).size() > 0;
 
-        return driver.findElements(By.xpath("//div[text()='SINGLE']")).size() > 0;
+        
     }
+
+
+    @Override
+    public WebElement getWebElement(String name) {
+        Map<String, WebElement> buttonElements = new HashMap<>();
+        buttonElements.put("mainEditButton", MainEditButton);
+        buttonElements.put("mainDeleteButton", MainDeleteButton);
+        buttonElements.put("nextButton", nextButton);
+        buttonElements.put("previousButton", previousButton);
+        buttonElements.put("PISaveButton", PISaveButton);
+        buttonElements.put("w2AddButton", w2AddButton);
+        buttonElements.put("w2SubmitButton", w2SubmitButton);
+        buttonElements.put("w2EditButton", w2EditButton);
+        buttonElements.put("w2DeleteButton", w2DeleteButton);
+        buttonElements.put("w2SaveButton", w2SaveButton);
+        buttonElements.put("OISaveButton", OISaveButton);
+        buttonElements.put("deductSaveButton", deductSaveButton);
+        buttonElements.put("deductEditButton", deductEditButton);
+        buttonElements.put("deductDeleteButton", deductDeleteButton);
+        buttonElements.put("deductAddButton", deductAddButton);
+        buttonElements.put("deductSubmitButton", deductSubmitButton);
+        buttonElements.put("reviewW2PreviousButton", reviewW2PreviousButton);
+        buttonElements.put("reviewW2NextButton", reviewW2NextButton);
+        buttonElements.put("reviewDeductPreviousButton", reviewDeductPreviousButton);
+        buttonElements.put("reviewDeductNextButton", reviewDeductNextButton);
+        buttonElements.put("reviewSubmitButton", reviewSubmitButton);
+
+        return buttonElements.get(name);
+    }
+       
+        
+    
+    @Override
+    public List<Component> getChildComponents() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+    }
+
+    
+
+    
+
+    @Override
+    public List<WebElement> getButtons() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getButtons'");
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+    }
+
+    
 
 }

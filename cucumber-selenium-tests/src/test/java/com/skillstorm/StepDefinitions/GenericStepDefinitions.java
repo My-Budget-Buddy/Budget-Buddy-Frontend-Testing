@@ -46,10 +46,10 @@ public class GenericStepDefinitions{
      * If you haven't already, you must redefine the method for navigation for your respective page and set the URL for your page as well.
      */
 
-    @Given("I am on the {string} page")
-    public void iAmOnThePage(String pageName){
-        navigator.navigateTo(pageName);
-    }
+    // @Given("I am on the {string} page")
+    // public void iAmOnThePage(String pageName){
+    //     navigator.navigateTo(pageName);
+    // }
 
 
     /*
@@ -61,11 +61,11 @@ public class GenericStepDefinitions{
      */
     
     
-    @When("I click the {string} button")
-    public void iClickTheButton(String buttonId){
-        WebElement button = driver.findElement(By.id(buttonId));
-        button.click();
-    }
+    // @When("I click the {string} button")
+    // public void iClickTheButton(String buttonId){
+    //     WebElement button = driver.findElement(By.id(buttonId));
+    //     button.click();
+    // }
 
     /*
      * General use definition for selecting an option from a dropdown
