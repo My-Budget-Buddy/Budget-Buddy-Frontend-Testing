@@ -12,14 +12,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.skillstorm.PageObjects.Components.Navbar.Navbar;
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
 public class SpendingPage extends Page {
 //#region Static Fields
 
     // Components
-    public static final String CMP_NAVBAR_NAME = "Navbar";
+    public static final String CMP_DASHBOARDNAVBAR_NAME = "Navbar";
 
     // IDs
     public static final String BTN_SEECURRENTMONTH_ID = "see-current-month-button";
@@ -36,7 +36,7 @@ public class SpendingPage extends Page {
     private WebElement spendingsTab;
 
     // Child Component
-    private Navbar navbar;
+    private DashboardNavbar dashboardNavbar;
 
     /**
      * Initializes the driver and sets an implicit wait 
@@ -64,14 +64,14 @@ public class SpendingPage extends Page {
 
     @Override
     public List<Component> getChildComponents() {
-        return Arrays.asList(navbar);
+        return Arrays.asList(dashboardNavbar);
     }
 
     @Override
     public Component getChildComponent(String name) {
         switch (name) {
-            case CMP_NAVBAR_NAME:
-                return navbar;
+            case CMP_DASHBOARDNAVBAR_NAME:
+                return dashboardNavbar;
             default:
                 return null;
         }
