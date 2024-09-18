@@ -51,14 +51,24 @@ public class LandingPage extends Page {
     }
     
     /////////// FUNCTIONS /////////////////////
-    private void clickBtnGetStarted() {
+    /**
+     * Clicks the Get Started button
+     */
+    public void clickBtnGetStarted() {
         btnGetStarted.click();
     }
 
+    /**
+     * reloads the elements on the page
+     */
     public void reloadElements() {
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     * seperate method to get the entire list of features
+     * @return - list of feature WebElements
+     */
     public List<WebElement> getFeatures() {
         return features;
     }
@@ -72,6 +82,9 @@ public class LandingPage extends Page {
         );
     }
 
+    /**
+     * Retrieves a child component given a name.
+     */
     @Override
     public Component getChildComponent(String name) {
         switch (name) {
@@ -84,6 +97,9 @@ public class LandingPage extends Page {
         }
     }
 
+    /**
+     * Retrieves all WebElements in this component and child components.
+     */
     @Override
     public List<WebElement> getWebElements() {
         List<WebElement> webElements = new ArrayList<>();
@@ -91,6 +107,10 @@ public class LandingPage extends Page {
         return webElements;
     }
 
+    /**
+     * Retrieves a WebElement given a name. Searches child components as well.
+     * @param name  Name of the WebElement to search for.
+     */
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
@@ -100,12 +120,18 @@ public class LandingPage extends Page {
                 throw new IllegalArgumentException("WebElement'" + name + "' does not exist.");
         }
     }
-
+    
+    /**
+     * Retrieves all buttons in this component.
+     */
     @Override
     public List<WebElement> getButtons() {
         return Arrays.asList(btnGetStarted);
     }
 
+    /**
+     * Maps the button names in the static fields to a click action.
+     */
     @Override
     public void clickButton(String name) {
         switch (name) {

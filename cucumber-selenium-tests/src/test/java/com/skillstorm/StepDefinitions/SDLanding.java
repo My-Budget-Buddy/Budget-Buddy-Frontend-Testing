@@ -36,6 +36,9 @@ public class SDLanding {
     private User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
     public static final int NUM_OF_FEATURES = 3;
 
+    /**
+     * This method sets up the web driver and the wait object before each test.
+     */
     @Before
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
@@ -44,6 +47,9 @@ public class SDLanding {
         // page = new LandingPage(driver);
     }
 
+    /**
+     * This method closes the web driver after each test.
+     */
     @After
     public void tearDown() {
         WebDriverSingleton.quitDriver();
@@ -58,6 +64,10 @@ public class SDLanding {
      *      @Then("I am redirected to {string} page")
      */
 
+
+     /**
+      * This method logs out the user if they are logged in and puts them on the landing page.
+      */
     @Given("I am logged out on Landing Page")
     public void iAmLoggedOutOnLanding() { 
         navigator.navigateTo(Navigator.PGNAME_LANDING);
@@ -79,6 +89,9 @@ public class SDLanding {
  
     }
 
+    /**
+     * This method logs in the user and puts them on the landing page.
+     */
     @Given("I am logged in on Landing Page")
     public void iAmLoggedIn() {
         //login
@@ -93,6 +106,9 @@ public class SDLanding {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingNavbar.BTN_LOGOUT_ID)));
     }
 
+    /**
+     * This method checks to see if the Landing Page has loaded general information about Budget Buddy.
+     */
     @Then("I can see general info about Budget Buddy")
     public void iCanSeeGeneralInfoAboutBudgetBuddy() {
         page = new LandingPage(driver);
@@ -104,6 +120,9 @@ public class SDLanding {
         );
     }
 
+    /**
+     * This method checks if the Landing page has the correct Elements in the Navbar.
+     */
     @Then("I Can see the Logged Out Navbar")
     public void iCanSeeTheLoggedOutNavbar() {
         LandingNavbar navbar = new LandingNavbar(driver);
