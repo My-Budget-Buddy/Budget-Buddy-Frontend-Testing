@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
@@ -23,6 +24,7 @@ public class SpendingMonthPage extends Page {
 
     // IDs
     public static final String BTN_BACKTOSPENDING_ID = "back-to-spending-btn";
+    public static final String SEL_MONTH_ID = "month-select";
 
     // Names
     public static final String BTN_BACKTOANNUALSPENDING_NAME = "Back to Annual Spending Overview";
@@ -31,6 +33,9 @@ public class SpendingMonthPage extends Page {
 
     @FindBy(id = BTN_BACKTOSPENDING_ID)
     private WebElement btnBackToSpending;
+
+    @FindBy(id = SEL_MONTH_ID)
+    private WebElement selectMonth;
 
     @FindBy(xpath = "/html/body/div[1]/div[1]/div/div[1]/a[4]")
     private WebElement spendingsTab;
@@ -135,6 +140,21 @@ public class SpendingMonthPage extends Page {
         }
 
         // give time for page to load
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selectMonth(String monthSelection) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Select select = new Select(selectMonth);
+        select.selectByVisibleText(monthSelection);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

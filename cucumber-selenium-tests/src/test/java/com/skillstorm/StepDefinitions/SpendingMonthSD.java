@@ -84,4 +84,14 @@ public class SpendingMonthSD {
     public void iCanSeeTheCategorySpendingTable() {
         Assert.assertTrue(driver.findElement(By.xpath("/html/body/div[1]/div[1]/main/div/div/section/div[3]/div/div[2]/table")).isDisplayed());
     }
+
+    @When("SpendingMonth: I select {string} from the month selection dropdown")
+    public void iSelectFromTheMonthSelectionDropdown(String month) {
+        this.spendingMonthPage.selectMonth(month);
+    }
+
+    @Then("SpendingMonth: I can see the SpendingMonth page display March spending values")
+    public void iCanSeeTheSpendingMonthPageForMarch() {
+        Assert.assertTrue(driver.findElement(By.id("spending-month-title")).getText().contains("March"));
+    }
 }
