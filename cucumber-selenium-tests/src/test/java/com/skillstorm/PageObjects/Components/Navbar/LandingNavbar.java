@@ -10,15 +10,22 @@
 package com.skillstorm.PageObjects.Components.Navbar;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.bidi.log.Log;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import com.skillstorm.PageObjects.Interfaces.Component;
 import com.skillstorm.Utilities.UserData.LoginStatus;
+
+import io.cucumber.java.it.Ma;
 
 public class LandingNavbar extends Navbar{
 //#region Static fields
@@ -40,16 +47,27 @@ public class LandingNavbar extends Navbar{
     private LoginStatus loginStatus;
 
     // WebElements
+    @FindBy(id = BTN_LANDING_ID)
     private WebElement btnLanding;
 
+    @FindBy(id = BTN_LOGIN_ID)
     private WebElement btnLogin;
+
+    @FindBy(id = BTN_REGISTER_ID)
     private WebElement btnRegister;
 
+    @FindBy(id = BTN_DASHBOARD_ID)
     private WebElement btnDashboard;
+
+    @FindBy(id = BTN_LOGOUT_ID)
     private WebElement btnLogout;
 
     public LandingNavbar(WebDriver driver) {
         super(driver);
+
+        loginStatus = LoginStatus.Unknown; // Just a default value.
+
+        PageFactory.initElements(driver, this);
     }
 
     /**
