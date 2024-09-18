@@ -138,11 +138,6 @@ public class TransactionPage {
         return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void logIn() {
-        waitForElement(emailField, 10).sendKeys("joseph.sam@gmail.com");
-        waitForElement(passwordField, 10).sendKeys("password1");
-        waitForElement(logInBtn, 10).click();
-    }
 
     public void clickTab() {
         waitForElement(transactionsTab, 10).click();

@@ -65,7 +65,7 @@ public class GenericStepDefinitions{
     public void iClickTheButton(String buttonId){
         //WebElement button = driver.findElement(By.id(buttonId));
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2500);
         } catch (Exception e) {
             e.printStackTrace();
         }

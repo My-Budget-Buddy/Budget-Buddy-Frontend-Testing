@@ -7,8 +7,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.TransactionHistoryPage;
 import com.skillstorm.Utilities.Navigator;
+import com.skillstorm.Utilities.UserData.User;
+import com.skillstorm.Utilities.UserData.UserType;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -57,9 +60,12 @@ public class SDTransactionHistory {
     /**
      * Log into the web application.
      */
-    @And("I login into the webapp")
+    @Given("I login into the webapp")
     public void login() {
-        transactionHistory.logIn();
+        navigator.navigateTo(Navigator.PGNAME_LOGIN);
+        LoginPage loginPage = new LoginPage(driver);
+        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        loginPage.login(user);
     }
 
     // ===================== Navigation Step Definitions =====================

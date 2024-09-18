@@ -51,14 +51,12 @@ public class SDTransactions {
     /**
      * Login Scenario Definitions
      */
-    @And("I login")
+    @Given("I login")
     public void login() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
         User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
         loginPage.login(user);
-        //this.transactions.logIn();
-        //this.loginPage.login(user);
     }
 
     /**

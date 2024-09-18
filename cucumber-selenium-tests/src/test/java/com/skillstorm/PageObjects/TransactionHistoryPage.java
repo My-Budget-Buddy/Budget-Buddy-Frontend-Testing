@@ -185,14 +185,6 @@ public class TransactionHistoryPage {
         return driver.getCurrentUrl();
     }
 
-    /**
-     * Log into the application with hardcoded credentials (for test purposes).
-     */
-    public void logIn() {
-        waitForElement(emailField, 10).sendKeys("joseph.sam@gmail.com");
-        waitForElement(passwordField, 10).sendKeys("password1");
-        waitForElement(logInBtn, 10).click();
-    }
 
     /**
      * Click the "Transactions" tab.
@@ -263,8 +255,8 @@ public class TransactionHistoryPage {
         if (category != null && !category.isEmpty()) {
             pause(2000);
             waitForElement(categoryDropdown, 10).click();
-            pause(2000);
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
+            pause(2000);
             waitForElement(option, 10).click();
         }
         return category;
