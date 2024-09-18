@@ -2,8 +2,7 @@
 Feature: Features on the transaction history page
 #-----------------------------NAVIGATE TO PAGE FROM Transactions---------------------------#
     Scenario:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
         And I can see Transaction Detailed Information
@@ -13,8 +12,7 @@ Feature: Features on the transaction history page
 #-----------------------------CREATE---------------------------#
 
     Scenario Outline:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
 
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
@@ -33,8 +31,7 @@ Feature: Features on the transaction history page
 #-----------------------------READ---------------------------#
     
     Scenario:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
         And I can see Transaction Detailed Information
@@ -45,8 +42,7 @@ Feature: Features on the transaction history page
 #-----------------------------UPDATE---------------------------#
     
     Scenario Outline:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
 
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
@@ -65,8 +61,7 @@ Feature: Features on the transaction history page
 #-----------------------------DELETE---------------------------#
     
     Scenario:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
 
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
@@ -80,8 +75,7 @@ Feature: Features on the transaction history page
 #-----------------------------GRAPHICAL SUMMARY---------------------------#
     
     Scenario:
-        Given I am on the "Login" page
-        And I login into the webapp
+        Given I login into the webapp
 
         Given I start on the Transactions page
         When I click the "btnTransactionArrow" button
