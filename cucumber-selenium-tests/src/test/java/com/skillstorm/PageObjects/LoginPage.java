@@ -70,6 +70,7 @@ public class LoginPage extends Page{
     public LoginPage(WebDriver driver) {
         super(driver);
 
+        // Initialize Navbar
         navbar = new LandingNavbar(driver);
 
         // Initialize form and add elements
@@ -78,6 +79,9 @@ public class LoginPage extends Page{
         formLogin.setInput(IN_USERNAME_ID, IN_USERNAME_NAME);
         formLogin.setInput(IN_PASSWORD_ID, IN_PASSWORD_NAME);
         formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)), BTN_SUBMIT_NAME);
+
+        // Initialize Footer
+        footer = new Footer(driver);
     }
 
     /**
@@ -92,6 +96,14 @@ public class LoginPage extends Page{
         formLogin.submit();
 
         // Check for success
+        return !checkForAlerts();
+    }
+
+    /**
+     * Checks if an alert pops up within 10ms
+     * @return  Alert presence status.
+     */
+    public boolean checkForAlerts(){
         boolean foundAlert = false;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10));
         try {
