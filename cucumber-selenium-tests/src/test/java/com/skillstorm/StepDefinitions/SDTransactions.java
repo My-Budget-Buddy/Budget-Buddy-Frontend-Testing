@@ -35,7 +35,7 @@ public class SDTransactions {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
 
-        this.transactions = new TransactionPage();
+        this.transactions = new TransactionPage(driver);
 
         transactionContent =  new String[4];
     }

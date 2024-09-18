@@ -12,11 +12,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
+import com.skillstorm.PageObjects.Interfaces.Component;
 
-public class TransactionPage {
+public class TransactionPage extends Page{
 
     WebDriver driver = WebDriverSingleton.getDriver();
-    private static final String transactionsUrl = "http://localhost:5173/dashboard/transactions";
 
     // Locators for Transaction Page Elements
     @FindBy(className = "usa-logo__text")
@@ -25,14 +26,18 @@ public class TransactionPage {
     @FindBy(id = "clearFilterBtn")
     private WebElement clearFilterBtn;
 
+
     @FindBy(id = "sortByDropdown")
     private WebElement sortByDropdown;
+
 
     @FindBy(id = "directionDropdown")
     private WebElement directionDropdown;
 
+
     @FindBy(id = "addTransactionModal")
     private WebElement addTransactionModal;
+
 
     // Modal Fields
     @FindBy(name = "vendorName")
@@ -50,18 +55,23 @@ public class TransactionPage {
     @FindBy(id = "addTransactionBtn")
     private WebElement submitBtn;
 
+
     // Filter Dropdowns
     @FindBy(id = "allCategoriesDropDown")
     private WebElement allCategoriesDropDown;
 
+
     @FindBy(id = "allAccountDropDown")
     private WebElement allAccountDropDown;
+
 
     @FindBy(id = "allAmountsDropDown")
     private WebElement allAmountsDropDown;
 
+
     @FindBy(id = "allDatesDropDown")
     private WebElement allDatesDropDown;
+
 
     // Transaction Table Elements
     @FindBy(id = "listOfTransactionsTitle")
@@ -80,14 +90,13 @@ public class TransactionPage {
     @FindBy(id = "editTransactionBtn")
     private WebElement editSubmitBtn;
 
-    @FindBy(id = "edit-transaction-vendorName")
-    private WebElement editTransactionNameField;
+    private static final String editTransactionNameField = "edit-transaction-vendorName";
 
     @FindBy(id = "edit-transaction-account")
     private WebElement editTransactionAccountField;
 
-    @FindBy(id = "edit-transaction-amount")
-    private WebElement editTransactionAmountField;
+
+    private static final String editTransactionAmountFieldId = "edit-transaction-amount";
 
     @FindBy(id = "edit-transaction-category")
     private WebElement editTransactionCategoryField;
@@ -96,14 +105,11 @@ public class TransactionPage {
     @FindBy(id = "deleteBtn")
     private WebElement deleteBtn;
 
-    // Transaction Tab
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/div/div[1]/a[5]")
-    private WebElement transactionsTab;
-
     private int tableSizeBeforeDeletion;
 
     // Constructor
-    public TransactionPage() {
+    public TransactionPage(WebDriver driver) {
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -115,14 +121,11 @@ public class TransactionPage {
 
 
     public void clickTab() {
-        waitForElement(transactionsTab, 10).click();
+        DashboardNavbar navbar = new DashboardNavbar(driver);
+        navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
         pause(2000);
     }
 
-    // Navigation Methods
-    public void getTransactionsUrl() {
-        driver.navigate().to(transactionsUrl);
-    }
 
     // General methods
     public String getCurrentUrl() {
@@ -138,7 +141,7 @@ public class TransactionPage {
 
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            waitForElement(accountDropdown, 10).click();
+            clickButton(account);
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
@@ -153,7 +156,7 @@ public class TransactionPage {
 
     public String setCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            waitForElement(categoryDropdown, 10).click();
+            clickButton(category);
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
@@ -173,26 +176,26 @@ public class TransactionPage {
     // Update Transaction Methods
 
     public void updateName(String name) {
-        waitForElement(editTransactionNameField, 10).clear();
-        editTransactionNameField.sendKeys(name);
+        waitForElement(getWebElement(editTransactionNameField), 10).clear();
+        getWebElement(editTransactionNameField).sendKeys(name);
     }
 
     public void updateAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            waitForElement(editTransactionAccountField, 10).click();
+            clickButton(account);
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
     }
 
     public void updateAmount(String amount) {
-        waitForElement(editTransactionAmountField, 10).clear();
-        editTransactionAmountField.sendKeys(amount);
+        waitForElement(getWebElement(editTransactionAmountFieldId), 10).clear();
+        getWebElement(editTransactionAmountFieldId).sendKeys(amount);
     }
 
     public void updateCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            waitForElement(editTransactionCategoryField, 10).click();
+            clickButton(category);
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
@@ -201,13 +204,11 @@ public class TransactionPage {
     // Delete Transaction Methods
     public void clickDeleteBtn() {
         tableSizeBeforeDeletion = transactionsTable.getText().length();
-        System.out.println(tableSizeBeforeDeletion + " before");
         waitForElement(deleteBtn, 10).click();
     }
 
     public Boolean confirmDeletion() {
         int tableSizeAfterDeletion = transactionsTable.getText().length();
-        System.out.println(tableSizeAfterDeletion + " after");
         return tableSizeBeforeDeletion > tableSizeAfterDeletion;
     }
 
@@ -215,7 +216,7 @@ public class TransactionPage {
 
     public void selectACategory(String category) {
         if (category != null && !category.isEmpty()) {
-            waitForElement(allCategoriesDropDown, 10).click();
+            clickButton(category);
             WebElement option = driver.findElement(By.xpath("//*[@id='allCategoriesDropDown']/option[text()='" + category + "']"));
             option.click();
         }
@@ -237,6 +238,44 @@ public class TransactionPage {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Component> getChildComponents() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+    }
+
+    @Override
+    public WebElement getWebElement(String id) {
+        return driver.findElement(By.id(id));
+    }
+
+    @Override
+    public List<WebElement> getButtons() {
+        return driver.findElements(By.tagName("select"));
+    }
+
+    @Override
+    public void clickButton(String name) {
+        for (WebElement selectElement : getButtons()) {
+            if (selectElement.getText().equalsIgnoreCase(name)) {
+                selectElement.click();
+                break;
+            }
         }
     }
 }

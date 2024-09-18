@@ -66,6 +66,8 @@ public class DashboardNavbar extends Navbar {
     public DashboardNavbar(WebDriver driver) {
         super(driver);
 
+        PageFactory.initElements(driver, this);
+
         // Map web elements.
         nameElementMap.put(BTN_LANDING_NAME, btnLanding);
         nameElementMap.put(BTN_DASHBOARD_NAME, btnDashboard);
@@ -75,7 +77,6 @@ public class DashboardNavbar extends Navbar {
         nameElementMap.put(BTN_TRANSACTIONS_NAME, btnTransactions);
         nameElementMap.put(BTN_TAX_NAME, btnTax);
 
-        PageFactory.initElements(driver, this);
     }
 
     /**
