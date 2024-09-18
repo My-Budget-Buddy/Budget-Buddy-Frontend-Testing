@@ -5,8 +5,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.TransactionPage;
 import com.skillstorm.Utilities.Navigator;
+import com.skillstorm.Utilities.UserData.User;
+import com.skillstorm.Utilities.UserData.UserType;
 
 import java.time.Duration;
 
@@ -50,7 +53,11 @@ public class SDTransactions {
      */
     @And("I login")
     public void login() {
-        this.transactions.logIn();
+        navigator.navigateTo(Navigator.PGNAME_LOGIN);
+        LoginPage loginPage = new LoginPage(driver);
+        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        loginPage.login(user);
+        //this.transactions.logIn();
         //this.loginPage.login(user);
     }
 
