@@ -61,6 +61,10 @@ public class Footer implements Component, ButtonContainer {
     private WebElement btnEmail;
 //#endregion
 
+    public Footer(WebDriver driver){
+        this.driver = driver;
+    }
+
     /**
      * Maps the button names in the static fields to a click action.
      * @param name Name of the button to click.
