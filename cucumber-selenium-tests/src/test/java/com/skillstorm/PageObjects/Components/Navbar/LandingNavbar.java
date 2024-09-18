@@ -30,7 +30,7 @@ import io.cucumber.java.it.Ma;
 public class LandingNavbar extends Navbar{
 //#region Static fields
     // IDs
-    public static final String BTN_LANDING_ID = "landing-link";
+    public static final String BTN_LANDING_ID = "nav-menu-button";
     public static final String BTN_LOGIN_ID = "login-link";
     public static final String BTN_REGISTER_ID = "register-link";
     public static final String BTN_DASHBOARD_ID = "dashboard-link";
