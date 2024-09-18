@@ -63,7 +63,13 @@ public class GenericStepDefinitions{
     
     @When("I click the {string} button")
     public void iClickTheButton(String buttonId){
-        WebElement button = driver.findElement(By.id(buttonId));
+        //WebElement button = driver.findElement(By.id(buttonId));
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.id(buttonId)));
         button.click();
     }
 

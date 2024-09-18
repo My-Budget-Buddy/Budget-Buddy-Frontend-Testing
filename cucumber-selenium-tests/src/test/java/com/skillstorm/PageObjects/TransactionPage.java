@@ -146,11 +146,7 @@ public class TransactionPage {
 
     public void clickTab() {
         waitForElement(transactionsTab, 10).click();
-        try {
-            Thread.sleep(500);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        pause(2000);
     }
 
     // Navigation Methods
@@ -258,6 +254,19 @@ public class TransactionPage {
         List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[3]"));
         for (WebElement cell : categoryColumnValues) {
             System.out.println(cell.getText());
+        }
+    }
+
+    /**
+     * Utility method to pause execution for a specified amount of time.
+     * 
+     * @param milliseconds - the amount of time in milliseconds to pause
+     */
+    private void pause(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
