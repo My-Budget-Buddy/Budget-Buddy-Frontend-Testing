@@ -73,22 +73,6 @@ public class TransactionPage {
     @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/tbody/tr[1]")
     private WebElement transactionsTableFirstRow;
 
-    // Table Headers
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/thead/tr/th[1]")
-    private WebElement dateHeader;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/thead/tr/th[2]")
-    private WebElement nameHeader;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/thead/tr/th[3]")
-    private WebElement categoryHeader;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/thead/tr/th[4]")
-    private WebElement actionsHeader;
-
-    @FindBy(xpath = "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table/thead/tr/th[5]")
-    private WebElement amountHeader;
-
     // Edit Transaction Elements
     @FindBy(id = "editBtn")
     private WebElement editBtn;
@@ -112,16 +96,7 @@ public class TransactionPage {
     @FindBy(id = "deleteBtn")
     private WebElement deleteBtn;
 
-    // Login Elements
-    @FindBy(name = "email")
-    private WebElement emailField;
-
-    @FindBy(name = "password")
-    private WebElement passwordField;
-
-    @FindBy(id = "logInBtn")
-    private WebElement logInBtn;
-
+    // Transaction Tab
     @FindBy(xpath = "//*[@id=\"root\"]/div[1]/div/div[1]/a[5]")
     private WebElement transactionsTab;
 
