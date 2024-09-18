@@ -25,7 +25,9 @@ public class DashboardPage extends Page {
     public static final String NAME_ACCORDION_SAVINGS_BTN = "Savings";
     public static final String NAME_ACCORDION_CREDIT_CARDS_BTN = "Credit Cards"; 
     public static final String NAME_ACCORDION_INVESTMENTS_BTN = "Investments";  
-    public final String NAME_TRANSACTION_ARROW_OVERLAY = "Recent Transaction"; 
+    public static final String NAME_TRANSACTION_ARROW_OVERLAY = "Recent Transaction"; 
+    public static final String NAME_CURRENT_SPENDING_CHART_TITLE = "Current Spending Chart Title";
+    public static final String NAME_CURRENT_SPENDING_CHART = "Current Spending Chart";
 
     // Button IDs
     private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
@@ -39,6 +41,8 @@ public class DashboardPage extends Page {
     private final String ACCORDION_SAVINGS_TABLE_ID = "savings";
     private final String ACCORDION_CREDIT_CARDS_TABLE_ID = "credit";
     private final String ACCORDION_INVESTMENTS_TABLE_ID = "investment";
+    private final String CURRENT_SPENDING_CHART_TITLE_ID = "current-spending-chart-header";
+    private final String CURRENT_SPENDING_CHART_ID = "chart-container";
 
     // Other WebElement IDs
     private final String TRANSACTION_ARROW_OVERLAY_ID = "transaction-info-modal";
@@ -83,6 +87,14 @@ public class DashboardPage extends Page {
     private List<WebElement> btnTransactionButtons;
 
 
+    //Web Elements - Current Spending Chart
+    @FindBy(id = CURRENT_SPENDING_CHART_TITLE_ID)
+    private WebElement currentSpendingChartTitle;
+
+    @FindBy(id = CURRENT_SPENDING_CHART_ID)
+    private WebElement currentSpendingChart;
+
+
     //Child Components
     //TODO: Navbar???
 
@@ -106,7 +118,9 @@ public class DashboardPage extends Page {
         nameElementMap.put(ACCORDION_SAVINGS_TABLE_ID, tableSavings);   
         nameElementMap.put(ACCORDION_CREDIT_CARDS_TABLE_ID, tableCreditCards);  
         nameElementMap.put(ACCORDION_INVESTMENTS_TABLE_ID, tableInvestments); 
-        nameElementMap.put(NAME_TRANSACTION_ARROW_OVERLAY, transactionArrowOverlay); 
+        nameElementMap.put(NAME_TRANSACTION_ARROW_OVERLAY, transactionArrowOverlay);
+        nameElementMap.put(NAME_CURRENT_SPENDING_CHART_TITLE, currentSpendingChartTitle);
+        nameElementMap.put(NAME_CURRENT_SPENDING_CHART, currentSpendingChart);
         nameElementMap.put(NAME_TRANSACTION_ARROW, btnTransactionButtons.get(0)); //just the first arrow button
         //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
     }
@@ -131,6 +145,15 @@ public class DashboardPage extends Page {
             default:
                 throw new IllegalArgumentException("Button name not recognized.");
         }
+    }
+
+    public double getCurrentSpending() {
+        //Get the title of the current spending chart
+        String title = currentSpendingChartTitle.getText();
+        //Get the number from the title and remove all the commas, keeping the decimal
+        String spending = title.substring(title.lastIndexOf("$") + 1).replaceAll(",","").trim();
+        
+        return Double.parseDouble(spending);
     }
 
 

@@ -19,6 +19,7 @@ import com.skillstorm.Utilities.UserData.UserType;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,7 +30,7 @@ public class DashboardSD {
     WebDriverWait wait;
     Navigator navigator;
     DashboardPage page;
-    User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+    User user = new User(UserType.PERSISTANT, "frontend.tests@gmail.com", "password1");
 
     @BeforeClass
     public void setUp() {
@@ -79,8 +80,6 @@ public class DashboardSD {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(user);
-
-        //TODO: create a budget plan
 
     }
 
@@ -143,20 +142,27 @@ public class DashboardSD {
 
     @Then("I see a Current Spending Table")
     public void iSeeACurrentSpendingTable() {
-
+        page = new DashboardPage(driver);
+        wait.until(ExpectedConditions.visibilityOf(
+            page.getWebElement(DashboardPage.NAME_CURRENT_SPENDING_CHART)
+        ));
     }
 
-    @Then("The spending line reflects my spending")
+    @And("The spending line reflects my spending")
     public void theSpendingLineReflectsMySpending() {
-        //TODO: Implement this
+        page = new DashboardPage(driver);
+        Assert.assertTrue(
+            page.getCurrentSpending() > 0.0,
+            "Current Spending is not greater than 0.0"
+        );
     }
 
     @Then("A pop up of the transaction appears")
     public void aPopUpOfTheTransactionAppears() {
-        if (page == null) page = new DashboardPage(driver);
+        page = new DashboardPage(driver);
         //Check to see if the Transaction Modal is displayed Over the page
         wait.until(ExpectedConditions.visibilityOf(
-            page.getWebElement(page.NAME_TRANSACTION_ARROW_OVERLAY)
+            page.getWebElement(DashboardPage.NAME_TRANSACTION_ARROW_OVERLAY)
         ));
     }
 
