@@ -19,18 +19,22 @@ public class LandingPage extends Page {
     //Naming System
     public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";    
     public static final String CMP_FOOTER_NAME = "Footer";
+    public static final String NAME_FEATURES_CONTAINER = "Features";
 
     // Button IDs
-    public static final String BTN_GET_STARTED_ID = "Get Started";
+    public static final String BTN_GET_STARTED_ID = "btnGetStarted";
 
     // Other WebElement IDs
-
+    public static final String LANDING_FEATURES_CONTAINER_ID = "feature-text";
 
 //#END Static Fields
 
 //#region Attributes
     @FindBy(id = BTN_GET_STARTED_ID)
     private WebElement btnGetStarted;
+
+    @FindBy(id = LANDING_FEATURES_CONTAINER_ID)
+    private List<WebElement> features;
 
     //Child Components
     private Footer footer;
@@ -41,7 +45,7 @@ public class LandingPage extends Page {
     /////////// CONSTRUCTORS //////////////////////////
     public LandingPage(WebDriver driver) {
         super(driver);
-        footer = new Footer();
+        footer = new Footer(driver);
         landingNavbar = new LandingNavbar(driver);
         PageFactory.initElements(driver, this);
     }
@@ -53,6 +57,10 @@ public class LandingPage extends Page {
 
     public void reloadElements() {
         PageFactory.initElements(driver, this);
+    }
+
+    public List<WebElement> getFeatures() {
+        return features;
     }
 
     /////////// OVERRIDE IMPLEMENTATIONS //////////////

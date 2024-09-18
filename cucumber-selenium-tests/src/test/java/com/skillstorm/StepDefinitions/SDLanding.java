@@ -1,9 +1,14 @@
 package com.skillstorm.StepDefinitions;
 
 import java.time.Duration;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.bidi.log.Log;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -24,11 +29,12 @@ import io.cucumber.java.en.Then;
 
 public class SDLanding {
 
-    WebDriver driver;
-    WebDriverWait wait;
-    Navigator navigator;
-    LandingPage page;
-    User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private Navigator navigator;
+    private LandingPage page;
+    private User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+    public static final int NUM_OF_FEATURES = 3;
 
     @Before
     public void setUp() {
@@ -52,26 +58,59 @@ public class SDLanding {
      *      @Then("I am redirected to {string} page")
      */
 
-    @And("I am logged out on Landing Page")
-    public void iAmLoggedOut() { 
+    @Given("I am logged out on Landing Page")
+    public void iAmLoggedOutOnLanding() { 
+        navigator.navigateTo(Navigator.PGNAME_LANDING);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingPage.BTN_GET_STARTED_ID)));
+        
+        // check to see if logout button exists
+        Navbar navbar = new LandingNavbar(driver);
+        if (navbar.getWebElement(LandingNavbar.BTN_LOGOUT_NAME) != null) {
+            // and click it if it does
+            navbar.clickButton(LandingNavbar.BTN_LOGOUT_NAME);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingPage.BTN_GET_STARTED_ID)));
+        } 
 
+        // if we find the login button, then we're already logged out
+        Assert.assertTrue(
+            navbar.getWebElement(LandingNavbar.BTN_LOGIN_NAME) != null,
+        "Could not find either the login or logout button on the navbar"
+        );  
+ 
     }
 
-    @And("I am logged in on Landing Page")
+    @Given("I am logged in on Landing Page")
     public void iAmLoggedIn() {
+        //login
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(user);        
+        loginPage.login(user);  
+        
+        //navigate to landing page
+        navigator.navigateTo(Navigator.PGNAME_LANDING);
+        
+        //make sure we're logged in
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingNavbar.BTN_LOGOUT_ID)));
     }
 
     @Then("I can see general info about Budget Buddy")
     public void iCanSeeGeneralInfoAboutBudgetBuddy() {
-        throw new UnsupportedOperationException("Unimplemented method 'iCanSeeGeneralInfoAboutBudgetBuddy'");
+        page = new LandingPage(driver);
+        List<WebElement> features = page.getFeatures();
+
+        Assert.assertTrue(
+            features.size() == NUM_OF_FEATURES,
+            "Could not find any features on the landing page"
+        );
     }
 
     @Then("I Can see the Logged Out Navbar")
     public void iCanSeeTheLoggedOutNavbar() {
-        throw new UnsupportedOperationException("Unimplemented method 'iCanSeeTheLoggedOutNavbar'");
+        LandingNavbar navbar = new LandingNavbar(driver);
+        Assert.assertTrue(
+            navbar.getWebElement(LandingNavbar.BTN_LOGIN_NAME) != null, 
+            "Could not find the logout button on the navbar"
+        );
     }    
     
 }
