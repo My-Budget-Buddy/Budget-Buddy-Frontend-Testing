@@ -47,8 +47,6 @@ public class LandingNavbar extends Navbar{
     private LoginStatus loginStatus;
 
     // WebElements
-    Map<String, WebElement> nameElementMap = new HashMap<String, WebElement>();
-
     @FindBy(id = BTN_LANDING_ID)
     private WebElement btnLanding;
 
@@ -70,12 +68,6 @@ public class LandingNavbar extends Navbar{
         loginStatus = LoginStatus.Unknown; // Just a default value.
 
         PageFactory.initElements(driver, this);
-
-        nameElementMap.put(BTN_LANDING_NAME, btnLanding);
-        nameElementMap.put(BTN_LOGIN_NAME, btnLogin);
-        nameElementMap.put(BTN_REGISTER_NAME, btnRegister);
-        nameElementMap.put(BTN_DASHBOARD_NAME, btnDashboard);
-        nameElementMap.put(BTN_LOGOUT_NAME, btnLogout);
     }
 
     /**
