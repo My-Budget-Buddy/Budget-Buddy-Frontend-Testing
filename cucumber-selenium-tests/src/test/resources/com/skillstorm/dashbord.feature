@@ -4,14 +4,14 @@ Feature:
         Given I have multiple "<objects>"
         And I am on the "Dashboard" page
         When I click on "<option>" option
-        Then I can see a the "<obj>" table
+        Then I can see the "<list>"
 
         Examples:
-        | objects           | option        | obj        |
-        | Checking Accounts | Checkings     | checking   |
-        | Savings Accounts  | Savings       | savings    |
-        | Credit Cards      | Credit Cards  | credit     |
-        | Investments       | Investments   | investment |
+        | objects           | option        | list             |
+        | Checking Accounts | Checkings     | Checkings List   |
+        | Savings Accounts  | Savings       | Savings List     |
+        | Credit Cards      | Credit Cards  | Credit Card List |
+        | Investments       | Investments   | Investments List |
     
     
     Scenario: DB2 - looking at recent spending

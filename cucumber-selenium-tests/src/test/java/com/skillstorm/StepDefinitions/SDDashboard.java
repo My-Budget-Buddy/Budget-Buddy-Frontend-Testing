@@ -70,11 +70,11 @@ public class SDDashboard {
      * This methods signs into a user account that has mulptle objects
      * @param ojbects
      * 
-     *      | objects           | option        |
-     *      | Checking Accounts | Checkings     |
-     *      | Savings Accounts  | Savings       |
-     *      | Credit Cards      | Credit Cards  |
-     *      | Investments       | Investments   |
+     * | objects           | option        | list             |
+     * | Checking Accounts | Checkings     | Checkings List   |
+     * | Savings Accounts  | Savings       | Savings List     |
+     * | Credit Cards      | Credit Cards  | Credit Card List |
+     * | Investments       | Investments   | Investments List |
      * 
      */
     @Given("I have multiple {string}")
@@ -115,11 +115,11 @@ public class SDDashboard {
      * This method will click on one of the accordion options on the page
      * @param option - The name of the accordion "list"
      * 
-     *      | objects           | option        |
-     *      | Checking Accounts | Checkings     |
-     *      | Savings Accounts  | Savings       |
-     *      | Credit Cards      | Credit Cards  |
-     *      | Investments       | Investments   |
+     * | objects           | option        | list             |
+     * | Checking Accounts | Checkings     | Checkings List   |
+     * | Savings Accounts  | Savings       | Savings List     |
+     * | Credit Cards      | Credit Cards  | Credit Card List |
+     * | Investments       | Investments   | Investments List |
      * 
      */
     @When("I click on {string} option")
@@ -129,8 +129,8 @@ public class SDDashboard {
         page = new DashboardPage(driver);
 
         //check to make sure the accordian table is currently not displayed
-        String tableName = page.getTableNameFromButtonName(accordianBtnName);
-        Assert.assertFalse(page.getWebElement(tableName).isDisplayed());
+        String listName = page.getListName(accordianBtnName);
+        Assert.assertFalse(page.getWebElement(listName).isDisplayed());
 
         //click on the appropriate object
         page.clickButton(accordianBtnName);
@@ -139,19 +139,19 @@ public class SDDashboard {
 
     /**
      * This method makes sure that the accordian list appeared
-     * @param ojbects
+     * @param listName - The name of the list that should appear
      * 
-     *      | objects           | option        |
-     *      | Checking Accounts | Checkings     |
-     *      | Savings Accounts  | Savings       |
-     *      | Credit Cards      | Credit Cards  |
-     *      | Investments       | Investments   |
+     * | objects           | option        | list             |
+     * | Checking Accounts | Checkings     | Checkings List   |
+     * | Savings Accounts  | Savings       | Savings List     |
+     * | Credit Cards      | Credit Cards  | Credit Card List |
+     * | Investments       | Investments   | Investments List |
      * 
      */
-    @Then("I can see a the {string} table")
-    public void iCanSeeAListOfMy(String obj) {
+    @Then("I can see the {string}")
+    public void iCanSeeThe(String listName) {
         wait.until(ExpectedConditions.visibilityOf(
-            page.getWebElement(obj)
+            page.getWebElement(listName)
         ));
     }
 

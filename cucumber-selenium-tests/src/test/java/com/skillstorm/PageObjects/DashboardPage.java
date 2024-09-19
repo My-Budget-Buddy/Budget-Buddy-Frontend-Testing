@@ -31,6 +31,10 @@ public class DashboardPage extends Page {
     public static final String NAME_CURRENT_SPENDING_CHART = "Current Spending Chart";
     public static final String NAME_BUDGET_CIRCLE_CHART = "Budget Circle Chart";
     public static final String NAME_BUDGET_BREAKDOWN = "Budget Breakdown";
+    public static final String NAME_CHECKING_TABLE = "Checkings List";
+    public static final String NAME_SAVINGS_TABLE = "Savings List";
+    public static final String NAME_CREDIT_CARDS_TABLE = "Credit Card List";
+    public static final String NAME_INVESTMENTS_TABLE = "Investments List";
 
     // Button IDs
     private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
@@ -40,10 +44,10 @@ public class DashboardPage extends Page {
     private final String BTN_TRANSCATION_ARROWS_ID = "btnTransactionArrow";
 
     // Table IDs
-    private final String ACCORDION_CHECKING_TABLE_ID = "checking";
-    private final String ACCORDION_SAVINGS_TABLE_ID = "savings";
-    private final String ACCORDION_CREDIT_CARDS_TABLE_ID = "credit";
-    private final String ACCORDION_INVESTMENTS_TABLE_ID = "investment";
+    private final String ACCORDION_LIST_CHECKING_ID = "checking";
+    private final String ACCORDION_LIST_SAVINGS_ID = "savings";
+    private final String ACCORDION_LIST_CREDIT_CARDS_ID = "credit";
+    private final String ACCORDION_LIST_INVESTMENTS_TABLE_ID = "investment";
     private final String CURRENT_SPENDING_CHART_TITLE_ID = "current-spending-chart-header";
     private final String CURRENT_SPENDING_CHART_ID = "chart-container";
     private final String BUDGET_CIRCLE_CHART_ID = "budget-gauge";
@@ -72,16 +76,16 @@ public class DashboardPage extends Page {
     private WebElement btnAccordianInvestments;
 
     //Web Elements - Hidden Elements
-    @FindBy(id = ACCORDION_CHECKING_TABLE_ID)
+    @FindBy(id = ACCORDION_LIST_CHECKING_ID)
     private WebElement tableChecking;
 
-    @FindBy(id = ACCORDION_SAVINGS_TABLE_ID)
+    @FindBy(id = ACCORDION_LIST_SAVINGS_ID)
     private WebElement tableSavings;
 
-    @FindBy(id = ACCORDION_CREDIT_CARDS_TABLE_ID)
+    @FindBy(id = ACCORDION_LIST_CREDIT_CARDS_ID)
     private WebElement tableCreditCards;
 
-    @FindBy(id = ACCORDION_INVESTMENTS_TABLE_ID)
+    @FindBy(id = ACCORDION_LIST_INVESTMENTS_TABLE_ID)
     private WebElement tableInvestments;
 
     @FindBy(id = TRANSACTION_ARROW_OVERLAY_ID)
@@ -124,10 +128,10 @@ public class DashboardPage extends Page {
         nameElementMap.put(NAME_ACCORDION_SAVINGS_BTN, btnAccordianSavings);
         nameElementMap.put(NAME_ACCORDION_CREDIT_CARDS_BTN, btnAccordianCreditCards);
         nameElementMap.put(NAME_ACCORDION_INVESTMENTS_BTN, btnAccordianInvestments);
-        nameElementMap.put(ACCORDION_CHECKING_TABLE_ID, tableChecking);
-        nameElementMap.put(ACCORDION_SAVINGS_TABLE_ID, tableSavings);   
-        nameElementMap.put(ACCORDION_CREDIT_CARDS_TABLE_ID, tableCreditCards);  
-        nameElementMap.put(ACCORDION_INVESTMENTS_TABLE_ID, tableInvestments); 
+        nameElementMap.put(NAME_CHECKING_TABLE, tableChecking);
+        nameElementMap.put(NAME_SAVINGS_TABLE, tableSavings);
+        nameElementMap.put(NAME_CREDIT_CARDS_TABLE, tableCreditCards);
+        nameElementMap.put(NAME_INVESTMENTS_TABLE, tableInvestments); 
         nameElementMap.put(NAME_TRANSACTION_ARROW_OVERLAY, transactionArrowOverlay);
         nameElementMap.put(NAME_CURRENT_SPENDING_CHART_TITLE, currentSpendingChartTitle);
         nameElementMap.put(NAME_CURRENT_SPENDING_CHART, currentSpendingChart);
@@ -140,22 +144,22 @@ public class DashboardPage extends Page {
     ////////// UNIQUE METHODS ////////////////////
 
     /**
-     * Retrieves the table name associated with a button name.
-     * @param btnName - name of the button to retrieve the table name for.
-     * @return - name of the table associated with the button.
+     * Retrieves the list name associated with its accordion header name.
+     * @param btnAccordionName - name of the button to that displays the accordian list.
+     * @return - name of the accordian list associated with the button.
      */
-    public String getTableNameFromButtonName(String btnName) {
-        switch (btnName) {
+    public String getListName(String btnAccordionName) {
+        switch(btnAccordionName) {
             case NAME_ACCORDION_CHECKING_BTN:
-                return ACCORDION_CHECKING_TABLE_ID;
+                return NAME_CHECKING_TABLE;
             case NAME_ACCORDION_SAVINGS_BTN:
-                return ACCORDION_SAVINGS_TABLE_ID;
+                return NAME_SAVINGS_TABLE;
             case NAME_ACCORDION_CREDIT_CARDS_BTN:
-                return ACCORDION_CREDIT_CARDS_TABLE_ID;
+                return NAME_CREDIT_CARDS_TABLE;
             case NAME_ACCORDION_INVESTMENTS_BTN:
-                return ACCORDION_INVESTMENTS_TABLE_ID;
+                return NAME_INVESTMENTS_TABLE;
             default:
-                throw new IllegalArgumentException("Button name not recognized.");
+                return null;
         }
     }
 
