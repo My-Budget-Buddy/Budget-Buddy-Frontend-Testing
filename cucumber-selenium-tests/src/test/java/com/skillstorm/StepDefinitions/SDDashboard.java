@@ -78,7 +78,7 @@ public class SDDashboard {
      * 
      */
     @Given("I have multiple {string}")
-    public void iHaveMulitple(String ojbects) {
+    public void iHaveMultiple(String ojbects) {
         //Load "seasoned" user who has lots of accounts
         navigator.navigateTo(Navigator.PGNAME_LOGIN);       
         LoginPage loginPage = new LoginPage(driver); 
