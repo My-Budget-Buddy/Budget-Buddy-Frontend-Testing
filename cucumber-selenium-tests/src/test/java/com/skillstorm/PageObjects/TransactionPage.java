@@ -19,6 +19,10 @@ public class TransactionPage extends Page{
 
     WebDriver driver = WebDriverSingleton.getDriver();
 
+    //static strings for IDs
+    private static final String editTransactionAmountFieldId = "edit-transaction-amount";
+    private static final String editTransactionNameField = "edit-transaction-vendorName";
+
     // Locators for Transaction Page Elements
     @FindBy(className = "usa-logo__text")
     private WebElement transactionPageTitle;
@@ -90,13 +94,9 @@ public class TransactionPage extends Page{
     @FindBy(id = "editTransactionBtn")
     private WebElement editSubmitBtn;
 
-    private static final String editTransactionNameField = "edit-transaction-vendorName";
-
     @FindBy(id = "edit-transaction-account")
     private WebElement editTransactionAccountField;
 
-
-    private static final String editTransactionAmountFieldId = "edit-transaction-amount";
 
     @FindBy(id = "edit-transaction-category")
     private WebElement editTransactionCategoryField;
@@ -117,6 +117,19 @@ public class TransactionPage extends Page{
     private WebElement waitForElement(WebElement element, int timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    /**
+     * Helper method to pause execution for a specified amount of time.
+     * 
+     * @param milliseconds - the amount of time in milliseconds to pause
+     */
+    private void pause(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -225,19 +238,6 @@ public class TransactionPage extends Page{
         List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[3]"));
         for (WebElement cell : categoryColumnValues) {
             System.out.println(cell.getText());
-        }
-    }
-
-    /**
-     * Utility method to pause execution for a specified amount of time.
-     * 
-     * @param milliseconds - the amount of time in milliseconds to pause
-     */
-    private void pause(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 

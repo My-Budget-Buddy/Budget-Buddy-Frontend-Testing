@@ -50,7 +50,7 @@ Feature: Features on the transaction history page
         And I click the "viewHistoryBtn" button
 
         Given I am on the Transaction History page
-        When I click the "editBtn" button
+        When I click the edit button
         And I update the "<account>", "<amount>", and "<category>" 
         And I click the "editTransactionBtn" button
         Then I can see the updated transaction in my list

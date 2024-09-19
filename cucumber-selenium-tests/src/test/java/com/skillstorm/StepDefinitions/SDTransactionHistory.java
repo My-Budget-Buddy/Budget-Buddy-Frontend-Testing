@@ -35,7 +35,7 @@ public class SDTransactionHistory {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
-        transactionHistory = new TransactionHistoryPage();
+        transactionHistory = new TransactionHistoryPage(driver);
         transactionHistoryContent = new String[3]; // To store transaction details
     }
 
@@ -130,6 +130,11 @@ public class SDTransactionHistory {
 
     // ===================== Update Transaction Step Definitions =====================
 
+    @When("I click the edit button")
+    public void clickEditBtn() {
+        transactionHistory.clickEditBtn();
+    }
+
     /**
      * Update account, amount, and category fields for a transaction.
      */
@@ -139,11 +144,6 @@ public class SDTransactionHistory {
         transactionHistory.updateAmount(amount);
         transactionHistory.updateCategory(category);
     }
-
-    // @When("I click the edit submit button")
-    // public void clickSubmitBtn() {
-    //     transactionHistory.clickSubmitBtn();
-    // }
 
     /**
      * Verify that the updated transaction is reflected in the list of past transactions.

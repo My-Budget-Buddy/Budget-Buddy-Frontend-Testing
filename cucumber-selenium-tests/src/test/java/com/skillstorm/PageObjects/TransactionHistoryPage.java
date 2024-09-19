@@ -1,6 +1,8 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,13 +11,36 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.skillstorm.WebDriverSingleton;
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
+import com.skillstorm.PageObjects.Interfaces.Component;
 
 /**
  * This class represents the Page Object Model for the Transaction History Page.
  * It provides methods to interact with various elements on the page.
  */
-public class TransactionHistoryPage {
+public class TransactionHistoryPage  extends Page{
     WebDriver driver = WebDriverSingleton.getDriver();
+
+    //static final strings for IDs
+    private static final String accountDropdownId = "create-transaction-account";
+
+    private static final String amountFieldId = "create-transaction-amount";
+
+    private static final String categoryDropdownId = "create-transaction-category";
+
+    private static final String editAccountFieldId = "transaction-account";
+
+    private static final String editAmountFieldId = "transaction-amount";
+
+    private static final String editCategoryFieldId = "transaction-category";
+
+    private static final String transactionDetailedInfoHeadingId = "transactionDetailedInfoHeading";
+
+    private static final String summaryDivId = "summaryDiv";
+
+    private static final String deleteBtn = "deleteBtn";
+
+    
 
     // ===================== WebElement Locators =====================
     // Page title and buttons
@@ -37,15 +62,6 @@ public class TransactionHistoryPage {
     // Modal Fields (for creating transactions)
     @FindBy(name = "vendorName")
     private WebElement vendorNameField;
-
-    @FindBy(id = "create-transaction-account")
-    private WebElement accountDropdown;
-
-    @FindBy(id = "create-transaction-amount")
-    private WebElement amountField;
-
-    @FindBy(id = "create-transaction-category")
-    private WebElement categoryDropdown;
 
     @FindBy(id = "addTransactionBtn")
     private WebElement submitBtn;
@@ -73,34 +89,10 @@ public class TransactionHistoryPage {
     @FindBy(id = "transaction-name")
     private WebElement editVendorNameField;
 
-    @FindBy(id = "transaction-account")
-    private WebElement editAccountField;
-
-    @FindBy(id = "transaction-amount")
-    private WebElement editAmountField;
-
-    @FindBy(id = "transaction-category")
-    private WebElement editCategoryField;
 
     @FindBy(id = "editTransactionModal")
     private WebElement triggerEditTransactionModal;
 
-    // Delete Transaction Elements
-    @FindBy(id = "deleteBtn")
-    private WebElement deleteBtn;
-
-    // Login Elements
-    @FindBy(name = "email")
-    private WebElement emailField;
-
-    @FindBy(name = "password")
-    private WebElement passwordField;
-
-    @FindBy(id = "logInBtn")
-    private WebElement logInBtn;
-
-    @FindBy(xpath = "//*[@id='root']/div[1]/div/div[1]/a[5]")
-    private WebElement transactionsTab;
 
     // Transaction history table
     @FindBy(xpath = "//*[@id='root']/div[1]/main/div/div[3]/div[1]/table")
@@ -109,9 +101,7 @@ public class TransactionHistoryPage {
     @FindBy(xpath = "//*[@id='root']/div[1]/main/div/div[3]/div[1]/table/tbody/tr[1]")
     private WebElement transactionHistoryTableFirstRow;
 
-    // Summary Section
-    @FindBy(xpath = "//*[@id='summaryDiv']")
-    private WebElement summaryDiv;
+
 
     // Bar chart in summary section
     @FindBy(xpath = "//*[@id='summaryDiv']/div")
@@ -129,12 +119,6 @@ public class TransactionHistoryPage {
     @FindBy(xpath = "//*[@id='summaryDiv']/span[3]")
     private WebElement sum;
 
-    // Transaction history page button
-    @FindBy(id = "btnTransactionArrow")
-    private WebElement transactionHistoryBtn;
-
-    @FindBy(id = "transactionDetailedInfoHeading")
-    private WebElement transactionDetailedInfoHeading;
 
     private int transactionHistoryTableBeforeDeletion;
 
@@ -143,7 +127,8 @@ public class TransactionHistoryPage {
     /**
      * Constructor to initialize WebElement locators using PageFactory.
      */
-    public TransactionHistoryPage() {
+    public TransactionHistoryPage(WebDriver driver) {
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -190,8 +175,10 @@ public class TransactionHistoryPage {
      * Click the "Transactions" tab.
      */
     public void clickTab() {
-        waitForElement(transactionsTab, 10).click();
-        pause(2000); // For waiting purposes
+        pause(1000);
+        DashboardNavbar navbar = new DashboardNavbar(driver);
+        navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
+        pause(500);
     }
 
     /**
@@ -200,8 +187,8 @@ public class TransactionHistoryPage {
      * @return the page title
      */
     public String confirmDetailedInfoTitle() {
-        pause(2000);
-        return transactionDetailedInfoHeading.getText();
+        pause(500);
+        return getWebElement(transactionDetailedInfoHeadingId).getText();
     }
 
     /**
@@ -210,7 +197,7 @@ public class TransactionHistoryPage {
      * @return true if the table is displayed, false otherwise
      */
     public Boolean displayTransactionHistoryTable() {
-        pause(2000);
+        pause(500);
         return transactionHistoryTable.isDisplayed();
     }
 
@@ -224,8 +211,8 @@ public class TransactionHistoryPage {
      */
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            pause(2000);
-            waitForElement(accountDropdown, 10).click();
+            pause(500);
+            clickButton(accountDropdownId);
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
         }
@@ -239,9 +226,10 @@ public class TransactionHistoryPage {
      * @return the entered amount
      */
     public String setAmount(String amount) {
-        pause(2000);
-        waitForElement(amountField, 10).clear();
-        waitForElement(amountField, 10).sendKeys(amount);
+        pause(500);
+        WebElement createAmountField = waitForElement(getWebElement(amountFieldId), 10);
+        createAmountField.clear();
+        createAmountField.sendKeys(amount);
         return amount;
     }
 
@@ -253,10 +241,10 @@ public class TransactionHistoryPage {
      */
     public String setCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            pause(2000);
-            waitForElement(categoryDropdown, 10).click();
+            pause(500);
+            clickButton(categoryDropdownId);
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
-            pause(2000);
+            pause(500);
             waitForElement(option, 10).click();
         }
         return category;
@@ -268,7 +256,14 @@ public class TransactionHistoryPage {
      * @return the text of the first row
      */
     public String confirmCreation() {
-        pause(2000);
+        pause(500);
+        List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
+        int rowCounter = rows.size();
+
+        if(rowCounter >= 2) {
+            WebElement secondToLastRow = rows.get(rowCounter - 2);
+            return waitForElement(secondToLastRow, 10).getText();
+        }
         return waitForElement(transactionHistoryTableFirstRow, 10).getText();
     }
 
@@ -280,10 +275,15 @@ public class TransactionHistoryPage {
      * @return true if both are visible, false otherwise
      */
     public Boolean bothTableAndGraphAreVisible() {
-        return transactionHistoryTable.isDisplayed() && summaryDiv.isDisplayed();
+        return transactionHistoryTable.isDisplayed() && getWebElement(summaryDivId).isDisplayed();
     }
 
     // ===================== Update Transaction Methods =====================
+
+    public void clickEditBtn() {
+        pause(1500);
+        waitForElement(getWebElement("editBtn"), 10).click();
+    }
 
     /**
      * Update the account of an existing transaction.
@@ -294,8 +294,8 @@ public class TransactionHistoryPage {
     public String updateAccount(String account) {
         //waitForElement(editAccountField, 10).clear();
         if (account != null && !account.isEmpty()) {
-            pause(2000);
-            waitForElement(editAccountField, 10).click();
+            pause(500);
+            clickButton(editAccountFieldId);
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
         }
@@ -303,9 +303,10 @@ public class TransactionHistoryPage {
     }
 
     public String updateAmount(String amount) {
-        pause(2000);
-        waitForElement(editAmountField, transactionHistoryTableBeforeDeletion).clear();
-        waitForElement(editAmountField, 10).sendKeys(amount);
+        pause(500);
+        WebElement editAmountField = waitForElement(getWebElement(editAmountFieldId), 10);
+        editAmountField.clear();
+        editAmountField.sendKeys(amount);
         return amount;
     }
 
@@ -318,12 +319,12 @@ public class TransactionHistoryPage {
     public String updateCategory(String category) {
        // waitForElement(editCategoryField, 10).clear();
         if (category != null && !category.isEmpty()) {
-            pause(2000);
-            waitForElement(editCategoryField, 10).click();
+            pause(500);
+            clickButton(editCategoryFieldId);
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
         }
-        pause(2000);
+        pause(500);
         return category;
     }
 
@@ -334,7 +335,7 @@ public class TransactionHistoryPage {
      * @return the text of the first row
      */
     public String confirmUpdation() {
-        pause(2000);
+        pause(500);
         return waitForElement(transactionHistoryTableFirstRow, 10).getText();
     }
 
@@ -344,9 +345,9 @@ public class TransactionHistoryPage {
      * Click the trash icon to delete a transaction and store the number of rows before deletion.
      */
     public void clickTrashIcon() {
-        pause(2000);
+        pause(500);
         transactionHistoryTableBeforeDeletion = transactionHistoryTable.findElements(By.tagName("tr")).size();
-        waitForElement(deleteBtn, 10).click();
+        waitForElement(getWebElement(deleteBtn), 10).click();
     }
 
     /**
@@ -355,7 +356,7 @@ public class TransactionHistoryPage {
      * @return true if a row has been deleted, false otherwise
      */
     public Boolean transactionIsNotInList() {
-        pause(2000);
+        pause(500);
         int transactionHistoryTableAfterDeletion = transactionHistoryTable.findElements(By.tagName("tr")).size();
         return transactionHistoryTableAfterDeletion < transactionHistoryTableBeforeDeletion;
     }
@@ -368,8 +369,46 @@ public class TransactionHistoryPage {
      * @return true if all elements of the graphical summary are displayed, false otherwise
      */
     public Boolean viewGraphicalSummary() {
-        pause(2000);
+        pause(500);
         return barChart.isDisplayed() && spent.isDisplayed() && earned.isDisplayed() && sum.isDisplayed();
+    }
+
+    @Override
+    public List<Component> getChildComponents() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+    }
+
+    @Override
+    public Component getChildComponent(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+    }
+
+    @Override
+    public List<WebElement> getWebElements() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+    }
+
+    @Override
+    public WebElement getWebElement(String id) {
+        return driver.findElement(By.id(id));
+    }
+
+    @Override
+    public List<WebElement> getButtons() {
+        return driver.findElements(By.tagName("select"));
+    }
+
+    @Override
+    public void clickButton(String name) {
+        for (WebElement selectElement : getButtons()) {
+            if (selectElement.getText().equalsIgnoreCase(name)) {
+                selectElement.click();
+                break;
+            }
+        }
     }
 
 
