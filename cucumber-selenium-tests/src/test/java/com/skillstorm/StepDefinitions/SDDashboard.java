@@ -16,6 +16,7 @@ import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
+import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -33,7 +34,7 @@ public class SDDashboard {
     private WebDriverWait wait;
     private Navigator navigator;
     private DashboardPage page;
-    private User seasonedUser = new User(UserType.PERSISTANT, "frontend.tests@gmail.com", "password1");
+    private User seasonedUser = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
     //Number of Budget Items this user has
     private final int NUM_BUDGET_ITEMS = 2;
 
