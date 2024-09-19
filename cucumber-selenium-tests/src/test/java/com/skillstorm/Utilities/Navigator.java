@@ -48,7 +48,7 @@ public class Navigator {
     public static final String URL_TAX= "";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
-    public static final String URL_ERROR= "";
+    public static final String URL_ERROR= "http://localhost:5173/error";
 //#endregion
 
     Map<String, String> pageUrlMap = new HashMap<>();
@@ -183,8 +183,7 @@ public class Navigator {
     }
 
     private void navigateToError() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToError'");
+        driver.get(URL_ERROR);
     }
 
     private void navigateToDashboard() {
