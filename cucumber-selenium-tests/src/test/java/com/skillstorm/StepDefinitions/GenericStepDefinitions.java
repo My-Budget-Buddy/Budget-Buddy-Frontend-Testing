@@ -28,7 +28,7 @@ public class GenericStepDefinitions{
     @Before
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         navigator = new Navigator(driver);
     }
 
@@ -104,6 +104,10 @@ public class GenericStepDefinitions{
      */
     @Then("I am redirected to the {string} page")
     public void iAmRedirectedToThePage(String pageName){
-        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(pageName)));
+        boolean areWeThereYet = wait.until(ExpectedConditions.urlMatches(navigator.getURL(pageName)));
+        
+        Assert.assertTrue( areWeThereYet,
+            "Expected to be redirected to " + pageName + " but was redirected to " + driver.getCurrentUrl()
+        );
     }
 }
