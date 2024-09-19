@@ -1,9 +1,11 @@
 package com.skillstorm.StepDefinitions;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.bidi.log.Log;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,11 +28,13 @@ import io.cucumber.java.en.When;
 
 public class DashboardSD {
     
-    WebDriver driver;
-    WebDriverWait wait;
-    Navigator navigator;
-    DashboardPage page;
-    User user = new User(UserType.PERSISTANT, "frontend.tests@gmail.com", "password1");
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private Navigator navigator;
+    private DashboardPage page;
+    private User seasonedUser = new User(UserType.PERSISTANT, "frontend.tests@gmail.com", "password1");
+    //Number of Budget Items this user has
+    private final int NUM_BUDGET_ITEMS = 2;
 
     @BeforeClass
     public void setUp() {
@@ -67,11 +71,11 @@ public class DashboardSD {
         //Load "seasoned" user who has lots of accounts
         navigator.navigateTo(Navigator.PGNAME_LOGIN);       
         LoginPage loginPage = new LoginPage(driver); 
-        loginPage.login(user);
+        loginPage.login(seasonedUser);
     }
 
     /**
-     * This method will take a user and create a budget plan for them
+     * This method will load a user who has a budget plan
      */
     @Given("I have a budget plan")
     public void iHaveABudgetPlan() {
@@ -79,12 +83,12 @@ public class DashboardSD {
         //Load "seasoned" user who has a budget plan
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(user);
+        loginPage.login(seasonedUser);
 
     }
 
     /**
-     * This method will create some recent transactions for user
+     * This method will load a user who has recent transactions
      */
     @Given("I have recent transactions")
     public void iHaveRecentTransactions() {
@@ -92,7 +96,7 @@ public class DashboardSD {
         //load "seasoned" user who has recent transactions
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(user);
+        loginPage.login(seasonedUser);
 
     }
 
@@ -140,6 +144,9 @@ public class DashboardSD {
         ));
     }
 
+    /**
+     * This method maks sure that the spending chart is created and displayed
+     */
     @Then("I see a Current Spending Table")
     public void iSeeACurrentSpendingTable() {
         page = new DashboardPage(driver);
@@ -148,6 +155,10 @@ public class DashboardSD {
         ));
     }
 
+    /**
+     * This method checks that the spending number on the chart is greater than 0
+     *     for a user who has transactions in the given month
+     */
     @And("The spending line reflects my spending")
     public void theSpendingLineReflectsMySpending() {
         page = new DashboardPage(driver);
@@ -157,6 +168,9 @@ public class DashboardSD {
         );
     }
 
+    /**
+     * This test is to make sure that a transaction pop up has appeared
+     */
     @Then("A pop up of the transaction appears")
     public void aPopUpOfTheTransactionAppears() {
         page = new DashboardPage(driver);
@@ -166,9 +180,28 @@ public class DashboardSD {
         ));
     }
 
+    /**
+     * This test is to make sure that the budget information is displayed
+     *      for a user who has a budget plan
+     */
     @Then("I can see budget information")
     public void iCanSeeBudgetInformation() {
-        //TODO: Implement this
+        page = new DashboardPage(driver);
+
+        //Check to see if the Budget Circle Chart is displayed
+        WebElement budgetCircleChart = page.getWebElement(DashboardPage.NAME_BUDGET_CIRCLE_CHART);
+        Assert.assertTrue(
+            budgetCircleChart != null,
+            "Budget Circle Chart cannot be found"
+        );
+
+
+        //Check to see if the Budget Breakdown Information is displayed
+        List<WebElement> budgetItems = page.getAllBudgetItems();
+        Assert.assertTrue(
+            budgetItems.size() == NUM_BUDGET_ITEMS,
+            "Budget Breakdown cannot be found"
+        );
     }
 
 

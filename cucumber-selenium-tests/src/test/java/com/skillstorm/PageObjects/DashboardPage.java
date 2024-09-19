@@ -28,6 +28,8 @@ public class DashboardPage extends Page {
     public static final String NAME_TRANSACTION_ARROW_OVERLAY = "Recent Transaction"; 
     public static final String NAME_CURRENT_SPENDING_CHART_TITLE = "Current Spending Chart Title";
     public static final String NAME_CURRENT_SPENDING_CHART = "Current Spending Chart";
+    public static final String NAME_BUDGET_CIRCLE_CHART = "Budget Circle Chart";
+    public static final String NAME_BUDGET_BREAKDOWN = "Budget Breakdown";
 
     // Button IDs
     private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
@@ -43,6 +45,8 @@ public class DashboardPage extends Page {
     private final String ACCORDION_INVESTMENTS_TABLE_ID = "investment";
     private final String CURRENT_SPENDING_CHART_TITLE_ID = "current-spending-chart-header";
     private final String CURRENT_SPENDING_CHART_ID = "chart-container";
+    private final String BUDGET_CIRCLE_CHART_ID = "budget-gauge";
+    private final String BUDGET_BREAKDOWN_ID = "budget-items";
 
     // Other WebElement IDs
     private final String TRANSACTION_ARROW_OVERLAY_ID = "transaction-info-modal";
@@ -87,13 +91,18 @@ public class DashboardPage extends Page {
     private List<WebElement> btnTransactionButtons;
 
 
-    //Web Elements - Current Spending Chart
+    //Web Elements - Charts
     @FindBy(id = CURRENT_SPENDING_CHART_TITLE_ID)
     private WebElement currentSpendingChartTitle;
 
     @FindBy(id = CURRENT_SPENDING_CHART_ID)
     private WebElement currentSpendingChart;
 
+    @FindBy(id = BUDGET_CIRCLE_CHART_ID)
+    private WebElement budgetCircleChart;
+
+    @FindBy(id = BUDGET_BREAKDOWN_ID)
+    private List<WebElement> budgetBreakdownItems;
 
     //Child Components
     //TODO: Navbar???
@@ -121,6 +130,8 @@ public class DashboardPage extends Page {
         nameElementMap.put(NAME_TRANSACTION_ARROW_OVERLAY, transactionArrowOverlay);
         nameElementMap.put(NAME_CURRENT_SPENDING_CHART_TITLE, currentSpendingChartTitle);
         nameElementMap.put(NAME_CURRENT_SPENDING_CHART, currentSpendingChart);
+        nameElementMap.put(NAME_BUDGET_CIRCLE_CHART, budgetCircleChart);
+        nameElementMap.put(NAME_BUDGET_BREAKDOWN, budgetBreakdownItems.get(0));
         nameElementMap.put(NAME_TRANSACTION_ARROW, btnTransactionButtons.get(0)); //just the first arrow button
         //NOTE: btnTransactionButtons are a list, so that needs to be accounted for in "get" methods
     }
@@ -154,6 +165,10 @@ public class DashboardPage extends Page {
         String spending = title.substring(title.lastIndexOf("$") + 1).replaceAll(",","").trim();
         
         return Double.parseDouble(spending);
+    }
+
+    public List<WebElement> getAllBudgetItems() {
+        return budgetBreakdownItems;
     }
 
 
