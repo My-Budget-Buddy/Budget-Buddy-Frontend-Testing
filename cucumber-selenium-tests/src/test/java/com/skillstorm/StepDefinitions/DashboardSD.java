@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -36,22 +37,26 @@ public class DashboardSD {
     //Number of Budget Items this user has
     private final int NUM_BUDGET_ITEMS = 2;
 
-    @BeforeClass
-    public void setUp() {
-        System.out.println("Before Class has run");
-    }
-
     @Before
     public void scenarioSetUp() {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
+
+        //make sure user is logged out to start with
+        navigator.navigateTo(Navigator.PGNAME_LANDING);
+        LandingNavbar navbar = new LandingNavbar(driver);
+        if (navbar.getWebElement(LandingNavbar.BTN_LOGOUT_NAME) != null) {
+            navbar.clickButton(LandingNavbar.BTN_LOGOUT_NAME);
+        }
     }
 
     @After
     public void scenarioTearDown() {
         WebDriverSingleton.quitDriver();
         page = null;
+        wait = null;
+        navigator = null;
     }
 
 
