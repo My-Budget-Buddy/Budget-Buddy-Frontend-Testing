@@ -37,6 +37,9 @@ public class DashboardSD {
     //Number of Budget Items this user has
     private final int NUM_BUDGET_ITEMS = 2;
 
+    /**
+     * This method sets up the web driver and the wait object before each test.
+     */
     @Before
     public void scenarioSetUp() {
         driver = WebDriverSingleton.getDriver();
@@ -51,6 +54,9 @@ public class DashboardSD {
         }
     }
 
+    /**
+     * This method closes the web driver after each test.
+     */
     @After
     public void scenarioTearDown() {
         WebDriverSingleton.quitDriver();
