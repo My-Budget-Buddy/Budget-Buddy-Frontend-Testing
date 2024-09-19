@@ -27,7 +27,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class DashboardSD {
+public class SDDashboard {
     
     private WebDriver driver;
     private WebDriverWait wait;
