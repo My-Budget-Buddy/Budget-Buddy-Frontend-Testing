@@ -24,7 +24,7 @@ public class Navigator {
 
     public static final String URL = "";
     public static final String URL_LANDING= "";
-    public static final String URL_LOGIN= "";
+    public static final String URL_LOGIN= "http://localhost:5173/login";
     public static final String URL_SIGNUP= "";
     public static final String URL_DASHBOARD= "";
     public static final String URL_ACCOUNTS= "";
@@ -159,8 +159,7 @@ public class Navigator {
     }
 
     private void navigateToLogin() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToLogin'");
+        driver.get(URL_LOGIN);
     }
 
     private void navigateToLanding() {
