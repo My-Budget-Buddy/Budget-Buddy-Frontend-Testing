@@ -33,7 +33,7 @@ public class SDLanding {
     private WebDriverWait wait;
     private Navigator navigator;
     private LandingPage page;
-    private User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+    private User user = new User(UserType.PERSISTANT, );
     public static final int NUM_OF_FEATURES = 3;
 
     /**

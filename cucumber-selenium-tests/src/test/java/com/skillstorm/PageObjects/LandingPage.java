@@ -17,8 +17,8 @@ public class LandingPage extends Page {
 //#region Static fields
 
     //Naming System
-    public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";    
-    public static final String CMP_FOOTER_NAME = "Footer";
+    public static final String NAME_CMP_LANDING_NAVBAR = "Landing Navbar";    
+    public static final String NAME_CMP_FOOTER = "Footer";
     public static final String NAME_FEATURES_CONTAINER = "Features";
 
     // Button IDs
@@ -88,9 +88,9 @@ public class LandingPage extends Page {
     @Override
     public Component getChildComponent(String name) {
         switch (name) {
-            case CMP_FOOTER_NAME:
+            case NAME_CMP_FOOTER:
                 return footer;
-            case CMP_LANDING_NAVBAR_NAME:
+            case NAME_CMP_LANDING_NAVBAR:
                 return landingNavbar;
             default:
                 throw new IllegalArgumentException("Component'" + name + "' does not exist.");
