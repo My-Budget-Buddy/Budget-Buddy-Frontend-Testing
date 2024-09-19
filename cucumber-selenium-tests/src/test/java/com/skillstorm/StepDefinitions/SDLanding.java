@@ -40,19 +40,26 @@ public class SDLanding {
      * This method sets up the web driver and the wait object before each test.
      */
     @Before
-    public void setUp() {
+    public void scenarioSetUp() {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         navigator = new Navigator(driver);
-        // page = new LandingPage(driver);
+
+        //make sure user is logged out to start with
+        navigator.navigateTo(Navigator.PGNAME_LANDING);
+        LandingNavbar navbar = new LandingNavbar(driver);
+        if (navbar.getWebElement(LandingNavbar.BTN_LOGOUT_NAME) != null) {
+            navbar.clickButton(LandingNavbar.BTN_LOGOUT_NAME);
+        }
     }
 
     /**
      * This method closes the web driver after each test.
      */
     @After
-    public void tearDown() {
+    public void scenarioTearDown() {
         WebDriverSingleton.quitDriver();
+        page = null;
         wait = null;
         navigator = null;
     }
