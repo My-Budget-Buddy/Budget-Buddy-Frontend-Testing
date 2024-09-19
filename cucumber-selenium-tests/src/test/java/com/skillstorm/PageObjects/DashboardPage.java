@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.Navbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
@@ -105,7 +106,7 @@ public class DashboardPage extends Page {
     private List<WebElement> budgetBreakdownItems;
 
     //Child Components
-    //TODO: Navbar???
+    DashboardNavbar navbar;
 
 //#END Attributes
 
@@ -116,7 +117,7 @@ public class DashboardPage extends Page {
         PageFactory.initElements(driver, this);
 
         //load components
-        //TODO: Navbar??
+        navbar = new DashboardNavbar(driver);
 
         //Map WebElements
         nameElementMap.put(NAME_ACCORDION_CHECKING_BTN, btnAccordianChecking);
@@ -200,8 +201,10 @@ public class DashboardPage extends Page {
      */
     @Override
     public Component getChildComponent(String name) {
+        if(name.equals(CMP_LANDING_NAVBAR_NAME)) return navbar;  // Directly exists here
+
+        // Couldn't find.
         return null;
-        //TODO: Navbar???
     }
 
     /**
