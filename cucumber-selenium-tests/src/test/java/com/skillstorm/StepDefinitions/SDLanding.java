@@ -17,6 +17,7 @@ import com.skillstorm.PageObjects.LandingPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.Navbar;
+import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -33,7 +34,7 @@ public class SDLanding {
     private WebDriverWait wait;
     private Navigator navigator;
     private LandingPage page;
-    private User user = new User(UserType.PERSISTANT, );
+    private User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
     public static final int NUM_OF_FEATURES = 3;
 
     /**
