@@ -20,7 +20,7 @@ public class DashboardPage extends Page {
 //#region Static fields
 
     //Names
-    public static final String NAME_CMP_DASHBOARD_NAVBAR = "Landing Navbar";
+    public static final String NAME_CMP_DASHBOARD_NAVBAR = "Dashboard Navbar";
     public static final String NAME_TRANSACTION_ARROW = "Transaction Arrow";
     public static final String NAME_ACCORDION_CHECKING_BTN = "Checkings";
     public static final String NAME_ACCORDION_SAVINGS_BTN = "Savings";
