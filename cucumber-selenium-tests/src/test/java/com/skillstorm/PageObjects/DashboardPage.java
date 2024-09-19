@@ -20,7 +20,7 @@ public class DashboardPage extends Page {
 //#region Static fields
 
     //Names
-    public static final String CMP_LANDING_NAVBAR_NAME = "Landing Navbar";
+    public static final String NAME_CMP_LANDING_NAVBAR = "Landing Navbar";
     public static final String NAME_TRANSACTION_ARROW = "Transaction Arrow";
     public static final String NAME_ACCORDION_CHECKING_BTN = "Checkings";
     public static final String NAME_ACCORDION_SAVINGS_BTN = "Savings";
@@ -205,7 +205,7 @@ public class DashboardPage extends Page {
      */
     @Override
     public Component getChildComponent(String name) {
-        if(name.equals(CMP_LANDING_NAVBAR_NAME)) return navbar;  // Directly exists here
+        if(name.equals(NAME_CMP_LANDING_NAVBAR)) return navbar;  // Directly exists here
 
         // Couldn't find.
         return null;
