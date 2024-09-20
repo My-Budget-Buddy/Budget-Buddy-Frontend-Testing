@@ -48,21 +48,21 @@ public class SpendingMonthSD {
         loginPage.login(user);
     }
 
-    @And("SpendingMonth: I am on the {string} page")
-    public void iAmOnTheSpendingMonthPage(String pageName) {
+    @And("I am on the SpendingMonth page")
+    public void iAmOnTheSpendingMonthPage() {
         this.spendingMonthPage.clickTab();
         this.spendingPage.clickButton("See Current Month");
-        navigator.navigateTo(pageName);
+        navigator.navigateTo(Navigator.PGNAME_SPENDINGMONTH);
     }
 
-    @When("SpendingMonth: I click the {string} button")
-    public void iClickTheButtonOnSpendingMonthPage(String buttonName) {
-        this.spendingMonthPage.clickButton(buttonName);
+    @When("I click the Back to Annual Spending Overview button")
+    public void iClickTheButtonOnSpendingMonthPage() {
+        this.spendingMonthPage.clickButton(SpendingMonthPage.BTN_BACKTOANNUALSPENDING_NAME);
     }
 
-    @Then("SpendingMonth: I am redirected to the {string} page")
-    public void iAmRedirectedToTheSpendingPage(String pageName) {
-        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(pageName)));
+    @Then("I am redirected to the Spending page")
+    public void iAmRedirectedToTheSpendingPage() {
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(Navigator.PGNAME_SPENDING)));
     }
 
     @Then("I can see the total monthly spending")
@@ -85,12 +85,12 @@ public class SpendingMonthSD {
         Assert.assertTrue(driver.findElement(By.xpath("/html/body/div[1]/div[1]/main/div/div/section/div[3]/div/div[2]/table")).isDisplayed());
     }
 
-    @When("SpendingMonth: I select {string} from the month selection dropdown")
+    @When("I select {string} from the month selection dropdown")
     public void iSelectFromTheMonthSelectionDropdown(String month) {
         this.spendingMonthPage.selectMonth(month);
     }
 
-    @Then("SpendingMonth: I can see the SpendingMonth page display March spending values")
+    @Then("I can see the SpendingMonth page display March spending values")
     public void iCanSeeTheSpendingMonthPageForMarch() {
         Assert.assertTrue(driver.findElement(By.id("spending-month-title")).getText().contains("March"));
     }

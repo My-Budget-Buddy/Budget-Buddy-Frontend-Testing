@@ -45,20 +45,20 @@ public class SpendingSD {
         loginPage.login(user);
     }
 
-    @And("Spending: I am on the {string} page")
-    public void iAmOnTheSpendingPage(String pageName) {
+    @And("I am on the Spending page")
+    public void iAmOnTheSpendingPage() {
         this.spendingPage.clickTab();
-        navigator.navigateTo(pageName);
+        navigator.navigateTo(Navigator.PGNAME_SPENDING);
     }
 
-    @When("Spending: I click the {string} button")
-    public void iClickTheButtonOnSpendingPage(String buttonName) {
-        this.spendingPage.clickButton(buttonName);
+    @When("I click the See Current Month button")
+    public void iClickTheSeeCurrentMonthButton() {
+        this.spendingPage.clickButton(SpendingPage.BTN_SEECURRENTMONTH_NAME);
     }
 
-    @Then("Spending: I am redirected to the {string} page")
-    public void  iAmRedirectedToTheSpendingMonthPage(String pageName) {
-        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(pageName)));
+    @Then("I am redirected to the SpendingMonth page")
+    public void  iAmRedirectedToTheSpendingMonthPage() {
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(Navigator.PGNAME_SPENDINGMONTH)));
     }
 
     @Then("I can see the three cards: spent this week, deposited this week, and Annual Total Spent")
