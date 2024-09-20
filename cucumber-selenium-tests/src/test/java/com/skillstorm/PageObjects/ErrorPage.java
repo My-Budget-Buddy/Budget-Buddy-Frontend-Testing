@@ -29,14 +29,12 @@ public class ErrorPage extends Page{
 
     @Override
     public List<Component> getChildComponents() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+        return null;
     }
 
     @Override
     public Component getChildComponent(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+        return null;
     }
 
     @Override
