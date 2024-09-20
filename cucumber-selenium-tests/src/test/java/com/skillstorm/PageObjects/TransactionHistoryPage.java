@@ -108,6 +108,8 @@ public class TransactionHistoryPage  extends Page{
     @FindBy(xpath = "//*[@id='root']/div[1]/main/div/div[3]/div[1]/table/tbody/tr[1]")
     private WebElement transactionHistoryTableFirstRow;
 
+    @FindBy(id = "btnTransactionArrow")
+    private WebElement transactionHistoryBtn;
 
 
     // Bar chart in summary section
@@ -397,6 +399,7 @@ public class TransactionHistoryPage  extends Page{
     @Override
     public List<WebElement> getWebElements() {
         ArrayList<WebElement> webElements = new ArrayList<WebElement>();
+        webElements.add(transactionHistoryBtn);
         
         for (Component component : getChildComponents()) {
             webElements.addAll(component.getWebElements());
@@ -419,7 +422,7 @@ public class TransactionHistoryPage  extends Page{
 
     @Override
     public List<WebElement> getButtons() {
-        return driver.findElements(By.tagName("button"));
+        return Arrays.asList(transactionHistoryBtn);
     }
 
     @Override
