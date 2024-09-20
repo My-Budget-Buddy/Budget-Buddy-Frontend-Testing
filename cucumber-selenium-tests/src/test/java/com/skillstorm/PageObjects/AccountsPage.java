@@ -38,11 +38,13 @@ public class AccountsPage extends Page {
     public static final String NAME_BTN_ADD_ACCOUNT = "Add Account";
     public static final String NAME_BTN_GET_REPORT = "Get Report";
     public static final String NAME_NETCASH_BAR = "Net Cash Bar";
+    public static final String NAME_CREDIT_SCORE_POPUP = "Credit Score Pop Up";
+    public static final String NAME_CREDIT_SCORE_POPUP_TITLE = "Credit Score Report";
     
 
     // Button IDs
     private final String BTN_ADD_ACCOUNT_LOCATOR = "button[aria-controls='account-modal']";
-    private final String BTN_GET_REPORT_LOCATOR = "button[aria-controls='credit-score-modal'']";
+    private final String BTN_GET_REPORT_LOCATOR = "button[aria-controls='credit-score-modal']";
     private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_Checking']";
     private final String ACCORDION_SAVINGS_LOCATOR = "button[data-testid='accordionButton_savings']";
     private final String ACCORDION_CREDIT_CARDS_LOCATOR = "button[data-testid='accordionButton_credit-cards']";
@@ -65,16 +67,17 @@ public class AccountsPage extends Page {
 
     // Other WebElement IDs
     public static final String NETCASH_BAR_ID = "netCash-gauge";
+    public static final String CREDIT_SCORE_POPUP_ID = "credit-score-modal-heading";
 
     //Element Attributes
     public static final String NETCASH_BAR_GREEN = "rgb(82, 178, 2)";
-    public static final String NETCASH_BAR_RED = "";
+    public static final String NETCASH_BAR_RED = "rgb(178, 2, 2)";
     private final List<String> ACCOUNT_TYPE_OPTIONS = Arrays.asList(
         "- Select -",
-         "Checking",
-         "Savings", 
-         "Credit Card", 
-         "Investment"
+         NAME_ACCORDION_CHECKING_BTN,
+         NAME_ACCORDION_SAVINGS_BTN, 
+         NAME_ACCORDION_CREDIT_CARDS_BTN, 
+         NAME_ACCORDION_INVESTMENTS_BTN
     );
 
 //#END Static Fields
@@ -120,6 +123,9 @@ public class AccountsPage extends Page {
     @FindBy(id = NETCASH_BAR_ID)
     private WebElement netCashBar;
 
+    @FindBy(id = CREDIT_SCORE_POPUP_ID)
+    private WebElement creditScorePopUp;
+
     //Child Components
     DashboardNavbar navbar;
 
@@ -147,6 +153,7 @@ public class AccountsPage extends Page {
         nameElementMap.put(NAME_BTN_ADD_ACCOUNT, btnAddAccount);
         nameElementMap.put(NAME_BTN_GET_REPORT, btnGetReport);
         nameElementMap.put(NAME_NETCASH_BAR, netCashBar);
+        nameElementMap.put(NAME_CREDIT_SCORE_POPUP, creditScorePopUp);
         
     }
 
@@ -201,10 +208,7 @@ public class AccountsPage extends Page {
         return Double.parseDouble(netCashText);
     }
 
-    public void addAccount(String accountType, String institutionName, int accountNumber, double balance) {
-        //Click the Add Account Button
-        btnAddAccount.click();
-
+    public void addAccount(String accountType, String institutionName, String accountNumber, String routing, String balance ) {
         //Wait for the modal to appear
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(FORM_ADD_ACCOUNT_ID)));
@@ -221,18 +225,16 @@ public class AccountsPage extends Page {
         //Fill in the input fields
         accountTypeDropdown.selectByIndex(ACCOUNT_TYPE_OPTIONS.indexOf(accountType));
         inputInstitutionName.sendKeys(institutionName);
-        inputAccountNumber.sendKeys(Integer.toString(accountNumber));
-        inputBalance.sendKeys(Double.toString(balance));
+        inputAccountNumber.sendKeys(accountNumber);
+        inputBalance.sendKeys(balance);
 
-
-        //Testing - wait for 10 seconds
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        //Handle Routing Number if Present
+        if (!routing.equals("0") && !accountType.equals("Credit Card")) {
+            WebElement inputRoutingNumber = form.findElement(By.id(FORM_ROUTING_NUMBER_ID));
+            inputRoutingNumber.sendKeys(routing);
         }
         //Click the submit button
-        //form.findElement(By.id(FORM_SUMBIT_BTN_ID)).click();
+        form.findElement(By.id(FORM_SUMBIT_BTN_ID)).click();
     }
 
     ////////////// OVERRIDES ///////////////////////
@@ -243,7 +245,6 @@ public class AccountsPage extends Page {
     @Override
     public void clickButton(String name) {
         WebElement button = getWebElement(name);
-
         if(button == null) throw new IllegalArgumentException("Button '" + name + "' does not exist.");
         button.click();
     }

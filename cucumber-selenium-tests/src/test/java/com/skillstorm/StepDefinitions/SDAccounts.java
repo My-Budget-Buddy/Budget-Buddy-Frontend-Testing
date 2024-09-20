@@ -1,7 +1,10 @@
 package com.skillstorm.StepDefinitions;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,7 +35,7 @@ public class SDAccounts {
     private Navigator navigator;
     private AccountsPage page;
     private User seasonedUser = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
-
+    private Map<String, String> accountInfo;
 
     /**
      * This method sets up the web driver and the wait object before each test.
@@ -49,6 +52,9 @@ public class SDAccounts {
         if (navbar.getWebElement(LandingNavbar.BTN_LOGOUT_NAME) != null) {
             navbar.clickButton(LandingNavbar.BTN_LOGOUT_NAME);
         }
+
+        //initialize accountInfo
+        accountInfo = new HashMap<>();
     }
 
     /**
@@ -60,6 +66,7 @@ public class SDAccounts {
         page = null;
         wait = null;
         navigator = null;
+        accountInfo = null;
     }
 
     /**********************************************************************
@@ -94,7 +101,9 @@ public class SDAccounts {
     }
 
     @When("I click the {string} button on Accounts")
-    public void iClickTheButtonOnAccounts (String accordianBtnName) {
+    public void iClickTheButtonOnAccounts (String btnName) {
+        page = new AccountsPage(driver);
+        page.clickButton(btnName);
     }
 
     @When("I attempt to delete a {string}")
@@ -108,27 +117,66 @@ public class SDAccounts {
 
         //Get the net cash value
         double netCash = page.getNetCash();
+
+        //Pull up the Add Account Form
+        page.clickButton(AccountsPage.NAME_BTN_ADD_ACCOUNT);
+
         //Add and credit account with more debt than than the net cash value
         String accountType = "Credit Card";
         String institutionName = "Test Bank";
-        page.addAccount(accountType, institutionName, 123456789, netCash*1.5);
+        String accountNumber = "123456789";
+        String routingNumber = "0";
+        String balance = new Double(netCash*1.5).toString();
+        page.addAccount(accountType, institutionName, accountNumber, routingNumber, balance);
         
-        //Check to make sure credit account is added
+        //Save the Information of that Account for Future Steps
+        saveAccountInfo(accountType, institutionName, accountNumber, routingNumber, balance);
+
+        //Check to make sure credit account is added TODO: Implement this
         //Assert.assertTrue(page.checkForCreditCard("Test Credit Card") != null);
     }
 
-    @And("I enter valid {string} information")
-    public void iEnterValidInformation(String accountType) {
-        // TODO: Implement this step
+    @And("I enter the following information: {string}, {string}, {string}, {string}, {string}")
+    public void iEnterTheFollowingInformation(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
+        page = new AccountsPage(driver);
+        //Add account
+        page.addAccount(accountType, institutionName, accountNumber, routingNumber, balance);
+
+        //Save the Information of that Account for Future Steps
+        saveAccountInfo(accountType, institutionName, accountNumber, routingNumber, balance);
     }
 
 
     /**********************************************************************
      *    THEN STEPS
      * *********************************************************************/
-    @Then("a {string} account is Added")
-    public void aAccountIsAdded(String accountType) {
-        // TODO: Implement this step
+    @Then("that specific account is created")
+    public void thatSpecificAccountIsCreated() {
+        // Load the page
+        page = new AccountsPage(driver);
+
+        // Get the last account type that was modified and open up the accordian to display the list
+        String lastAccountTypeModified = accountInfo.get("accountType");
+        page.clickButton(lastAccountTypeModified);
+
+        // Get the list of accounts
+        WebElement accountListContainer = page.getWebElement(page.getListName(lastAccountTypeModified));
+        String listOfAccounts = accountListContainer.getText();
+
+        // Modify the account info to match the format of the list
+        String institutionName = accountInfo.get("institutionName");
+        
+        String accountNumber = accountInfo.get("accountNumber");
+        accountNumber = accountNumber.substring(accountNumber.length()-4);
+
+        String balance = String.format("%,.2f", Double.parseDouble( accountInfo.get("balance") ));
+
+        // Check to see if the last modified account is in the list
+        Assert.assertTrue(
+            listOfAccounts.contains(institutionName) &&
+            listOfAccounts.contains(accountNumber) &&
+            listOfAccounts.contains(balance)
+        );
     }
 
     @Then("that {string} is removed")
@@ -138,15 +186,22 @@ public class SDAccounts {
 
     @Then("a pop up appears of my credit score")
     public void aPopUpAppearsOfMyCreditScore() {
-        // TODO: Implement this step
+        page = new AccountsPage(driver);
+
+        //Check to make sure this popup is the correct one
+        WebElement popup = page.getWebElement(AccountsPage.NAME_CREDIT_SCORE_POPUP);
+        Assert.assertEquals(popup.getText(),AccountsPage.NAME_CREDIT_SCORE_POPUP_TITLE);    
+
+        //Check to make sure the popup is displayed
+        Assert.assertTrue(page.getWebElement(AccountsPage.NAME_CREDIT_SCORE_POPUP).isDisplayed());
     }
 
     @Then("my net cash bar turns red")
     public void myNetCashBarTurnsRed() {
         page = new AccountsPage(driver);
 
-        //Check if the net cash is negative
-        Assert.assertTrue(page.getNetCash() < 0.0);
+        //Check if the net cash is larger than 0 - this is because net is calculated as absoulte value
+        Assert.assertTrue(page.getNetCash() > 0.0);
         //Check if the net cash bar is red
         Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_RED);
     }
@@ -177,4 +232,17 @@ public class SDAccounts {
         //Check if the net cash bar is green
         Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_GREEN);
     }
+
+
+    /**********************************************************************
+     *    EXTRA FUNCTIONS
+     * *********************************************************************/
+    private void saveAccountInfo(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
+        accountInfo.put("accountType", accountType);
+        accountInfo.put("institutionName", institutionName);
+        accountInfo.put("accountNumber", accountNumber);
+        accountInfo.put("routingNumber", routingNumber);
+        accountInfo.put("balance", balance);
+    }
+
 }
