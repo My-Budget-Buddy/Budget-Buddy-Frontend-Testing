@@ -1,7 +1,12 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -107,6 +112,9 @@ public class TransactionPage extends Page{
 
     private int tableSizeBeforeDeletion;
 
+    //child component
+    DashboardNavbar navbar;
+
     // Constructor
     public TransactionPage(WebDriver driver) {
         super(driver);
@@ -134,7 +142,7 @@ public class TransactionPage extends Page{
 
 
     public void clickTab() {
-        DashboardNavbar navbar = new DashboardNavbar(driver);
+        navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
         pause(2000);
     }
@@ -243,21 +251,62 @@ public class TransactionPage extends Page{
 
     @Override
     public List<Component> getChildComponents() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+        return Arrays.asList(navbar);
     }
 
     @Override
     public Component getChildComponent(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+        switch (name) {
+            case "navbar":
+                return navbar;
+            default:
+                return null;
+        }
     }
 
     @Override
     public List<WebElement> getWebElements() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+        // Map to hold element names and their respective locators
+        Map<String, String> elementLocators = new HashMap<>();
+        elementLocators.put("transactionPageTitle", "usa-logo__text");
+        elementLocators.put("clearFilterBtn", "clearFilterBtn");
+        elementLocators.put("sortByDropdown", "sortByDropdown");
+        elementLocators.put("directionDropdown", "directionDropdown");
+        elementLocators.put("addTransactionModal", "addTransactionModal");
+        elementLocators.put("vendorNameField", "vendorName");
+        elementLocators.put("accountDropdown", "accountId");
+        elementLocators.put("amountField", "amount");
+        elementLocators.put("categoryDropdown", "category");
+        elementLocators.put("submitBtn", "addTransactionBtn");
+        elementLocators.put("allCategoriesDropDown", "allCategoriesDropDown");
+        elementLocators.put("allAccountDropDown", "allAccountDropDown");
+        elementLocators.put("allAmountsDropDown", "allAmountsDropDown");
+        elementLocators.put("allDatesDropDown", "allDatesDropDown");
+        elementLocators.put("transactionsTableTitle", "listOfTransactionsTitle");
+        elementLocators.put("transactionsTable", "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table"); // adjust root if needed
+        elementLocators.put("transactionsTableFirstRow", "root"); // adjust root if needed
+        elementLocators.put("editBtn", "editBtn");
+        elementLocators.put("editSubmitBtn", "editTransactionBtn");
+        elementLocators.put("editTransactionAccountField", "edit-transaction-account");
+        elementLocators.put("editTransactionCategoryField", "edit-transaction-category");
+        elementLocators.put("deleteBtn", "deleteBtn");
+
+        // Create a list to store the WebElements
+        List<WebElement> elements = new ArrayList<>();
+
+        // Iterate through the map and find the elements by their IDs
+        for (String id : elementLocators.values()) {
+            try {
+                WebElement element = driver.findElement(By.id(id));
+                elements.add(element);
+            } catch (NoSuchElementException e) {
+                System.out.println("Element with ID " + id + " not found.");
+            }
+        }
+
+        return elements;
     }
+
 
     @Override
     public WebElement getWebElement(String id) {
