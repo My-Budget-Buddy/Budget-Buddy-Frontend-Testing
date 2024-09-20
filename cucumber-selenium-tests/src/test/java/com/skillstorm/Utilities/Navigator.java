@@ -41,8 +41,8 @@ public class Navigator {
     public static final String URL_DASHBOARD= URL + "/dashboard";
     public static final String URL_ACCOUNTS= "";
     public static final String URL_BUDGET= "";
-    public static final String URL_SPENDING= "http://localhost:5173/dashboard/spending";
-    public static final String URL_SPENDINGMONTH= "http://localhost:5173/dashboard/spending/May";
+    public static final String URL_SPENDING= URL + "/dashboard/spending";
+    public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
     public static final String URL_TAX= "";
@@ -158,21 +158,11 @@ public class Navigator {
     }
 
     private void navigateToSpendingMonth() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.driver.get(URL_SPENDINGMONTH);
+        driver.get(URL_SPENDINGMONTH);
     }
 
     private void navigateToSpending() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.driver.get(URL_SPENDING);
+        driver.get(URL_SPENDING);
     }
 
     private void navigateToSignup() {
