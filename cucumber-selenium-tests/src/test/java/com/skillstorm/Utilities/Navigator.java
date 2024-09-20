@@ -3,7 +3,9 @@ package com.skillstorm.Utilities;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class Navigator {
 //#region Static fields
@@ -139,8 +141,19 @@ public class Navigator {
     }
 
     private void navigateToTax() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToTax'");
+        driver.get("http://localhost:5173/login");
+        WebElement usernameField = driver.findElement(By.id("email"));
+        WebElement passwordField = driver.findElement(By.id("password"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div[1]/main/div/main/div/div[2]/div/div/form/fieldset/button[2]"));
+        usernameField.sendKeys("joseph.sam@gmail.com");
+        passwordField.sendKeys("password1");
+        submitButton.click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        driver.get("http://localhost:5173/dashboard/tax");
     }
 
     private void navigateToSpendingMonth() {

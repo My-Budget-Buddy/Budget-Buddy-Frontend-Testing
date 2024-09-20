@@ -7,8 +7,8 @@ Feature: update tax estimation form
 
     
     Examples:
-    |page        |
-    |PGNAME_TAX  |
+    | page        |
+    | Tax  |
 
 
   Scenario Outline: Successfully update tax estimation form
@@ -19,7 +19,7 @@ Feature: update tax estimation form
     And I click the "<button4>" button followed by the "<button5>" button 
     And I enter the following W2 information "<state2>" "<employer>" "<wages>" "<federalTax>" "<stateTax>" "<SSNTax>" "<medicareTax>"
     And I click the "<button6>" button followed by the "<button7>" button 
-    And I enter valid other income information such as "<longTermCapitalGains>" "<shortTermCapitalGains>" "<netBusinessIncome>" "<OtherInvestments>" "<additionalIncome>"
+    And I enter valid other income information such as "<longTermCapitalGains>" "<shortTermCapitalGains>" "<netBusinessIncome>" "<otherInvestments>" "<additionalIncome>"
     And I click the "<button8>" button followed by the "<button9>" button 
     And I click the "<button10>" button followed by the "<button11>" button 
     And I enter valid deductions information such as "<deductionType>" "<deductionAmount>"
@@ -32,8 +32,8 @@ Feature: update tax estimation form
     
 
   Examples:
-    |page        | button           | firstName | lastName | streetAddress | city    | state      | zip      |         DOB        | SSN        | button2          | button3       | button4          | button5         | state2 | employer    | wages | federalTax | stateTax | SSNTax | medicareTax | button6        | button7       | longTermCapitalGains | shortTermCapitalGains | netBusinessIncome |otherInvestments | additionalIncome       | button8     | button9    | button10             | button11       | deductionType           | deductionAmount | button12       | button13      | button14 |
-    |PGNAME_TAX  | mainEditButton       | John      | Doe     | 1234 Main St  | Tampa| F        | 33647      | 01/01/1990         | 123-45-6789 | PISaveButton   | nextButton   | w2AddButton     | w2EditButton       | FL    | Publix   | 4000 | 15000       | 15000     | 5000    | 1000         | w2SaveButton   | nextButton     | 10                 | 5                  | 10               |  0           |    5             | OISaveButton   | nextButton | deductAddButton   | deductEditButton | H              | 1000                 | deductSaveButton          | nextButton | reviewSubmitButton |
+    |page        | button           | firstName | lastName | streetAddress | city    | state      | zip      |         DOB        | SSN        | button2          | button3       | button4          | button5         | state2 | employer    | wages | federalTax | stateTax | SSNTax | medicareTax | button6        | button7       | longTermCapitalGains | shortTermCapitalGains | netBusinessIncome | otherInvestments | additionalIncome       | button8     | button9    | button10             | button11       | deductionType           | deductionAmount | button12       | button13      | button14 |
+    |Tax  | edit-button       | John      | Doe     | 1234 Main St  | Tampa| F        | 33647      | 01/01/1990         | 123-45-6789 | PISaveButton   | nextButton   | w2AddButton     | w2EditButton       | FL    | Publix   | 4000 | 15000       | 15000     | 5000       | 1000           | w2SaveButton         | nextButton     | 10                  | 5                     | 10                |  0               |    5             | OISaveButton   | nextButton | deductAddButton   | deductEditButton | H              | 1000                 | deductSaveButton          | nextButton | reviewSubmitButton |
     
 
   Scenario Outline: Successfully delete tax estimation form
@@ -44,4 +44,4 @@ Feature: update tax estimation form
 
      Examples:
     |page        | button |
-    |PGNAME_TAX  | mainDeleteButton |
+    |Tax  | delete-button |

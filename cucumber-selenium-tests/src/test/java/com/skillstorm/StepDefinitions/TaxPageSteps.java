@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.WebDriver;
 
+import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.TaxPage;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;;
@@ -24,33 +25,37 @@ public class TaxPageSteps {
     
     @Before
 public void before(){
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments();
-    driver = new ChromeDriver(options);
-    this.driver = new ChromeDriver(options);
+    driver = WebDriverSingleton.getDriver();
+    // ChromeOptions options = new ChromeOptions();
+    // options.addArguments();
+    // driver = new ChromeDriver(options);
+    // this.driver = new ChromeDriver(options);
     this.taxPage = new TaxPage(driver);
 }
 
 @After
-    public void after() {
-        if(driver != null) {
-            this.driver.quit();
-        }
-    }
-
-
-
-    @Given("I am on the {string} page")
-public void i_am_on_the_tax_page(String page) {
-    taxPage.getMain();
-    taxPage.login();
-    taxPage.NavigateToTaxPage();
-    System.out.print(driver.getCurrentUrl());
+public void tearDown() {
+    WebDriverSingleton.quitDriver();
 }
-@When("I click the {string} button")
-public void i_click_the_main_button_button(String button) {
-    taxPage.clickDeleteOrEdit(button);
-}
+    // public void after() {
+    //     if(driver != null) {
+    //         this.driver.quit();
+    //     }
+    // }
+
+
+
+//     @Given("I am on the {string} page")
+// public void i_am_on_the_tax_page(String page) {
+//     taxPage.getMain();
+//     taxPage.login();
+//     taxPage.NavigateToTaxPage();
+//     System.out.print(driver.getCurrentUrl());
+// }
+// @When("I click the {string} button")
+// public void i_click_the_main_button_button(String button) {
+//     taxPage.clickDeleteOrEdit(button);
+// }
 @Then("I should see the tax estimation form deleted")
 public void i_should_see_the_tax_estimation_form_deleted() {
     assertFalse(taxPage.checkIfDeleteWorked());
