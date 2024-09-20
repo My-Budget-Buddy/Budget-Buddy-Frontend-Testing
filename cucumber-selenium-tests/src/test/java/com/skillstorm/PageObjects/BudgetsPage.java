@@ -13,6 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.Navbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
@@ -103,7 +104,6 @@ public class BudgetsPage extends Page {
     @FindBy(id = "Spending-Budget-Div")
     private WebElement spendingBudgetDiv;
 
-    @FindBy(css = "div.nav-container.bg-\\[\\#005ea2\\].px-6.h-screen.min-w-64.max-w-min-w-64.flex.flex-col.pt-6")
     private Navbar navbar;
 
     // Edit and Delete Budget Modal Elements
@@ -148,13 +148,14 @@ public class BudgetsPage extends Page {
         elementMap.put("totalBudgetAmountInput", totalBudgetAmountInput);
         elementMap.put("submitSpendingBudgetButton", submitSpendingBudgetButton);
         elementMap.put("spendingBudgetDiv", spendingBudgetDiv);
+        navbar = new DashboardNavbar(driver);
     }
 
     @Override
     public List<Component> getChildComponents() {
         ArrayList<Component> components = new ArrayList<Component>();
         components.add(navbar);
-        return new ArrayList<Component>(Arrays.asList(navbar));
+        return components;
     }
 
     @Override
@@ -165,8 +166,7 @@ public class BudgetsPage extends Page {
 
     @Override
     public List<WebElement> getWebElements() {
-        List<WebElement> webElements = Arrays.asList(summaryComponentDiv, addNewBudgetButton,
-                budgetsTable, savingsBucketTable);
+        List<WebElement> webElements = new ArrayList<>(elementMap.values());
 
         System.out.println("Web elements: " + webElements);
 
@@ -235,6 +235,7 @@ public class BudgetsPage extends Page {
                 }
             }
         }
+        throw new IllegalArgumentException("No dialog found with the specified inputs.");
     }
 
     public void setDeleteButtonForGroceriesBudget() {
