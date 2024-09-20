@@ -48,7 +48,7 @@ public class Navigator {
     public static final String URL_TAX= "";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
-    public static final String URL_ERROR= "http://localhost:5173/error";
+    public static final String URL_ERROR= URL + "/error";
 //#endregion
 
     Map<String, String> pageUrlMap = new HashMap<>();
