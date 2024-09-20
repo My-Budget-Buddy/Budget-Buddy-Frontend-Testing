@@ -1,9 +1,21 @@
 package com.skillstorm.Utilities;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.skillstorm.PageObjects.LoginPage;
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
+import com.skillstorm.Utilities.UserData.User;
+import com.skillstorm.Utilities.UserData.UserType;
+
 
 public class Navigator {
 //#region Static fields
@@ -22,16 +34,16 @@ public class Navigator {
     public static final String PGNAME_TAXRESULTS= "TaxResults";
     public static final String PGNAME_ERROR= "Error";
 
-    public static final String URL = "";
-    public static final String URL_LANDING= "";
-    public static final String URL_LOGIN= "http://localhost:5173/login";
-    public static final String URL_SIGNUP= "";
-    public static final String URL_DASHBOARD= "";
+    public static final String URL = "http://localhost:5173";
+    public static final String URL_LANDING= URL;
+    public static final String URL_LOGIN= URL + "/login";
+    public static final String URL_SIGNUP= URL + "/register";
+    public static final String URL_DASHBOARD= URL + "/dashboard";
     public static final String URL_ACCOUNTS= "";
     public static final String URL_BUDGET= "";
     public static final String URL_SPENDING= "http://localhost:5173/dashboard/spending";
     public static final String URL_SPENDINGMONTH= "http://localhost:5173/dashboard/spending/May";
-    public static final String URL_TRANSACTIONS= "";
+    public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
     public static final String URL_TAX= "";
     public static final String URL_TAXEDITVIEW= "";
@@ -41,9 +53,11 @@ public class Navigator {
 
     Map<String, String> pageUrlMap = new HashMap<>();
     private WebDriver driver;
+    private WebDriverWait wait;
 
     public Navigator(WebDriver driver){
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         pageUrlMap.put(PGNAME_ACCOUNTS, URL_ACCOUNTS);
         pageUrlMap.put(PGNAME_LOGIN, URL_LOGIN);
         pageUrlMap.put(PGNAME_LANDING, URL_LANDING);
@@ -166,18 +180,14 @@ public class Navigator {
         throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
     }
 
-    private void navigateToLogin() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.driver.get(URL_LOGIN);
+    private void navigateToLogin() {       
+        driver.get(URL_LOGIN);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingNavbar.BTN_LANDING_ID)));
     }
 
     private void navigateToLanding() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToLanding'");
+        driver.get(URL_LANDING);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingNavbar.BTN_LANDING_ID)));;
     }
 
     private void navigateToError() {
@@ -186,8 +196,19 @@ public class Navigator {
     }
 
     private void navigateToDashboard() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToDashboard'");
+        try {
+            driver.get(URL_DASHBOARD);
+            wait.until(ExpectedConditions.urlMatches(URL_DASHBOARD));
+        } catch (TimeoutException e) {
+            //load user
+            navigateToLogin();
+            User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login(user);
+        }
+        
+        driver.get(URL_DASHBOARD);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardNavbar.BTN_DASHBOARD_ID)));
     }
 
     private void navigateToBudget() {
