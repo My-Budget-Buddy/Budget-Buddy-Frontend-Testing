@@ -1,12 +1,18 @@
 package com.skillstorm.StepDefinitions;
 
 import java.time.Duration;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.AccountsPage;
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
@@ -60,31 +66,35 @@ public class SDAccounts {
      *     GIVEN STEPS
      * *********************************************************************/ 
 
-
-    @Given("I have multiple {string}")
-    public void iHaveMultipleObjects(String objects) {
-        // TODO: Implement this step
-    }
-
-    
-    @Given("my net cash bar is green")
-    public void myNetCashBarIsGreen() {
-        // TODO: Implement this step
-    }
+    /**
+     * NOTE: This method is implemented in SDDashboard.java
+     */
+    // @Given("I have multiple {string}")
+    // public void iHaveMultipleObjects(String objects) {
+    // }
     
     /**********************************************************************
      *     WHEN STEPS
      * *********************************************************************/
 
+ 
+    @When("I click on the {string} option on Accounts")
+    public void iClickOnTheOptionOnAccounts (String accordianBtnName) {
+        //Load Dashboard page (check to make sure on correct page)
+        wait.until(ExpectedConditions.urlMatches(Navigator.URL_ACCOUNTS));
+        page = new AccountsPage(driver);
 
-    @When("I click on the Accounts {string} option")
-    public void iClickOnOption(String option) {
-        // TODO: Implement this step
+        //check to make sure the accordian table is currently not displayed
+        String listName = page.getListName(accordianBtnName);
+        Assert.assertTrue(listName != null);
+        Assert.assertFalse(page.getWebElement(listName).isDisplayed());
+
+        //click on the appropriate object
+        page.clickButton(accordianBtnName);
     }
 
-    @When("I click the {string} button on Accounts page") 
-    public void iClickTheButtonOnAccountsPage(String btnName) {
-        // TODO: Implement this step
+    @When("I click the {string} button on Accounts")
+    public void iClickTheButtonOnAccounts (String accordianBtnName) {
     }
 
     @When("I attempt to delete a {string}")
@@ -94,7 +104,17 @@ public class SDAccounts {
 
     @When("my debt exceeds my Assets")
     public void myDebtExceedsMyAssets() {
-        // TODO: Implement this step
+        page = new AccountsPage(driver);
+
+        //Get the net cash value
+        double netCash = page.getNetCash();
+        //Add and credit account with more debt than than the net cash value
+        String accountType = "Credit Card";
+        String institutionName = "Test Bank";
+        page.addAccount(accountType, institutionName, 123456789, netCash*1.5);
+        
+        //Check to make sure credit account is added
+        //Assert.assertTrue(page.checkForCreditCard("Test Credit Card") != null);
     }
 
     @And("I enter valid {string} information")
@@ -123,12 +143,21 @@ public class SDAccounts {
 
     @Then("my net cash bar turns red")
     public void myNetCashBarTurnsRed() {
-        // TODO: Implement this step
+        page = new AccountsPage(driver);
+
+        //Check if the net cash is negative
+        Assert.assertTrue(page.getNetCash() < 0.0);
+        //Check if the net cash bar is red
+        Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_RED);
     }
 
-    @Then("I can see the Accounts {string}")
-    public void iCanSeeTheAccounts(String listName) {
-        // TODO: Implement this step
+
+    @Then("I can see the {string} on Accounts")
+    public void iCanSeeTheListOnAccounts(String listName) {
+        page = new AccountsPage(driver);
+        wait.until(ExpectedConditions.visibilityOf(
+            page.getWebElement(listName)
+        ));
     }
 
     /**********************************************************************
@@ -137,5 +166,15 @@ public class SDAccounts {
     @And("I have a {string} I want to delete")
     public void iHaveAObjectIWantToDelete(String accountType) {
         // TODO: Implement this step
+    }
+
+    @And("my net cash bar is green")
+    public void myNetCashBarIsGreen() {
+        page = new AccountsPage(driver);
+
+        //Check if the net cash is positive
+        Assert.assertTrue(page.getNetCash() > 0.0);
+        //Check if the net cash bar is green
+        Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_GREEN);
     }
 }

@@ -1,18 +1,26 @@
 package com.skillstorm.PageObjects;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.PageObjects.Components.Form;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
+
 
 public class AccountsPage extends Page {
 //#region Static fields
@@ -29,14 +37,16 @@ public class AccountsPage extends Page {
     public static final String NAME_INVESTMENTS_TABLE = "Investments List";
     public static final String NAME_BTN_ADD_ACCOUNT = "Add Account";
     public static final String NAME_BTN_GET_REPORT = "Get Report";
+    public static final String NAME_NETCASH_BAR = "Net Cash Bar";
+    
 
     // Button IDs
     private final String BTN_ADD_ACCOUNT_LOCATOR = "button[aria-controls='account-modal']";
     private final String BTN_GET_REPORT_LOCATOR = "button[aria-controls='credit-score-modal'']";
-    private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_checking']";
+    private final String ACCORDION_CHECKING_LOCATOR = "button[data-testid='accordionButton_Checking']";
     private final String ACCORDION_SAVINGS_LOCATOR = "button[data-testid='accordionButton_savings']";
-    private final String ACCORDION_CREDIT_CARDS_LOCATOR = "button[data-testid='accordionButton_credit']";
-    private final String ACCORDION_INVESTMENTS_LOCATOR = "button[data-testid='accordionButton_investment']";
+    private final String ACCORDION_CREDIT_CARDS_LOCATOR = "button[data-testid='accordionButton_credit-cards']";
+    private final String ACCORDION_INVESTMENTS_LOCATOR = "button[data-testid='accordionButton_investments']";
 
     // Table IDs
     private final String ACCORDION_LIST_CHECKING_ID = "Checking";
@@ -44,7 +54,28 @@ public class AccountsPage extends Page {
     private final String ACCORDION_LIST_CREDIT_CARDS_ID = "credit-cards";
     private final String ACCORDION_LIST_INVESTMENTS_TABLE_ID = "investments";
 
+    // Form IDs
+    private final String FORM_ADD_ACCOUNT_ID = "form-add-account"; 
+    private final String FORM_INSTITUTION_NAME_ID = "account-name";
+    private final String FORM_ACCOUNT_TYPE_ID = "account-type";
+    private final String FORM_ACCOUNT_NUMBER_ID = "account-num";
+    private final String FORM_ROUTING_NUMBER_ID = "routing-num";
+    private final String FORM_BALANCE_ID = "account-balance";
+    private final String FORM_SUMBIT_BTN_ID = "submit-add-account";
+
     // Other WebElement IDs
+    public static final String NETCASH_BAR_ID = "netCash-gauge";
+
+    //Element Attributes
+    public static final String NETCASH_BAR_GREEN = "rgb(82, 178, 2)";
+    public static final String NETCASH_BAR_RED = "";
+    private final List<String> ACCOUNT_TYPE_OPTIONS = Arrays.asList(
+        "- Select -",
+         "Checking",
+         "Savings", 
+         "Credit Card", 
+         "Investment"
+    );
 
 //#END Static Fields
 
@@ -85,7 +116,9 @@ public class AccountsPage extends Page {
     private WebElement tableInvestments;
 
 
-    //Web Elements - Charts
+    //Web Elements - Other
+    @FindBy(id = NETCASH_BAR_ID)
+    private WebElement netCashBar;
 
     //Child Components
     DashboardNavbar navbar;
@@ -113,14 +146,94 @@ public class AccountsPage extends Page {
         nameElementMap.put(NAME_INVESTMENTS_TABLE, tableInvestments);
         nameElementMap.put(NAME_BTN_ADD_ACCOUNT, btnAddAccount);
         nameElementMap.put(NAME_BTN_GET_REPORT, btnGetReport);
+        nameElementMap.put(NAME_NETCASH_BAR, netCashBar);
         
     }
 
 
     /////////// FUNCTIONS /////////////////////
 
+    /**
+     * Retrieves the list name associated with its accordion header name.
+     * @param btnAccordionName - name of the button to that displays the accordian list.
+     * @return - name of the accordian list associated with the button.
+     */
+    public String getListName(String btnAccordionName) {
+        switch(btnAccordionName) {
+            case NAME_ACCORDION_CHECKING_BTN:
+                return NAME_CHECKING_TABLE;
+            case NAME_ACCORDION_SAVINGS_BTN:
+                return NAME_SAVINGS_TABLE;
+            case NAME_ACCORDION_CREDIT_CARDS_BTN:
+                return NAME_CREDIT_CARDS_TABLE;
+            case NAME_ACCORDION_INVESTMENTS_BTN:
+                return NAME_INVESTMENTS_TABLE;
+            default:
+                return null;
+        }
+    }
+
+    public String getNetCashBarColor() {
+        //Grab the container surrounding the visual element of the net cash bar
+        WebElement netCashBar_container = netCashBar.findElements(By.xpath("./child::*")).get(0);
+
+        //Inside the container is the following elements: title, desc, path, path, g
+        List<WebElement> components = netCashBar_container.findElements(By.xpath("./child::*"));
+        //The Second path element is the one that contains the part of the gauge that has color
+
+        try {
+            //Try to find that color
+            WebElement barWithColor = components.get(3);
+            if (barWithColor.getTagName().equals("path")) {
+                return barWithColor.getCssValue("fill");
+            } else { return "Color Not Found"; }
+        } catch (Exception e) {
+            //If the color is not found, return null
+            return "Something Went Wrong Finding Color: " + e.getMessage();
+        }
+    }
+
+    public Double getNetCash () {
+        //Get the title of the current spending chart
+        String netCashText = netCashBar.getText();
+        //Get the number from the Net Cash Element and remove all the commas, keeping the decimal
+        netCashText = netCashText.substring(netCashText.lastIndexOf("$") + 1).replaceAll(",","").trim();
+        return Double.parseDouble(netCashText);
+    }
+
+    public void addAccount(String accountType, String institutionName, int accountNumber, double balance) {
+        //Click the Add Account Button
+        btnAddAccount.click();
+
+        //Wait for the modal to appear
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(FORM_ADD_ACCOUNT_ID)));
+        
+        // Load in the form
+        WebElement form = driver.findElement(By.id(FORM_ADD_ACCOUNT_ID));
+        
+        //Set the input fields
+        Select accountTypeDropdown = new Select(form.findElement(By.id(FORM_ACCOUNT_TYPE_ID)));
+        WebElement inputInstitutionName = form.findElement(By.id(FORM_INSTITUTION_NAME_ID));
+        WebElement inputAccountNumber = form.findElement(By.id(FORM_ACCOUNT_NUMBER_ID));
+        WebElement inputBalance = form.findElement(By.id(FORM_BALANCE_ID));
+
+        //Fill in the input fields
+        accountTypeDropdown.selectByIndex(ACCOUNT_TYPE_OPTIONS.indexOf(accountType));
+        inputInstitutionName.sendKeys(institutionName);
+        inputAccountNumber.sendKeys(Integer.toString(accountNumber));
+        inputBalance.sendKeys(Double.toString(balance));
 
 
+        //Testing - wait for 10 seconds
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //Click the submit button
+        //form.findElement(By.id(FORM_SUMBIT_BTN_ID)).click();
+    }
 
     ////////////// OVERRIDES ///////////////////////
     /**
