@@ -10,6 +10,7 @@ import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.TransactionHistoryPage;
 import com.skillstorm.PageObjects.TransactionPage;
+import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -67,7 +68,7 @@ public class SDTransactionHistory {
     public void login() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
         loginPage.login(user);
     }
 

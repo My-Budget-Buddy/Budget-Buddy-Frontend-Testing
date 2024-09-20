@@ -6,8 +6,8 @@ import com.skillstorm.Utilities.UserData.UserType;
 public class Authenticator {
 //#region Static Fields
 
-    public static final String USERNAME_PERSISTENT = "persistent@email.com";
-    public static final String PASSWORD_PERSISTENT = "persistent";
+    public static final String USERNAME_PERSISTENT = "frontend.tests@gmail.com";
+    public static final String PASSWORD_PERSISTENT = "password1";
 
     public static final String USERNAME_NONPERSIST = "nonpersistent@email.com";
     public static final String PASSWORD_NONPERSIST = "nonpersistent";
