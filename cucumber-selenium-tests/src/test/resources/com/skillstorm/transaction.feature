@@ -13,7 +13,6 @@ Feature: Features on the transactions page
     Examples:
         |name|account|amount|category|
         |Skillstorm| Bank of Skillstorm - Savings| 10087.99 |Income|
-        |Crunchyroll| Heritage Bank | 10.99 |Entertainment|
 
 #-----------------------------READ---------------------------#
     
@@ -27,10 +26,10 @@ Feature: Features on the transactions page
     Scenario Outline:
         Given I login
         Given I am on the Transactions page
-        When I click the "editBtn" button
+        When I click the edit icon
         And I update the "<name>", "<account>", "<amount>", and "<category>"
         And I click the "editTransactionBtn" button
-        #Then I can see the updated transaction in my list
+        Then I can see the updated transaction in my list
     Examples:
         |name|account|amount|category|
         |Bojangles| Keystone Bank | 15.99 |Dining|

@@ -53,7 +53,7 @@ Feature: Features on the transaction history page
         When I click the edit button
         And I update the "<account>", "<amount>", and "<category>" 
         And I click the "editTransactionBtn" button
-        Then I can see the updated transaction in my list
+        Then I can see the updated transaction in my past history list
     Examples:
         |account|amount|category|
         |Keystone Bank | 3107.42 |Income|

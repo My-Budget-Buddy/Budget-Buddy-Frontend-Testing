@@ -1,7 +1,10 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -21,24 +24,8 @@ import com.skillstorm.PageObjects.Interfaces.Component;
 public class TransactionHistoryPage  extends Page{
     WebDriver driver = WebDriverSingleton.getDriver();
 
-    //static final strings for IDs
-    private static final String accountDropdownId = "create-transaction-account";
 
-    private static final String amountFieldId = "create-transaction-amount";
 
-    private static final String categoryDropdownId = "create-transaction-category";
-
-    private static final String editAccountFieldId = "transaction-account";
-
-    private static final String editAmountFieldId = "transaction-amount";
-
-    private static final String editCategoryFieldId = "transaction-category";
-
-    private static final String transactionDetailedInfoHeadingId = "transactionDetailedInfoHeading";
-
-    private static final String summaryDivId = "summaryDiv";
-
-    private static final String deleteBtn = "deleteBtn";
 
     
 
@@ -63,6 +50,15 @@ public class TransactionHistoryPage  extends Page{
     @FindBy(name = "vendorName")
     private WebElement vendorNameField;
 
+    @FindBy(id = "create-transaction-account")
+    private WebElement accountDropdown;
+
+    @FindBy(id = "create-transaction-amount")
+    private WebElement amountField;
+
+    @FindBy(id = "create-transaction-category")
+    private WebElement categoryDropdown;
+
     @FindBy(id = "addTransactionBtn")
     private WebElement submitBtn;
 
@@ -83,12 +79,23 @@ public class TransactionHistoryPage  extends Page{
     @FindBy(id = "editBtn")
     private WebElement editBtn;
 
+    @FindBy(id = "transaction-account")
+    private WebElement editAccountField;
+
+    @FindBy(id = "transaction-amount")
+    private WebElement editAmountField;
+
+    @FindBy(id = "transaction-category")
+    private WebElement editCategoryField;
+
     @FindBy(id = "editTransactionBtn")
     private WebElement editSubmitBtn;
 
     @FindBy(id = "transaction-name")
     private WebElement editVendorNameField;
 
+    @FindBy(id = "transactionDetailedInfoHeading")
+    private WebElement transactionInfoHeading;
 
     @FindBy(id = "editTransactionModal")
     private WebElement triggerEditTransactionModal;
@@ -104,6 +111,9 @@ public class TransactionHistoryPage  extends Page{
 
 
     // Bar chart in summary section
+    @FindBy(id = "summaryDiv")
+    private WebElement summaryDiv;
+
     @FindBy(xpath = "//*[@id='summaryDiv']/div")
     private WebElement barChart;
 
@@ -119,8 +129,14 @@ public class TransactionHistoryPage  extends Page{
     @FindBy(xpath = "//*[@id='summaryDiv']/span[3]")
     private WebElement sum;
 
+    @FindBy(id = "deleteBtn")
+    private WebElement deleteBtn;
+
 
     private int transactionHistoryTableBeforeDeletion;
+    
+    //child component
+    DashboardNavbar navbar;
 
     // ===================== Constructor =====================
 
@@ -172,23 +188,13 @@ public class TransactionHistoryPage  extends Page{
 
 
     /**
-     * Click the "Transactions" tab.
-     */
-    public void clickTab() {
-        pause(1000);
-        DashboardNavbar navbar = new DashboardNavbar(driver);
-        navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
-        pause(500);
-    }
-
-    /**
      * Confirm the detailed transaction info page title.
      * 
      * @return the page title
      */
     public String confirmDetailedInfoTitle() {
         pause(500);
-        return getWebElement(transactionDetailedInfoHeadingId).getText();
+        return transactionInfoHeading.getText();
     }
 
     /**
@@ -212,7 +218,7 @@ public class TransactionHistoryPage  extends Page{
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
             pause(500);
-            clickButton(accountDropdownId);
+            waitForElement(accountDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
         }
@@ -227,7 +233,7 @@ public class TransactionHistoryPage  extends Page{
      */
     public String setAmount(String amount) {
         pause(500);
-        WebElement createAmountField = waitForElement(getWebElement(amountFieldId), 10);
+        WebElement createAmountField = waitForElement(amountField, 10);
         createAmountField.clear();
         createAmountField.sendKeys(amount);
         return amount;
@@ -242,7 +248,7 @@ public class TransactionHistoryPage  extends Page{
     public String setCategory(String category) {
         if (category != null && !category.isEmpty()) {
             pause(500);
-            clickButton(categoryDropdownId);
+            waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
             pause(500);
             waitForElement(option, 10).click();
@@ -275,14 +281,14 @@ public class TransactionHistoryPage  extends Page{
      * @return true if both are visible, false otherwise
      */
     public Boolean bothTableAndGraphAreVisible() {
-        return transactionHistoryTable.isDisplayed() && getWebElement(summaryDivId).isDisplayed();
+        return transactionHistoryTable.isDisplayed() && summaryDiv.isDisplayed();
     }
 
     // ===================== Update Transaction Methods =====================
 
     public void clickEditBtn() {
         pause(1500);
-        waitForElement(getWebElement("editBtn"), 10).click();
+        waitForElement(editBtn, 10).click();
     }
 
     /**
@@ -295,7 +301,7 @@ public class TransactionHistoryPage  extends Page{
         //waitForElement(editAccountField, 10).clear();
         if (account != null && !account.isEmpty()) {
             pause(500);
-            clickButton(editAccountFieldId);
+            waitForElement(editAccountField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
         }
@@ -304,9 +310,9 @@ public class TransactionHistoryPage  extends Page{
 
     public String updateAmount(String amount) {
         pause(500);
-        WebElement editAmountField = waitForElement(getWebElement(editAmountFieldId), 10);
-        editAmountField.clear();
-        editAmountField.sendKeys(amount);
+        WebElement editAmountDropdown = waitForElement(editAmountField, 10);
+        editAmountDropdown.clear();
+        editAmountDropdown.sendKeys(amount);
         return amount;
     }
 
@@ -320,7 +326,7 @@ public class TransactionHistoryPage  extends Page{
        // waitForElement(editCategoryField, 10).clear();
         if (category != null && !category.isEmpty()) {
             pause(500);
-            clickButton(editCategoryFieldId);
+            waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
         }
@@ -347,7 +353,7 @@ public class TransactionHistoryPage  extends Page{
     public void clickTrashIcon() {
         pause(500);
         transactionHistoryTableBeforeDeletion = transactionHistoryTable.findElements(By.tagName("tr")).size();
-        waitForElement(getWebElement(deleteBtn), 10).click();
+        waitForElement(deleteBtn, 10).click();
     }
 
     /**
@@ -375,39 +381,54 @@ public class TransactionHistoryPage  extends Page{
 
     @Override
     public List<Component> getChildComponents() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+        return Arrays.asList(navbar);
     }
 
     @Override
     public Component getChildComponent(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+        switch (name) {
+            case "navbar":
+                return navbar;
+            default:
+                return null;
+        }
     }
 
     @Override
     public List<WebElement> getWebElements() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+        ArrayList<WebElement> webElements = new ArrayList<WebElement>();
+        
+        for (Component component : getChildComponents()) {
+            webElements.addAll(component.getWebElements());
+        }
+
+        return webElements;
     }
 
+
     @Override
-    public WebElement getWebElement(String id) {
-        return driver.findElement(By.id(id));
+    public WebElement getWebElement(String name) {
+        for (Component component : getChildComponents()) {
+            WebElement webElementlement = component.getWebElement(name);
+            if (webElementlement != null) {
+                return webElementlement;
+            }
+        }
+        return null;
     }
 
     @Override
     public List<WebElement> getButtons() {
-        return driver.findElements(By.tagName("select"));
+        return driver.findElements(By.tagName("button"));
     }
 
     @Override
     public void clickButton(String name) {
-        for (WebElement selectElement : getButtons()) {
-            if (selectElement.getText().equalsIgnoreCase(name)) {
-                selectElement.click();
-                break;
-            }
+        WebElement button = getWebElement(name);
+        if(button != null) {
+            button.click();
+        } else {
+            throw new NoSuchElementException("No button found with name: " + name);
         }
     }
 

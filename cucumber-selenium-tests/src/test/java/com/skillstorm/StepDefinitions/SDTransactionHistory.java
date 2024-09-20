@@ -9,6 +9,7 @@ import org.testng.Assert;
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.TransactionHistoryPage;
+import com.skillstorm.PageObjects.TransactionPage;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -25,6 +26,7 @@ public class SDTransactionHistory {
     WebDriverWait wait;
     Navigator navigator;
     private TransactionHistoryPage transactionHistory;
+    private TransactionPage transactionPage;
     private String[] transactionHistoryContent;
 
     /**
@@ -36,6 +38,7 @@ public class SDTransactionHistory {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
         transactionHistory = new TransactionHistoryPage(driver);
+        transactionPage = new TransactionPage(driver);
         transactionHistoryContent = new String[3]; // To store transaction details
     }
 
@@ -75,7 +78,7 @@ public class SDTransactionHistory {
      */
     @Given("I start on the Transactions page")
     public void iStartOnTheTransactionPage() {
-        transactionHistory.clickTab();
+        transactionPage.clickTab();
     }
 
     /**
@@ -148,7 +151,7 @@ public class SDTransactionHistory {
     /**
      * Verify that the updated transaction is reflected in the list of past transactions.
      */
-    @Then("I can see the updated transaction in my list")
+    @Then("I can see the updated transaction in my past history list")
     public void iCanSeeTheUpdatedTransactionInMyList() {
         String updatedTransaction = transactionHistory.confirmUpdation();
         Assert.assertTrue(updatedTransaction.contains("Income"), "Income not found in the updated transaction!");

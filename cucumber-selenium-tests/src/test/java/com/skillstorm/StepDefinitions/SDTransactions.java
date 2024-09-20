@@ -24,7 +24,7 @@ public class SDTransactions {
     WebDriverWait wait;
     Navigator navigator;
     private TransactionPage transactions;
-    private String[] transactionContent;
+    private String selectedCategory;
 
     /**
      * Set up the ChromeDriver and initialize TransactionPage.
@@ -37,7 +37,7 @@ public class SDTransactions {
 
         this.transactions = new TransactionPage(driver);
 
-        transactionContent =  new String[4];
+
     }
 
     /**
@@ -65,7 +65,7 @@ public class SDTransactions {
     @Given("I am on the Transactions page")
     public void iAmOnTheTranactionsPage() {
         this.transactions.clickTab();
-        String expectedUrl = "http://localhost:5173/dashboard/transactions";
+        String expectedUrl = Navigator.URL_TRANSACTIONS;
         String actualUrl = this.transactions.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
     }
@@ -76,16 +76,18 @@ public class SDTransactions {
 
     @And("I fill in the {string}, {string}, {string}, and {string}")
     public void andIFillInThe(String name, String account, String amount, String category) {
-        transactionContent[0] = this.transactions.setName(name);
-        transactionContent[1] = this.transactions.setAccount(account);
-        transactionContent[2] = this.transactions.setAmount(amount);
-        transactionContent[3] = this.transactions.setCategory(category);
+        this.transactions.setName(name);
+        this.transactions.setAccount(account);
+        this.transactions.setAmount(amount);
+        this.transactions.setCategory(category);
     }
 
     @Then("I can see the new transaction in my list")
     public void iCanSeeTheNewTransactionInMyList() {
         String actualTransaction = this.transactions.verifyTransactionDetails();
-        System.out.println(actualTransaction);
+        Assert.assertTrue(actualTransaction.contains("Skillstorm"));
+        Assert.assertTrue(actualTransaction.contains("$10,087.99"));
+        Assert.assertTrue(actualTransaction.contains("Income"));
     }
 
     /**
@@ -101,12 +103,24 @@ public class SDTransactions {
      * Update Transaction Scenario Definitions
      */
 
+    @When("I click the edit icon")
+    public void iClickTheEditButton() {
+        this.transactions.clickEditBtn();
+    }
     @And("I update the {string}, {string}, {string}, and {string}")
     public void andIUpdateThe(String name, String account, String amount, String category) {
         this.transactions.updateName(name);
         this.transactions.updateAccount(account);
         this.transactions.updateAmount(amount);
         this.transactions.updateCategory(category);
+    }
+
+    @Then("I can see the updated transaction in my list")
+    public void iCanSeeTheUpdatedTransactionInMyList() {
+        String actualTransaction = this.transactions.verifyTransactionDetails();
+        Assert.assertTrue(actualTransaction.contains("Bojangles"));
+        Assert.assertTrue(actualTransaction.contains("Dining"));
+        Assert.assertTrue(actualTransaction.contains("$15.99"));
     }
 
     /**
@@ -129,11 +143,13 @@ public class SDTransactions {
 
     @And("I click a {string} to filter based on")
     public void iClickToFilterBasedOn(String category) {
+        this.selectedCategory = category;
         this.transactions.selectACategory(category);
     }
 
     @Then("only transactions with that category should be visible")
     public void onlyTransactionsWithThatCategoryShouldBeVisible() {
-        this.transactions.printOutCategoryColumn();
+        this.transactions.getCategoryColumnValues();
+        this.transactions.assertCategorySelection(this.selectedCategory);
     }
 }

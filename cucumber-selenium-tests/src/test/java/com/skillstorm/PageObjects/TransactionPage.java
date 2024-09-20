@@ -15,6 +15,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
@@ -23,10 +24,6 @@ import com.skillstorm.PageObjects.Interfaces.Component;
 public class TransactionPage extends Page{
 
     WebDriver driver = WebDriverSingleton.getDriver();
-
-    //static strings for IDs
-    private static final String editTransactionAmountFieldId = "edit-transaction-amount";
-    private static final String editTransactionNameField = "edit-transaction-vendorName";
 
     // Locators for Transaction Page Elements
     @FindBy(className = "usa-logo__text")
@@ -99,8 +96,14 @@ public class TransactionPage extends Page{
     @FindBy(id = "editTransactionBtn")
     private WebElement editSubmitBtn;
 
+    @FindBy(id = "edit-transaction-vendorName")
+    private WebElement editTransactionNameField;
+
     @FindBy(id = "edit-transaction-account")
     private WebElement editTransactionAccountField;
+
+    @FindBy(id = "edit-transaction-amount")
+    private WebElement editTransactionAmountField;
 
 
     @FindBy(id = "edit-transaction-category")
@@ -142,9 +145,10 @@ public class TransactionPage extends Page{
 
 
     public void clickTab() {
+        pause(500);
         navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
-        pause(2000);
+        pause(500);
     }
 
 
@@ -162,7 +166,7 @@ public class TransactionPage extends Page{
 
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            clickButton(account);
+            waitForElement(accountDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
@@ -171,13 +175,13 @@ public class TransactionPage extends Page{
 
     public String setAmount(String amount) {
         waitForElement(amountField, 10).clear();
-        amountField.sendKeys(amount);
+        waitForElement(amountField, 10).sendKeys(amount);
         return amount;
     }
 
     public String setCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            clickButton(category);
+            waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
@@ -185,45 +189,62 @@ public class TransactionPage extends Page{
     }
 
     public String verifyTransactionDetails() {
+        pause(1000);
         return waitForElement(transactionsTableFirstRow, 10).getText();
     }
 
     // Read Transaction Methods
     public Boolean printTransactionTable() {
-        System.out.println(waitForElement(transactionsTable, 10).getText());
+        pause(500);
         return transactionsTable.isDisplayed();
     }
 
+
     // Update Transaction Methods
 
-    public void updateName(String name) {
-        waitForElement(getWebElement(editTransactionNameField), 10).clear();
-        getWebElement(editTransactionNameField).sendKeys(name);
+    public void clickEditBtn() {
+        waitForElement(editBtn, 10).click();
     }
 
-    public void updateAccount(String account) {
+    public String updateName(String name) {
+        waitForElement(editTransactionNameField, 10).clear();
+        waitForElement(editTransactionNameField, 10).sendKeys(name);
+        return name;
+    }
+
+    public String updateAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            clickButton(account);
+            waitForElement(editTransactionAccountField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-account']/option[text()='" + account + "']"));
             option.click();
         }
+        return account;
     }
 
-    public void updateAmount(String amount) {
-        waitForElement(getWebElement(editTransactionAmountFieldId), 10).clear();
-        getWebElement(editTransactionAmountFieldId).sendKeys(amount);
+    public String updateAmount(String amount) {
+        waitForElement(editTransactionAmountField, 10).clear();
+        waitForElement(editTransactionAmountField, 10).sendKeys(amount);
+
+        return amount;
     }
 
-    public void updateCategory(String category) {
+    public String updateCategory(String category) {
         if (category != null && !category.isEmpty()) {
-            clickButton(category);
+            waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
         }
+
+        return category;
     }
+
+        
+
+
 
     // Delete Transaction Methods
     public void clickDeleteBtn() {
+        pause(2000);
         tableSizeBeforeDeletion = transactionsTable.getText().length();
         waitForElement(deleteBtn, 10).click();
     }
@@ -233,21 +254,37 @@ public class TransactionPage extends Page{
         return tableSizeBeforeDeletion > tableSizeAfterDeletion;
     }
 
+
+
     // Category Methods
 
     public void selectACategory(String category) {
         if (category != null && !category.isEmpty()) {
-            clickButton(category);
+            waitForElement(allCategoriesDropDown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='allCategoriesDropDown']/option[text()='" + category + "']"));
             option.click();
         }
     }
-    public void printOutCategoryColumn() {
+    // Method to print and return category column values
+    public List<String> getCategoryColumnValues() {
         List<WebElement> categoryColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[3]"));
+        List<String> categoryValues = new ArrayList<>();
         for (WebElement cell : categoryColumnValues) {
-            System.out.println(cell.getText());
+            categoryValues.add(cell.getText());
         }
+        return categoryValues;
     }
+
+    // Method to assert selected category matches the category in the table
+    public void assertCategorySelection(String expectedCategory) {
+        List<String> categoryValues = getCategoryColumnValues();
+        for (String value : categoryValues) {
+            Assert.assertEquals(value, expectedCategory);
+        }
+    }   
+
+
+
 
     @Override
     public List<Component> getChildComponents() {
@@ -266,65 +303,39 @@ public class TransactionPage extends Page{
 
     @Override
     public List<WebElement> getWebElements() {
-        // Map to hold element names and their respective locators
-        Map<String, String> elementLocators = new HashMap<>();
-        elementLocators.put("transactionPageTitle", "usa-logo__text");
-        elementLocators.put("clearFilterBtn", "clearFilterBtn");
-        elementLocators.put("sortByDropdown", "sortByDropdown");
-        elementLocators.put("directionDropdown", "directionDropdown");
-        elementLocators.put("addTransactionModal", "addTransactionModal");
-        elementLocators.put("vendorNameField", "vendorName");
-        elementLocators.put("accountDropdown", "accountId");
-        elementLocators.put("amountField", "amount");
-        elementLocators.put("categoryDropdown", "category");
-        elementLocators.put("submitBtn", "addTransactionBtn");
-        elementLocators.put("allCategoriesDropDown", "allCategoriesDropDown");
-        elementLocators.put("allAccountDropDown", "allAccountDropDown");
-        elementLocators.put("allAmountsDropDown", "allAmountsDropDown");
-        elementLocators.put("allDatesDropDown", "allDatesDropDown");
-        elementLocators.put("transactionsTableTitle", "listOfTransactionsTitle");
-        elementLocators.put("transactionsTable", "//*[@id=\"root\"]/div[1]/main/div/div[3]/div/table"); // adjust root if needed
-        elementLocators.put("transactionsTableFirstRow", "root"); // adjust root if needed
-        elementLocators.put("editBtn", "editBtn");
-        elementLocators.put("editSubmitBtn", "editTransactionBtn");
-        elementLocators.put("editTransactionAccountField", "edit-transaction-account");
-        elementLocators.put("editTransactionCategoryField", "edit-transaction-category");
-        elementLocators.put("deleteBtn", "deleteBtn");
-
-        // Create a list to store the WebElements
-        List<WebElement> elements = new ArrayList<>();
-
-        // Iterate through the map and find the elements by their IDs
-        for (String id : elementLocators.values()) {
-            try {
-                WebElement element = driver.findElement(By.id(id));
-                elements.add(element);
-            } catch (NoSuchElementException e) {
-                System.out.println("Element with ID " + id + " not found.");
-            }
+        ArrayList<WebElement> webElements = new ArrayList<WebElement>();
+        
+        for (Component component : getChildComponents()) {
+            webElements.addAll(component.getWebElements());
         }
 
-        return elements;
+        return webElements;
     }
 
 
     @Override
-    public WebElement getWebElement(String id) {
-        return driver.findElement(By.id(id));
+    public WebElement getWebElement(String name) {
+        for (Component component : getChildComponents()) {
+            WebElement webElementlement = component.getWebElement(name);
+            if (webElementlement != null) {
+                return webElementlement;
+            }
+        }
+        return null;
     }
 
     @Override
     public List<WebElement> getButtons() {
-        return driver.findElements(By.tagName("select"));
+        return driver.findElements(By.tagName("button"));
     }
 
     @Override
     public void clickButton(String name) {
-        for (WebElement selectElement : getButtons()) {
-            if (selectElement.getText().equalsIgnoreCase(name)) {
-                selectElement.click();
-                break;
-            }
+        WebElement button = getWebElement(name);
+        if(button != null) {
+            button.click();
+        } else {
+            throw new NoSuchElementException("No button found with name: " + name);
         }
     }
 }
