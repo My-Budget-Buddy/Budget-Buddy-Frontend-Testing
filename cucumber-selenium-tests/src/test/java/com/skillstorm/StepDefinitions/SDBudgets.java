@@ -23,7 +23,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class BudgetsSD {
+public class SDBudgets {
     WebDriver driver;
     WebDriverWait wait;
     BudgetsPage page;
@@ -36,12 +36,6 @@ public class BudgetsSD {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         page = new BudgetsPage(driver);
         navigator = new Navigator(driver);
-
-        navigator.navigateTo(Navigator.PGNAME_LOGIN);
-        LoginPage loginPage = new LoginPage(driver);
-        user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
-        loginPage.login(user);
     }
 
     @After
@@ -169,19 +163,20 @@ public class BudgetsSD {
 
     @Then("I can see the Budgets page web elements")
     public void iCanSeeThePageWebElements() {
-        // Get the list of web elements from the BudgetsPage class
-        List<WebElement> webElements = page.getWebElements();
+        WebElement summaryComponentDiv = page.getWebElement("summaryComponentDiv");
+        WebElement addNewBudgetButton = page.getWebElement("addNewBudgetButton");
+        WebElement budgetsTable = page.getWebElement("budgetsTable");
+        WebElement savingsBucketTable = page.getWebElement("savingsBucketTable");
 
-        // Check that each web element is displayed on the page
-        for (WebElement element : webElements) {
-            if (element != null) {
-                wait.until(ExpectedConditions.visibilityOf(element));
-                System.out.println("Checking if element is displayed: " + element);
-                Assert.assertTrue(element.isDisplayed(), "Web element is not visible: " + element);
-            } else {
-                System.out.println(element + " is null");
-            }
-        }
+        wait.until(ExpectedConditions.visibilityOf(summaryComponentDiv));
+        wait.until(ExpectedConditions.visibilityOf(addNewBudgetButton));
+        wait.until(ExpectedConditions.visibilityOf(budgetsTable));
+        wait.until(ExpectedConditions.visibilityOf(savingsBucketTable));
+
+        Assert.assertTrue(summaryComponentDiv.isDisplayed(), "Summary Component is not visible");
+        Assert.assertTrue(addNewBudgetButton.isDisplayed(), "Add New Budget Button is not visible");
+        Assert.assertTrue(budgetsTable.isDisplayed(), "Budgets Table is not visible");
+        Assert.assertTrue(savingsBucketTable.isDisplayed(), "Savings Bucket Table is not visible");
     }
 
     @Then("I can see a {string} budget of {string} in the budget list")

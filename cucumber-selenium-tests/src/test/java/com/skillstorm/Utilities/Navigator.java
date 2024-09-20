@@ -204,6 +204,13 @@ public class Navigator {
     }
 
     private void navigateToBudget() {
+        //Login
+        navigateToLogin();
+        LoginPage loginPage = new LoginPage(driver);
+        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+        loginPage.login(user);
+        //Navigate to Budget
         driver.get(URL_BUDGET);
     }
 
