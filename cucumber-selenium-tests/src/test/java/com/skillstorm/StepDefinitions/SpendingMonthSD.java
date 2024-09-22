@@ -44,7 +44,7 @@ public class SpendingMonthSD {
     public void iAmLoggedIn() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        User user = new User(UserType.PERSISTANT, "frontend.tests@gmail.com", "password1");
         loginPage.login(user);
     }
 
