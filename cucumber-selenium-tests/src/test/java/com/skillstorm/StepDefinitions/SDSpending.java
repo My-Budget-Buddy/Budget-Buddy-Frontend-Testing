@@ -18,7 +18,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class SpendingSD {
+public class SDSpending {
     private WebDriver driver;
     private SpendingPage spendingPage;
     private Navigator navigator;

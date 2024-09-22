@@ -19,7 +19,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class SpendingMonthSD {
+public class SDSpendingMonth {
     private WebDriver driver;
     private SpendingMonthPage spendingMonthPage;
     private SpendingPage spendingPage;
