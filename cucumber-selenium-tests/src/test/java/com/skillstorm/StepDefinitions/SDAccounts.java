@@ -106,9 +106,22 @@ public class SDAccounts {
         page.clickButton(btnName);
     }
 
-    @When("I attempt to delete a {string}")
-    public void iAttemptToDeleteA(String accountType) {
-        // TODO: Implement this step
+    @When("I attempt to delete the account")
+    public void iAttemptToDeleteA() {
+        // Load the page
+        page = new AccountsPage(driver);
+
+        // Load the account we would like to delete
+        String accountType = accountInfo.get("accountType");
+        String institutionName = accountInfo.get("institutionName");
+        String accountNumber = accountInfo.get("accountNumber");
+        String balance = accountInfo.get("balance");
+
+        // Find the Account and Attempt to delete it
+        WebElement account = page.checkForAccount( accountType, institutionName, accountNumber, balance);
+        Assert.assertTrue(account != null, "Account to delete not found");
+
+        page.deleteAccount(account);
     }
 
     @When("my debt exceeds my Assets")
@@ -122,18 +135,19 @@ public class SDAccounts {
         page.clickButton(AccountsPage.NAME_BTN_ADD_ACCOUNT);
 
         //Add and credit account with more debt than than the net cash value
-        String accountType = "Credit Card";
-        String institutionName = "Test Bank";
+        String accountType = AccountsPage.ACCOUNT_TYPE_OPTIONS.get(3); //this is Credit Card Account 
+        String institutionName = "Checking Net Cash Gauge Bank";
         String accountNumber = "123456789";
         String routingNumber = "0";
+        // create more debt than net cash
         String balance = new Double(netCash*1.5).toString();
         page.addAccount(accountType, institutionName, accountNumber, routingNumber, balance);
         
         //Save the Information of that Account for Future Steps
         saveAccountInfo(accountType, institutionName, accountNumber, routingNumber, balance);
 
-        //Check to make sure credit account is added TODO: Implement this
-        //Assert.assertTrue(page.checkForCreditCard("Test Credit Card") != null);
+        //Check to make sure credit account is added
+        Assert.assertTrue(page.checkForAccount( accountType, institutionName, accountNumber, balance) != null);
     }
 
     @And("I enter the following information: {string}, {string}, {string}, {string}, {string}")
@@ -150,38 +164,29 @@ public class SDAccounts {
     /**********************************************************************
      *    THEN STEPS
      * *********************************************************************/
-    @Then("that specific account is created")
-    public void thatSpecificAccountIsCreated() {
+    @Then("that specific account is {string}")
+    public void thatSpecificAccountIs(String status) {
+
+        Assert.assertTrue( status.equals("Created") || status.equals("Deleted") );
         // Load the page
         page = new AccountsPage(driver);
 
-        // Get the last account type that was modified and open up the accordian to display the list
-        String lastAccountTypeModified = accountInfo.get("accountType");
-        page.clickButton(lastAccountTypeModified);
-
-        // Get the list of accounts
-        WebElement accountListContainer = page.getWebElement(page.getListName(lastAccountTypeModified));
-        String listOfAccounts = accountListContainer.getText();
-
-        // Modify the account info to match the format of the list
+        // Get the account information for the last modified account
+        String accountType = accountInfo.get("accountType");
         String institutionName = accountInfo.get("institutionName");
-        
         String accountNumber = accountInfo.get("accountNumber");
-        accountNumber = accountNumber.substring(accountNumber.length()-4);
+        String balance = accountInfo.get("balance");
 
-        String balance = String.format("%,.2f", Double.parseDouble( accountInfo.get("balance") ));
 
         // Check to see if the last modified account is in the list
-        Assert.assertTrue(
-            listOfAccounts.contains(institutionName) &&
-            listOfAccounts.contains(accountNumber) &&
-            listOfAccounts.contains(balance)
-        );
-    }
-
-    @Then("that {string} is removed")
-    public void thatIsRemoved(String accountType) {
-        // TODO: Implement this step
+        if (status.equals("Created")) {
+            Assert.assertTrue( page.checkForAccount(accountType, institutionName, accountNumber, balance) != null );
+        } else if (status.equals("Deleted")) {
+            System.out.println("Checking for account: " + accountType + " " + institutionName + " " + accountNumber + " " + balance);
+            Assert.assertTrue( page.checkForAccount(accountType, institutionName, accountNumber, balance) == null );
+        } else {
+            Assert.fail("Invalid Status");
+        }
     }
 
     @Then("a pop up appears of my credit score")
@@ -218,9 +223,18 @@ public class SDAccounts {
     /**********************************************************************
      *    AND STEPS
      * *********************************************************************/
-    @And("I have a {string} I want to delete")
-    public void iHaveAObjectIWantToDelete(String accountType) {
-        // TODO: Implement this step
+    @And("I have a {string} account with the information: {string}, {string}, {string}, {string}")
+    public void iHaveAAccountIWantToDelete(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
+        // Load the page
+        page = new AccountsPage(driver);
+
+        // Add account and save the information
+        page.clickButton(AccountsPage.NAME_BTN_ADD_ACCOUNT);
+        page.addAccount(accountType, institutionName, accountNumber, routingNumber, balance);
+        saveAccountInfo(accountType, institutionName, accountNumber, routingNumber, balance);
+
+        // Check to make sure the account was added
+        Assert.assertTrue( page.checkForAccount( accountType, institutionName, accountNumber, balance) != null );
     }
 
     @And("my net cash bar is green")

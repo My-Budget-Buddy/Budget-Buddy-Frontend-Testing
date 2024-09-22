@@ -16,7 +16,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
+import com.beust.ah.A;
 import com.skillstorm.PageObjects.Components.Form;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
@@ -72,7 +74,7 @@ public class AccountsPage extends Page {
     //Element Attributes
     public static final String NETCASH_BAR_GREEN = "rgb(82, 178, 2)";
     public static final String NETCASH_BAR_RED = "rgb(178, 2, 2)";
-    private final List<String> ACCOUNT_TYPE_OPTIONS = Arrays.asList(
+    public static final List<String> ACCOUNT_TYPE_OPTIONS = Arrays.asList(
         "- Select -",
          NAME_ACCORDION_CHECKING_BTN,
          NAME_ACCORDION_SAVINGS_BTN, 
@@ -105,7 +107,7 @@ public class AccountsPage extends Page {
     @FindBy(css = BTN_GET_REPORT_LOCATOR)
     private WebElement btnGetReport;
 
-    //Web Elements - Hidden Elements
+    //Web Elements - Hidden Tables/Lists
     @FindBy(id = ACCORDION_LIST_CHECKING_ID)
     private WebElement tableChecking;
 
@@ -235,6 +237,70 @@ public class AccountsPage extends Page {
         }
         //Click the submit button
         form.findElement(By.id(FORM_SUMBIT_BTN_ID)).click();
+    }
+
+    /**
+     * Checks if a particualr account with specific information is present on the page
+     * @param accountName - Name of the account
+     * @param accountType - Type of the account
+     * @param accountNumber - Account Number
+     * @param balance - Balance of the account
+     * @return - True if the account is present, false otherwise
+     */
+    public WebElement checkForAccount( String accountType, String accountName, String accountNumber, String balance) {
+        // first check if the list is displayed, 
+        String listName = getListName(accountType);
+        Assert.assertTrue(listName != null, "Account Type not found: " + accountType);
+        
+        // and if not, open the correct accordion
+        if (!getWebElement(listName).isDisplayed()) clickButton(accountType);
+        Assert.assertTrue(getWebElement(listName).isDisplayed(), "Something went wrong displaying account list: " + listName);
+      
+        //Get the list of accounts by continuing to drill down into the children of the container until we find the correct divs
+        WebElement listContainer = getWebElement(listName);
+        while (!listContainer.getAttribute("class").contains("grid-container")) {
+            //get all the child components of the current variable
+            List<WebElement> temp = listContainer.findElements(By.xpath("./child::*"));
+            // if the container has something else in it or nothing in it, then we have a problem
+            Assert.assertTrue(temp.size() == 1, "Container has incorrect number of children: " + temp.size());
+            // otherwise, set the accountList to the first child of the current accountList
+            listContainer = listContainer.findElements(By.xpath("./child::*")).get(0);
+        }
+
+        //Get the list of all the acounts in the container ()
+        List<WebElement> accounts = listContainer.findElements(By.xpath("./child::*"));
+        
+        // Modify the account info to match the format that would be shown on the webpage
+        accountNumber = accountNumber.substring(accountNumber.length()-4);
+        balance = String.format("$" + "%,.2f", Double.parseDouble(balance));
+
+        //Check if the account is present
+        for (WebElement account : accounts) {
+            String accountText = account.getText();
+            if (
+                accountText.contains(accountName) && 
+                accountText.contains(accountNumber) && 
+                accountText.contains(balance)
+            ) { return account; }
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to delete an account from the page
+     * @param account - WebElement of the account to delete
+     */
+    public void deleteAccount(WebElement account) {
+        //Get the last element in the account, which is the container for the delete button
+        WebElement deleteButton = account.findElement(By.xpath("./child::*[last()]"))
+        // Then get the button from the container
+        .findElement(By.xpath("./child::*"));
+
+        // Make sure this the delete button
+        Assert.assertTrue(deleteButton.getTagName().equals("button"), "Delete Button not found");
+        
+        // Then Click it!!!
+        deleteButton.click();
     }
 
     ////////////// OVERRIDES ///////////////////////
