@@ -36,8 +36,7 @@ public class SDTransactions {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         navigator = new Navigator(driver);
 
-        this.transactions = new TransactionPage(driver);
-
+        transactions = new TransactionPage(driver);
 
     }
 
@@ -65,7 +64,7 @@ public class SDTransactions {
      */
     @Given("I am on the Transactions page")
     public void iAmOnTheTranactionsPage() {
-        this.transactions.clickTab();
+        transactions.clickTab();
         String expectedUrl = Navigator.URL_TRANSACTIONS;
         String actualUrl = this.transactions.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
@@ -77,10 +76,10 @@ public class SDTransactions {
 
     @And("I fill in the {string}, {string}, {string}, and {string}")
     public void andIFillInThe(String name, String account, String amount, String category) {
-        this.transactions.setName(name);
-        this.transactions.setAccount(account);
-        this.transactions.setAmount(amount);
-        this.transactions.setCategory(category);
+        transactions.setName(name);
+        transactions.setAccount(account);
+        transactions.setAmount(amount);
+        transactions.setCategory(category);
     }
 
     @Then("I can see the new transaction in my list")
@@ -96,7 +95,7 @@ public class SDTransactions {
      */
     @Then("I can see the list of all my transactions")
     public void iCanSeeTheListOfAllMyTransactions() {
-        this.transactions.printTransactionTable();
+        transactions.printTransactionTable();
         Assert.assertTrue(this.transactions.printTransactionTable());
     }
 
@@ -106,14 +105,14 @@ public class SDTransactions {
 
     @When("I click the edit icon")
     public void iClickTheEditButton() {
-        this.transactions.clickEditBtn();
+        transactions.clickEditBtn();
     }
     @And("I update the {string}, {string}, {string}, and {string}")
     public void andIUpdateThe(String name, String account, String amount, String category) {
-        this.transactions.updateName(name);
-        this.transactions.updateAccount(account);
-        this.transactions.updateAmount(amount);
-        this.transactions.updateCategory(category);
+        transactions.updateName(name);
+        transactions.updateAccount(account);
+        transactions.updateAmount(amount);
+        transactions.updateCategory(category);
     }
 
     @Then("I can see the updated transaction in my list")
@@ -129,12 +128,12 @@ public class SDTransactions {
      */
     @When("I click the Trash Icon button")
     public void iClickTheTrashIconButton() {
-        this.transactions.clickDeleteBtn();
+        transactions.clickDeleteBtn();
     }
 
     @Then("the transaction is not in the list")
     public void theTransactionIsNotInTheList() {
-        this.transactions.confirmDeletion();
+        transactions.confirmDeletion();
         Assert.assertTrue(this.transactions.confirmDeletion());
     }
 
@@ -144,13 +143,13 @@ public class SDTransactions {
 
     @And("I click a {string} to filter based on")
     public void iClickToFilterBasedOn(String category) {
-        this.selectedCategory = category;
-        this.transactions.selectACategory(category);
+        selectedCategory = category;
+        transactions.selectACategory(category);
     }
 
     @Then("only transactions with that category should be visible")
     public void onlyTransactionsWithThatCategoryShouldBeVisible() {
-        this.transactions.getCategoryColumnValues();
-        this.transactions.assertCategorySelection(this.selectedCategory);
+        transactions.getCategoryColumnValues();
+        transactions.assertCategorySelection(selectedCategory);
     }
 }

@@ -68,8 +68,6 @@ public class DashboardNavbar extends Navbar {
 
         PageFactory.initElements(driver, this);
 
-        PageFactory.initElements(driver, this);
-
         // Map web elements.
         nameElementMap.put(BTN_LANDING_NAME, btnLanding);
         nameElementMap.put(BTN_DASHBOARD_NAME, btnDashboard);

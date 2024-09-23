@@ -195,8 +195,7 @@ public class TransactionHistoryPage  extends Page{
      * @return the page title
      */
     public String confirmDetailedInfoTitle() {
-        pause(500);
-        return transactionInfoHeading.getText();
+        return waitForElement(transactionInfoHeading, 1).getText();
     }
 
     /**
@@ -205,8 +204,7 @@ public class TransactionHistoryPage  extends Page{
      * @return true if the table is displayed, false otherwise
      */
     public Boolean displayTransactionHistoryTable() {
-        pause(500);
-        return transactionHistoryTable.isDisplayed();
+        return waitForElement(transactionHistoryTable,1).isDisplayed();
     }
 
     // ===================== Create Transaction Methods =====================
@@ -248,11 +246,10 @@ public class TransactionHistoryPage  extends Page{
      * @return the selected category
      */
     public String setCategory(String category) {
+        pause(500);
         if (category != null && !category.isEmpty()) {
-            pause(500);
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
-            pause(500);
             waitForElement(option, 10).click();
         }
         return category;
@@ -290,7 +287,7 @@ public class TransactionHistoryPage  extends Page{
 
     public void clickEditBtn() {
         pause(1500);
-        waitForElement(editBtn, 10).click();
+        waitForElement(editBtn, 30).click();
     }
 
     /**
@@ -300,9 +297,8 @@ public class TransactionHistoryPage  extends Page{
      * @return the updated account
      */
     public String updateAccount(String account) {
-        //waitForElement(editAccountField, 10).clear();
+        pause(500);
         if (account != null && !account.isEmpty()) {
-            pause(500);
             waitForElement(editAccountField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
@@ -325,14 +321,12 @@ public class TransactionHistoryPage  extends Page{
      * @return the updated category
      */
     public String updateCategory(String category) {
-       // waitForElement(editCategoryField, 10).clear();
+        pause(500);
         if (category != null && !category.isEmpty()) {
-            pause(500);
             waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
         }
-        pause(500);
         return category;
     }
 
@@ -354,7 +348,7 @@ public class TransactionHistoryPage  extends Page{
      */
     public void clickTrashIcon() {
         pause(500);
-        transactionHistoryTableBeforeDeletion = transactionHistoryTable.findElements(By.tagName("tr")).size();
+        transactionHistoryTableBeforeDeletion = waitForElement(transactionHistoryTable, 10).findElements(By.tagName("tr")).size();
         waitForElement(deleteBtn, 10).click();
     }
 
@@ -364,8 +358,7 @@ public class TransactionHistoryPage  extends Page{
      * @return true if a row has been deleted, false otherwise
      */
     public Boolean transactionIsNotInList() {
-        pause(500);
-        int transactionHistoryTableAfterDeletion = transactionHistoryTable.findElements(By.tagName("tr")).size();
+        int transactionHistoryTableAfterDeletion = waitForElement(transactionHistoryTable, 10).findElements(By.tagName("tr")).size();
         return transactionHistoryTableAfterDeletion < transactionHistoryTableBeforeDeletion;
     }
 
@@ -377,8 +370,11 @@ public class TransactionHistoryPage  extends Page{
      * @return true if all elements of the graphical summary are displayed, false otherwise
      */
     public Boolean viewGraphicalSummary() {
-        pause(500);
-        return barChart.isDisplayed() && spent.isDisplayed() && earned.isDisplayed() && sum.isDisplayed();
+        Boolean barChartDisplayed = waitForElement(barChart, 10).isDisplayed();
+        Boolean spentDisplayed = waitForElement(spent, 10).isDisplayed();
+        Boolean earnedDisplayed = waitForElement(earned, 10).isDisplayed();
+        Boolean sumDisplayed = waitForElement(sum, 10).isDisplayed();
+        return barChartDisplayed && spentDisplayed && earnedDisplayed && sumDisplayed;
     }
 
     @Override

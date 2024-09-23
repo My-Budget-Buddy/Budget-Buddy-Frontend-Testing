@@ -188,13 +188,13 @@ public class TransactionPage extends Page{
 
     public String verifyTransactionDetails() {
         pause(1000);
-        return waitForElement(transactionsTableFirstRow, 10).getText();
+        return waitForElement(transactionsTableFirstRow, 30).getText();
     }
 
     // Read Transaction Methods
     public Boolean printTransactionTable() {
         pause(500);
-        return transactionsTable.isDisplayed();
+        return waitForElement(transactionsTable, 10).isDisplayed();
     }
 
 
