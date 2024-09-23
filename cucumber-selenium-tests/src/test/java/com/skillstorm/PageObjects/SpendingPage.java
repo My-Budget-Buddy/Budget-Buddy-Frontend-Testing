@@ -55,11 +55,6 @@ public class SpendingPage extends Page {
 
     public void clickTab() {
         waitForElement(spendingsTab, 10).click();
-        try {
-            Thread.sleep(500);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -132,13 +127,6 @@ public class SpendingPage extends Page {
         }
         else {
             throw new IllegalArgumentException("Button '" + name + "' does not exist.");
-        }
-
-        // give time for page to load
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -60,11 +60,6 @@ public class SpendingMonthPage extends Page {
 
     public void clickTab() {
         waitForElement(spendingsTab, 10).click();
-        try {
-            Thread.sleep(500);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -138,27 +133,11 @@ public class SpendingMonthPage extends Page {
         else {
             throw new IllegalArgumentException("Button '" + name + "' does not exist.");
         }
-
-        // give time for page to load
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void selectMonth(String monthSelection) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        waitForElement(selectMonth, 10);
         Select select = new Select(selectMonth);
         select.selectByVisibleText(monthSelection);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
