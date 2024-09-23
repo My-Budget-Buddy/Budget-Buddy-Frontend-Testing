@@ -43,7 +43,9 @@ public class WebDriverSingleton {
     private static WebDriver getChromeDriver(){
         ChromeOptions options = new ChromeOptions();
         //Options are used to allow running ChromeDrivers in Jenkins pipeline
-        options.addArguments("-headless");
+        String sysHeadless = System.getProperty("headless", "false");
+        if(Boolean.parseBoolean(sysHeadless)) options.addArguments("-headless");
+        
         options.addArguments("-no-sandbox");
         options.addArguments("-disable-dev-shm-usage");
         if (driver == null) {
