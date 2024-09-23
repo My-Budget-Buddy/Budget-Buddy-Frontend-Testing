@@ -34,7 +34,7 @@ public class Navigator {
     public static final String PGNAME_TAXRESULTS= "TaxResults";
     public static final String PGNAME_ERROR= "Error";
 
-    public static final String URL = "http://api.skillstorm-congo.com";
+    public static final String URL = "http://localhost:5173";
     public static final String URL_LANDING= URL;
     public static final String URL_LOGIN= URL + "/login";
     public static final String URL_SIGNUP= URL + "/register";
