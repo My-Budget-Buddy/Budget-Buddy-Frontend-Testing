@@ -85,6 +85,7 @@ public class SDTransactions {
     @Then("I can see the new transaction in my list")
     public void iCanSeeTheNewTransactionInMyList() {
         String actualTransaction = this.transactions.verifyTransactionDetails();
+        System.out.println(actualTransaction);
         Assert.assertTrue(actualTransaction.contains("Skillstorm"));
         Assert.assertTrue(actualTransaction.contains("$10,087.99"));
         Assert.assertTrue(actualTransaction.contains("Income"));

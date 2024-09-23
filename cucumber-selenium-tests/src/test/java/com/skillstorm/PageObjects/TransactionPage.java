@@ -115,6 +115,7 @@ public class TransactionPage extends Page{
 
     //child component
     DashboardNavbar navbar;
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     // Constructor
     public TransactionPage(WebDriver driver) {
@@ -143,10 +144,10 @@ public class TransactionPage extends Page{
 
 
     public void clickTab() {
-        //pause(500);
+        pause(500);
         navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
-        //pause(500);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnTransactionArrow")));
     }
 
 
@@ -187,8 +188,38 @@ public class TransactionPage extends Page{
     }
 
     public String verifyTransactionDetails() {
-        //pause(1000);
-        return waitForElement(transactionsTableFirstRow, 30).getText();
+        pause(500);
+        List<WebElement> rows = transactionsTable.findElements(By.tagName("tr"));
+        int rowCounter = rows.size();
+
+        
+
+        if (rowCounter >= 1) {
+            WebElement firstRow = rows.get(1);
+            String firstRowText = waitForElement(firstRow, 10).getText();
+            return firstRowText;
+        }
+
+        if(rowCounter >= 2) {
+            WebElement secondRow = rows.get(2);
+            String secondRowText = waitForElement(secondRow, 10).getText();
+            return secondRowText;
+        }
+
+        if (rowCounter >= 3) {
+            WebElement thirdRow = rows.get(3);
+            String thirdRowText = waitForElement(thirdRow, 10).getText();
+            return thirdRowText;
+        }
+
+        if (rowCounter >= 4) {
+            WebElement fourthRow = rows.get(4);
+            String fourthRowText = waitForElement(fourthRow, 10).getText();
+            return fourthRowText;
+        }
+        
+        // If no valid information found in the first or second row
+        throw new NoSuchElementException("No valid transaction found in either the first or second row.");
     }
 
     // Read Transaction Methods
@@ -242,7 +273,7 @@ public class TransactionPage extends Page{
 
     // Delete Transaction Methods
     public void clickDeleteBtn() {
-        //pause(2000);
+        pause(500);
         tableSizeBeforeDeletion = transactionsTable.getText().length();
         waitForElement(deleteBtn, 10).click();
     }

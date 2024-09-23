@@ -259,14 +259,37 @@ public class TransactionHistoryPage  extends Page{
      * @return the text of the first row
      */
     public String confirmCreation() {
+        pause(500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
 
-        if(rowCounter >= 2) {
-            WebElement secondToLastRow = rows.get(rowCounter - 2);
-            return waitForElement(secondToLastRow, 10).getText();
+
+        if (rowCounter >= 1) {
+            WebElement firstRow = rows.get(1);
+            String firstRowText = waitForElement(firstRow, 10).getText();
+            return firstRowText;
         }
-        return waitForElement(transactionHistoryTableFirstRow, 10).getText();
+
+        if(rowCounter >= 2) {
+            WebElement secondRow = rows.get(2);
+            String secondRowText = waitForElement(secondRow, 10).getText();
+            return secondRowText;
+        }
+
+        if (rowCounter >= 3) {
+            WebElement thirdRow = rows.get(3);
+            String thirdRowText = waitForElement(thirdRow, 10).getText();
+            return thirdRowText;
+        }
+
+        if (rowCounter >= 4) {
+            WebElement fourthRow = rows.get(4);
+            String fourthRowText = waitForElement(fourthRow, 10).getText();
+            return fourthRowText;
+        }
+        
+        // If no valid information found in the first or second row
+        throw new NoSuchElementException("No valid transaction found in either the first or second row.");
     }
 
     // ===================== Read Transaction Methods =====================

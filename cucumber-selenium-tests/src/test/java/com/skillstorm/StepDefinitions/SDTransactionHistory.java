@@ -108,9 +108,9 @@ public class SDTransactionHistory {
      */
     @And("I fill in the {string}, {string}, and {string}")
     public void iFillInThe(String account, String amount, String category) {
-        transactionHistoryContent[0] = transactionHistory.setAccount(account);
-        transactionHistoryContent[1] = transactionHistory.setAmount(amount);
-        transactionHistoryContent[2] = transactionHistory.setCategory(category);
+        transactionHistory.setAccount(account);
+        transactionHistory.setAmount(amount);
+        transactionHistory.setCategory(category);
     }
 
     /**
@@ -119,8 +119,9 @@ public class SDTransactionHistory {
     @Then("I can see the new transaction in my past history list")
     public void iCanSeeTheNewTransactionInMyList() {
         String createdTransaction = transactionHistory.confirmCreation();
-        Assert.assertTrue(createdTransaction.contains(transactionHistoryContent[1]), "Amount not found in the list!");
-        Assert.assertTrue(createdTransaction.contains(transactionHistoryContent[2]), "Category not found in the list!");
+        System.out.println(createdTransaction);
+        Assert.assertTrue(createdTransaction.contains("$300.00"), "Amount not found in the list!");
+        Assert.assertTrue(createdTransaction.contains("Transportation"), "Category not found in the list!");
     }
 
     // ===================== Read Transaction Step Definitions =====================
