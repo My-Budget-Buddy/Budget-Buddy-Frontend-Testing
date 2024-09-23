@@ -9,8 +9,8 @@ public class Authenticator {
     public static final String USERNAME_PERSISTENT = "frontend.tests@gmail.com";
     public static final String PASSWORD_PERSISTENT = "password1";
 
-    public static final String USERNAME_NONPERSIST = "nonpersistent@email.com";
-    public static final String PASSWORD_NONPERSIST = "nonpersistent";
+    public static final String USERNAME_NONPERSIST = "joseph.sam@gmail.com";
+    public static final String PASSWORD_NONPERSIST = "password1";
 
     public static final String USERNAME_WRONG = "wrongformat!";
     public static final String PASSWORD_WRONG = "";
