@@ -183,6 +183,10 @@ public class AccountsPage extends Page {
         }
     }
 
+    /**
+     * Retrieves the "fill" attribute of the net cash bar element.
+     * @return - color represented in rgb format.
+     */
     public String getNetCashBarColor() {
         //Grab the container surrounding the visual element of the net cash bar
         WebElement netCashBar_container = netCashBar.findElements(By.xpath("./child::*")).get(0);
@@ -203,6 +207,10 @@ public class AccountsPage extends Page {
         }
     }
 
+    /**
+     * Retrieves the net cash value from the net cash bar element.
+     * @return - net cash value as a double.
+     */
     public Double getNetCash () {
         //Get the title of the current spending chart
         String netCashText = netCashBar.getText();
@@ -211,6 +219,14 @@ public class AccountsPage extends Page {
         return Double.parseDouble(netCashText);
     }
 
+    /**
+     * Attempts to add an account to the page for the user
+     * @param accountType - Type of the account
+     * @param institutionName - Name of the institution
+     * @param accountNumber - Account Number
+     * @param routing - Routing Number
+     * @param balance - Balance of the account
+     */
     public void addAccount(String accountType, String institutionName, String accountNumber, String routing, String balance ) {
         //Wait for the modal to appear
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
