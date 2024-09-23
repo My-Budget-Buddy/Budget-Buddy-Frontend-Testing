@@ -7,6 +7,15 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.skillstorm.PageObjects.LoginPage;
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
+import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
+import com.skillstorm.Utilities.UserData.User;
+import com.skillstorm.Utilities.UserData.UserType;
 
 public class Navigator {
 //#region Static fields
@@ -36,7 +45,7 @@ public class Navigator {
     public static final String URL_SPENDINGMONTH= "";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
-    public static final String URL_TAX= "";
+    public static final String URL_TAX= URL + "/dashboard/tax";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
     public static final String URL_ERROR= "";
@@ -144,19 +153,19 @@ public class Navigator {
     }
 
     private void navigateToTax() {
-        driver.get("http://localhost:5173/login");
-        WebElement usernameField = driver.findElement(By.id("email"));
-        WebElement passwordField = driver.findElement(By.id("password"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div[1]/main/div/main/div/div[2]/div/div/form/fieldset/button[2]"));
-        usernameField.sendKeys("joseph.sam@gmail.com");
-        passwordField.sendKeys("password1");
-        submitButton.click();
+        driver.get(URL_LOGIN);
+        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST, Authenticator.PASSWORD_NONPERSIST);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login(user);
+        
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        driver.get("http://localhost:5173/dashboard/tax");
+        driver.get(URL_TAX);
+        wait.until(ExpectedConditions.urlMatches(URL_TAX));
+        
     }
 
     private void navigateToSpendingMonth() {

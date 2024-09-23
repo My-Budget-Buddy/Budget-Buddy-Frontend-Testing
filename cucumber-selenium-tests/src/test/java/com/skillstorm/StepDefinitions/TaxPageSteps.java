@@ -2,13 +2,12 @@ package com.skillstorm.StepDefinitions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
+
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
 import org.openqa.selenium.WebDriver;
 
 import com.skillstorm.WebDriverSingleton;
@@ -26,10 +25,6 @@ public class TaxPageSteps {
     @Before
 public void before(){
     driver = WebDriverSingleton.getDriver();
-    // ChromeOptions options = new ChromeOptions();
-    // options.addArguments();
-    // driver = new ChromeDriver(options);
-    // this.driver = new ChromeDriver(options);
     this.taxPage = new TaxPage(driver);
 }
 
@@ -37,11 +32,7 @@ public void before(){
 public void tearDown() {
     WebDriverSingleton.quitDriver();
 }
-    // public void after() {
-    //     if(driver != null) {
-    //         this.driver.quit();
-    //     }
-    // }
+    
 
 
 
@@ -63,6 +54,7 @@ public void i_should_see_the_tax_estimation_form_deleted() {
 
 @Then("I should see the existing tax estimation form")
 public void i_should_see_the_existing_tax_estimation_form() {
+    taxPage.assureTaxRecordAppears();
     assertTrue(taxPage.checkForListOfExistingTaxEstimationRecords());
 }
 

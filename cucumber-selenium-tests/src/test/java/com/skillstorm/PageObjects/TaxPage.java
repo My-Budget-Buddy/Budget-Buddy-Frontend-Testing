@@ -187,41 +187,56 @@ public class TaxPage extends Page {
     @FindBy(id = "review-submit-button")
     private WebElement reviewSubmitButton;
 
+    //Buttons across top of tax page
+
+    @FindBy(id = "file-taxes")
+    private WebElement fileTaxesButton;
+
+    @FindBy(id = "estimate-refund")
+    private WebElement estimateRefundButton;
+
+    @FindBy(id = "document-checklist")
+    private WebElement documentChecklistButton;
+
+    @FindBy(id = "refund-planning")
+    private WebElement refundPlanningButton;
+
+
 
     //Login Page
-    private static final String url = "http://localhost:5173/login";
+    // private static final String url = "http://localhost:5173/login";
 
-    public void getMain() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.driver.get(url);
-    }
+    // public void getMain() {
+    //     try {
+    //         Thread.sleep(1000);
+    //     } catch (InterruptedException e) {
+    //         e.printStackTrace();
+    //     }
+    //     this.driver.get(url);
+    // }
 
     //login to site
-    public void login() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        emailField.sendKeys("joseph.sam@gmail.com");
-        passwordField.sendKeys("password1");
-        loginButton.click();
+    // public void login() {
+    //     try {
+    //         Thread.sleep(1000);
+    //     } catch (InterruptedException e) {
+    //         e.printStackTrace();
+    //     }
+    //     emailField.sendKeys("joseph.sam@gmail.com");
+    //     passwordField.sendKeys("password1");
+    //     loginButton.click();
 
-    }
-    //Navigate to tax page
-    public void NavigateToTaxPage() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    // }
+    // //Navigate to tax page
+    // public void NavigateToTaxPage() {
+    //     try {
+    //         Thread.sleep(1000);
+    //     } catch (InterruptedException e) {
+    //         e.printStackTrace();
+    //     }
         
-        taxLink.click();
-    }
+    //     taxLink.click();
+    // }
 
     public boolean checkForListOfExistingTaxEstimationRecords() {
         try {
@@ -258,6 +273,19 @@ public class TaxPage extends Page {
         }
         clickButton(button);
 
+    }
+
+    public void assureTaxRecordAppears(){
+        clickButton("fileTaxesButton");
+        clickButton("estimateRefundButton");
+        clickButton("documentChecklistButton");
+        clickButton("refundPlanningButton");
+        driver.navigate().refresh();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -383,6 +411,11 @@ public class TaxPage extends Page {
         buttonElements.put("reviewDeductPreviousButton", reviewDeductPreviousButton);
         buttonElements.put("reviewDeductNextButton", reviewDeductNextButton);
         buttonElements.put("reviewSubmitButton", reviewSubmitButton);
+        buttonElements.put("fileTaxesButton", fileTaxesButton);
+        buttonElements.put("estimateRefundButton", estimateRefundButton);
+        buttonElements.put("documentChecklistButton", documentChecklistButton);
+        buttonElements.put("refundPlanningButton", refundPlanningButton);
+
 
         return buttonElements.get(name);
     }
@@ -401,9 +434,6 @@ public class TaxPage extends Page {
         throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
     }
 
-    
-
-    
 
     @Override
     public List<WebElement> getButtons() {
