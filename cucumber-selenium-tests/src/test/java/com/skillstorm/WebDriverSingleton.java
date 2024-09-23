@@ -1,8 +1,9 @@
 package com.skillstorm;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class WebDriverSingleton {
 
@@ -13,13 +14,13 @@ public class WebDriverSingleton {
 
     //To be used in each Step Definition as the one WebDriver for all cucumber/selenium tests
     public static WebDriver getDriver() {
-        ChromeOptions options = new ChromeOptions();
+        FirefoxOptions options = new FirefoxOptions();
         //Options are used to allow running ChromeDrivers in Jenkins pipeline
-        //options.addArguments("--headless");
-        //options.addArguments("--no-sandbox");
-        //options.addArguments("--disable-dev-shm-usage");
+        //options.addArguments("-headless");
+        //options.addArguments("-no-sandbox");
+        //options.addArguments("-disable-dev-shm-usage");
         if (driver == null) {
-            driver = new ChromeDriver(options);
+            driver = new FirefoxDriver(options);
         }
         return driver;
     }

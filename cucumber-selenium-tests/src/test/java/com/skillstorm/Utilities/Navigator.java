@@ -42,8 +42,8 @@ public class Navigator {
     public static final String URL_DASHBOARD= URL + "/dashboard";
     public static final String URL_ACCOUNTS= URL + "/dashboard/accounts";
     public static final String URL_BUDGET= "";
-    public static final String URL_SPENDING= "";
-    public static final String URL_SPENDINGMONTH= "";
+    public static final String URL_SPENDING= URL + "/dashboard/spending";
+    public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
     public static final String URL_TAX= "";
@@ -159,13 +159,11 @@ public class Navigator {
     }
 
     private void navigateToSpendingMonth() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSpendingMonth'");
+        driver.get(URL_SPENDINGMONTH);
     }
 
     private void navigateToSpending() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSpending'");
+        driver.get(URL_SPENDING);
     }
 
     private void navigateToSignup() {
