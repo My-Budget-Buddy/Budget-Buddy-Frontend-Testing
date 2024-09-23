@@ -22,6 +22,7 @@ import com.skillstorm.PageObjects.Interfaces.Component;
 public class TransactionPage extends Page{
 
     WebDriver driver = WebDriverSingleton.getDriver();
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     // Locators for Transaction Page Elements
     @FindBy(className = "usa-logo__text")
@@ -144,8 +145,10 @@ public class TransactionPage extends Page{
 
     public void clickTab() {
         //pause(500);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardNavbar.BTN_TRANSACTIONS_ID)));
         navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnTransactionArrow")));
         //pause(500);
     }
 

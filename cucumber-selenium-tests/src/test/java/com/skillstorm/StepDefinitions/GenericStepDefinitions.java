@@ -7,6 +7,7 @@ import io.cucumber.java.en.*;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -63,8 +64,15 @@ public class GenericStepDefinitions{
     
     @When("I click the {string} button")
     public void iClickTheButton(String buttonId){
-        WebElement button = driver.findElement(By.id(buttonId));
-        button.click();
+        WebElement elementToClick = driver.findElement(By.id(buttonId));
+        // Scroll the browser to the element's Y position
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,"+elementToClick.getLocation().y+")");
+        // Click the element
+        elementToClick.click();
+        // wait.until(ExpectedConditions.presenceOfElementLocated(By.id(buttonId)));
+        // WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.id(buttonId)));
+        //WebElement button = driver.findElement(By.id(buttonId));
+        //button.click();
     }
 
     /*

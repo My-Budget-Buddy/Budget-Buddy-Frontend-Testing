@@ -180,6 +180,10 @@ public class TransactionHistoryPage  extends Page{
 
     // ===================== General Methods =====================
 
+    public void loadElements() {
+        PageFactory.initElements(driver, this);
+    }
+
     /**
      * Get the current URL of the page.
      * 
