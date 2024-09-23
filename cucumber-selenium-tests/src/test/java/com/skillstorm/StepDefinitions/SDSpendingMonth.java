@@ -29,14 +29,14 @@ public class SDSpendingMonth {
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
         navigator = new Navigator(driver);
-        this.spendingMonthPage = new SpendingMonthPage(driver);
-        this.spendingPage = new SpendingPage(driver);
+        spendingMonthPage = new SpendingMonthPage(driver);
+        spendingPage = new SpendingPage(driver);
     }
 
     @After("@spending-month-page")
     public void tearDown() {
         if(driver != null){
-            this.driver.quit();
+            driver.quit();
         }
     }
 
@@ -50,14 +50,14 @@ public class SDSpendingMonth {
 
     @And("I am on the SpendingMonth page")
     public void iAmOnTheSpendingMonthPage() {
-        this.spendingMonthPage.clickTab();
-        this.spendingPage.clickButton("See Current Month");
+        spendingMonthPage.clickTab();
+        spendingPage.clickButton("See Current Month");
         navigator.navigateTo(Navigator.PGNAME_SPENDINGMONTH);
     }
 
     @When("I click the Back to Annual Spending Overview button")
     public void iClickTheButtonOnSpendingMonthPage() {
-        this.spendingMonthPage.clickButton(SpendingMonthPage.BTN_BACKTOANNUALSPENDING_NAME);
+        spendingMonthPage.clickButton(SpendingMonthPage.BTN_BACKTOANNUALSPENDING_NAME);
     }
 
     @Then("I am redirected to the Spending page")
@@ -87,7 +87,7 @@ public class SDSpendingMonth {
 
     @When("I select {string} from the month selection dropdown")
     public void iSelectFromTheMonthSelectionDropdown(String month) {
-        this.spendingMonthPage.selectMonth(month);
+        spendingMonthPage.selectMonth(month);
     }
 
     @Then("I can see the SpendingMonth page display March spending values")

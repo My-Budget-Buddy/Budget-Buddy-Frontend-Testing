@@ -27,13 +27,13 @@ public class SDSpending {
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
         navigator = new Navigator(driver);
-        this.spendingPage = new SpendingPage(driver);
+        spendingPage = new SpendingPage(driver);
     }
 
     @After("@spending-page")
     public void tearDown() {
         if(driver != null){
-            this.driver.quit();
+            driver.quit();
         }
     }
 
@@ -47,13 +47,13 @@ public class SDSpending {
 
     @And("I am on the Spending page")
     public void iAmOnTheSpendingPage() {
-        this.spendingPage.clickTab();
+        spendingPage.clickTab();
         navigator.navigateTo(Navigator.PGNAME_SPENDING);
     }
 
     @When("I click the See Current Month button")
     public void iClickTheSeeCurrentMonthButton() {
-        this.spendingPage.clickButton(SpendingPage.BTN_SEECURRENTMONTH_NAME);
+        spendingPage.clickButton(SpendingPage.BTN_SEECURRENTMONTH_NAME);
     }
 
     @Then("I am redirected to the SpendingMonth page")
