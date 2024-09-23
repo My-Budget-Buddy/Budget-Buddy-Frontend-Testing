@@ -52,7 +52,7 @@ Feature: Features on the transaction history page
         Given I am on the Transaction History page
         When I click the edit button
         And I update the "<account>", "<amount>", and "<category>" 
-        And I click the "editTransactionBtn" button
+        And I click the edit submit button
         Then I can see the updated transaction in my past history list
     Examples:
         |account|amount|category|

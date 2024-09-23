@@ -143,10 +143,10 @@ public class TransactionPage extends Page{
 
 
     public void clickTab() {
-        pause(500);
+        //pause(500);
         navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
-        pause(500);
+        //pause(500);
     }
 
 
@@ -187,13 +187,13 @@ public class TransactionPage extends Page{
     }
 
     public String verifyTransactionDetails() {
-        pause(1000);
+        //pause(1000);
         return waitForElement(transactionsTableFirstRow, 30).getText();
     }
 
     // Read Transaction Methods
     public Boolean printTransactionTable() {
-        pause(500);
+        //pause(500);
         return waitForElement(transactionsTable, 10).isDisplayed();
     }
 
@@ -242,7 +242,7 @@ public class TransactionPage extends Page{
 
     // Delete Transaction Methods
     public void clickDeleteBtn() {
-        pause(2000);
+        //pause(2000);
         tableSizeBeforeDeletion = transactionsTable.getText().length();
         waitForElement(deleteBtn, 10).click();
     }

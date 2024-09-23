@@ -150,6 +150,11 @@ public class SDTransactionHistory {
         transactionHistory.updateCategory(category);
     }
 
+    @When("I click the edit submit button")
+    public void clickEditSubmitBtn() {
+        transactionHistory.clickEditSubmitBtn();
+    }
+
     /**
      * Verify that the updated transaction is reflected in the list of past transactions.
      */

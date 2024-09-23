@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -217,7 +218,6 @@ public class TransactionHistoryPage  extends Page{
      */
     public String setAccount(String account) {
         if (account != null && !account.isEmpty()) {
-            pause(500);
             waitForElement(accountDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-account']/option[text()='" + account + "']"));
             waitForElement(option, 10).click();
@@ -232,7 +232,6 @@ public class TransactionHistoryPage  extends Page{
      * @return the entered amount
      */
     public String setAmount(String amount) {
-        pause(500);
         WebElement createAmountField = waitForElement(amountField, 10);
         createAmountField.clear();
         createAmountField.sendKeys(amount);
@@ -246,7 +245,6 @@ public class TransactionHistoryPage  extends Page{
      * @return the selected category
      */
     public String setCategory(String category) {
-        pause(500);
         if (category != null && !category.isEmpty()) {
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
@@ -261,7 +259,6 @@ public class TransactionHistoryPage  extends Page{
      * @return the text of the first row
      */
     public String confirmCreation() {
-        pause(500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
 
@@ -286,7 +283,6 @@ public class TransactionHistoryPage  extends Page{
     // ===================== Update Transaction Methods =====================
 
     public void clickEditBtn() {
-        pause(1500);
         waitForElement(editBtn, 30).click();
     }
 
@@ -297,7 +293,6 @@ public class TransactionHistoryPage  extends Page{
      * @return the updated account
      */
     public String updateAccount(String account) {
-        pause(500);
         if (account != null && !account.isEmpty()) {
             waitForElement(editAccountField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-account']/option[text()='" + account + "']"));
@@ -307,7 +302,6 @@ public class TransactionHistoryPage  extends Page{
     }
 
     public String updateAmount(String amount) {
-        pause(500);
         WebElement editAmountDropdown = waitForElement(editAmountField, 10);
         editAmountDropdown.clear();
         editAmountDropdown.sendKeys(amount);
@@ -328,6 +322,12 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(option, 10).click();
         }
         return category;
+    }
+
+    public void clickEditSubmitBtn() {
+        WebElement editBtn = waitForElement(editSubmitBtn, 10);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", editBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editBtn);
     }
 
 
