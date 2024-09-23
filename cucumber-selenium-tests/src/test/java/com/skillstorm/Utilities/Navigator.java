@@ -9,6 +9,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
@@ -199,7 +200,12 @@ public class Navigator {
         }
         
         driver.get(URL_DASHBOARD);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardPage.BTN_VIEW_ALL_TRANSACTIONS_ID)));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardPage.BTN_VIEW_ALL_TRANSACTIONS_ID)));
+        } catch (TimeoutException e) {
+            Assert.assertTrue( false, "Dashboard Not Loaded, Current Page: " + driver.getCurrentUrl());
+        }
+        
     }
 
     private void navigateToBudget() {
