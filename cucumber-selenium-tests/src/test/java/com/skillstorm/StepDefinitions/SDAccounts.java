@@ -1,12 +1,9 @@
 package com.skillstorm.StepDefinitions;
 
-import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,17 +12,12 @@ import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.AccountsPage;
-import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
-import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
-import com.skillstorm.Utilities.UserData.User;
-import com.skillstorm.Utilities.UserData.UserType;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -61,6 +53,7 @@ public class SDAccounts {
      */
     @After
     public void scenarioTearDown() {
+        // quit the driver
         WebDriverSingleton.quitDriver();
         page = null;
         wait = null;
@@ -76,14 +69,16 @@ public class SDAccounts {
      * NOTE: This method is implemented in SDDashboard.java
      */
     // @Given("I have multiple {string}")
-    // public void iHaveMultipleObjects(String objects) {
-    // }
     
     /**********************************************************************
      *     WHEN STEPS
      * *********************************************************************/
 
- 
+    
+    /**
+     * This method finds and clicks on an accordion button on the Accounts page.
+     * @param accordianBtnName
+     */
     @When("I click on the {string} option on Accounts")
     public void iClickOnTheOptionOnAccounts (String accordianBtnName) {
         //Load Dashboard page (check to make sure on correct page)
@@ -99,12 +94,19 @@ public class SDAccounts {
         page.clickButton(accordianBtnName);
     }
 
+    /**
+     * This method finds and clicks on a button on the Accounts page that cannot be found by id.
+     * @param btnName
+     */
     @When("I click the {string} button on Accounts")
     public void iClickTheButtonOnAccounts (String btnName) {
         page = new AccountsPage(driver);
         page.clickButton(btnName);
     }
 
+    /**
+     * This method attempts to delete an account on the Accounts page.
+     */
     @When("I attempt to delete the account")
     public void iAttemptToDeleteA() {
         // Load the page
@@ -123,6 +125,10 @@ public class SDAccounts {
         page.deleteAccount(account);
     }
 
+    /**
+     * This method makes a credit account that is more than the net cash value.
+     * This is to change the color of the net cash bar to red.
+     */
     @When("my debt exceeds my Assets")
     public void myDebtExceedsMyAssets() {
         page = new AccountsPage(driver);
@@ -149,20 +155,15 @@ public class SDAccounts {
         Assert.assertTrue(page.checkForAccount( accountType, institutionName, accountNumber, balance) != null);
     }
 
-    @And("I enter the following information: {string}, {string}, {string}, {string}, {string}")
-    public void iEnterTheFollowingInformation(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
-        page = new AccountsPage(driver);
-        //Add account
-        page.addAccount(accountType, institutionName, accountNumber, routingNumber, balance);
-
-        //Save the Information of that Account for Future Steps
-        saveAccountInfo(accountType, institutionName, accountNumber, routingNumber, balance);
-    }
 
 
     /**********************************************************************
      *    THEN STEPS
      * *********************************************************************/
+    /**
+     * This method checks to see if the account is created or deleted.
+     * @param status
+     */
     @Then("that specific account is {string}")
     public void thatSpecificAccountIs(String status) {
 
@@ -178,16 +179,21 @@ public class SDAccounts {
 
 
         // Check to see if the last modified account is in the list
+        WebElement account = page.checkForAccount(accountType, institutionName, accountNumber, balance);
         if (status.equals("Created")) {
-            Assert.assertTrue( page.checkForAccount(accountType, institutionName, accountNumber, balance) != null );
+            Assert.assertTrue( account != null );
+            // Clean up if account was created
+            page.deleteAccount(account);
         } else if (status.equals("Deleted")) {
-            System.out.println("Checking for account: " + accountType + " " + institutionName + " " + accountNumber + " " + balance);
-            Assert.assertTrue( page.checkForAccount(accountType, institutionName, accountNumber, balance) == null );
+            Assert.assertTrue( account == null );
         } else {
             Assert.fail("Invalid Status");
         }
     }
 
+    /**
+     * This method checks to make sure the credit score popup appears.
+     */
     @Then("a pop up appears of my credit score")
     public void aPopUpAppearsOfMyCreditScore() {
         page = new AccountsPage(driver);
@@ -200,6 +206,9 @@ public class SDAccounts {
         Assert.assertTrue(page.getWebElement(AccountsPage.NAME_CREDIT_SCORE_POPUP).isDisplayed());
     }
 
+    /**
+     * This method checks to make sure the net cash bar is red.
+     */
     @Then("my net cash bar turns red")
     public void myNetCashBarTurnsRed() {
         page = new AccountsPage(driver);
@@ -208,9 +217,21 @@ public class SDAccounts {
         Assert.assertTrue(page.getNetCash() > 0.0);
         //Check if the net cash bar is red
         Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_RED);
+
+        // Try to clean up the credit account that was created
+        WebElement account = page.checkForAccount(
+            accountInfo.get("accountType"),
+            accountInfo.get("institutionName"),
+            accountInfo.get("accountNumber"),
+            accountInfo.get("balance")
+        );
+        if (account != null) page.deleteAccount(account);
     }
 
-
+    /**
+     * This method checks to make sure the accordian list is displayed on the Accounts page after the button was clicked.
+     * @param listName - the name of the accordian list
+     */
     @Then("I can see the {string} on Accounts")
     public void iCanSeeTheListOnAccounts(String listName) {
         page = new AccountsPage(driver);
@@ -222,8 +243,17 @@ public class SDAccounts {
     /**********************************************************************
      *    AND STEPS
      * *********************************************************************/
-    @And("I have a {string} account with the information: {string}, {string}, {string}, {string}")
-    public void iHaveAAccountIWantToDelete(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
+
+    /**
+     * This method creates an account with the following information
+     * @param accountType - the type of account
+     * @param institutionName - The name of the bank or institution
+     * @param accountNumber - the account number
+     * @param routingNumber - the routing number
+     * @param balance - the balance of the account
+     */
+    @And("I add a {string} account with the information: {string}, {string}, {string}, {string}")
+    public void iAddAAccountWithTheInformation(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
         // Load the page
         page = new AccountsPage(driver);
 
@@ -236,6 +266,9 @@ public class SDAccounts {
         Assert.assertTrue( page.checkForAccount( accountType, institutionName, accountNumber, balance) != null );
     }
 
+    /**
+     * This method checks to make sure the net cash bar is green.
+     */
     @And("my net cash bar is green")
     public void myNetCashBarIsGreen() {
         page = new AccountsPage(driver);
@@ -250,6 +283,14 @@ public class SDAccounts {
     /**********************************************************************
      *    EXTRA FUNCTIONS
      * *********************************************************************/
+    /**
+     * This method saves the account information to a map for future use.
+     * @param accountType - the type of account
+     * @param institutionName - The name of the bank or institution
+     * @param accountNumber - the account number
+     * @param routingNumber - the routing number
+     * @param balance - the balance of the account
+     */
     private void saveAccountInfo(String accountType, String institutionName, String accountNumber, String routingNumber, String balance) {
         accountInfo.put("accountType", accountType);
         accountInfo.put("institutionName", institutionName);

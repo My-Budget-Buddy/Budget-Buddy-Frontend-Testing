@@ -15,7 +15,7 @@ Feature:
 
     Scenario: AC2 - Creating a new account
         Given I am on the "Accounts" page
-        And I have a "<accountType>" account with the information: "<name>", "<accountNum>", "<routing>", "<balance>"
+        When I add a "<accountType>" account with the information: "<name>", "<accountNum>", "<routing>", "<balance>"
         Then that specific account is "Created"
 
         Examples:
@@ -27,7 +27,7 @@ Feature:
 
     Scenario: AC3 - Deleting an account
         Given I am on the "Accounts" page
-        And I have a "<accountType>" account with the information: "<name>", "<accountNum>", "<routing>", "<balance>"
+        And I add a "<accountType>" account with the information: "<name>", "<accountNum>", "<routing>", "<balance>"
         When I attempt to delete the account
         Then that specific account is "Deleted"
 

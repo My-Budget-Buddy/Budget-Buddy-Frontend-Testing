@@ -168,6 +168,7 @@ public class AccountsPage extends Page {
      * @return - name of the accordian list associated with the button.
      */
     public String getListName(String btnAccordionName) {
+        if (btnAccordionName == null) return null;
         switch(btnAccordionName) {
             case NAME_ACCORDION_CHECKING_BTN:
                 return NAME_CHECKING_TABLE;
