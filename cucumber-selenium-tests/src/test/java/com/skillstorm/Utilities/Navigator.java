@@ -58,7 +58,7 @@ public class Navigator {
 
     public Navigator(WebDriver driver){
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         pageUrlMap.put(PGNAME_ACCOUNTS, URL_ACCOUNTS);
         pageUrlMap.put(PGNAME_LOGIN, URL_LOGIN);
         pageUrlMap.put(PGNAME_LANDING, URL_LANDING);

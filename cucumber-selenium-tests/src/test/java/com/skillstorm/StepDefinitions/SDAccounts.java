@@ -34,7 +34,6 @@ public class SDAccounts {
     private WebDriverWait wait;
     private Navigator navigator;
     private AccountsPage page;
-    private User seasonedUser = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
     private Map<String, String> accountInfo;
 
     /**
