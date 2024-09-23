@@ -59,6 +59,7 @@ public class SDTransactionHistory {
     @Given("I am on the Transaction History page")
     public void iAmOnTheTransactionHistoryPage() {
         transactionHistory.getCurrentUrl();
+        Assert.assertTrue(transactionHistory.bothTableAndGraphAreVisible());
     }
 
     /**
