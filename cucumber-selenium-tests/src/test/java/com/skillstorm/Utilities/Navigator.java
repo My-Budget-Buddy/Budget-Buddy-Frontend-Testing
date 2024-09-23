@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
@@ -198,7 +199,7 @@ public class Navigator {
         }
         
         driver.get(URL_DASHBOARD);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardNavbar.BTN_DASHBOARD_ID)));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardPage.BTN_VIEW_ALL_TRANSACTIONS_ID)));
     }
 
     private void navigateToBudget() {
