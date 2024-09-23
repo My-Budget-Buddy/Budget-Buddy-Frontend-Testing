@@ -1,6 +1,6 @@
 Feature:
 
-    Scenario: DB1 - looking at drop down options when logged in
+    Scenario: AC1 - looking at drop down options when logged in
         Given I have multiple "<objects>"  
         And I am on the "Accounts" page
         When I click on the "<option>" option on Accounts
