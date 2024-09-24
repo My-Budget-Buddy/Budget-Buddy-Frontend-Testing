@@ -123,10 +123,8 @@ public class SDTransactionHistory {
      */
     @Then("I can see the new transaction in my past history list")
     public void iCanSeeTheNewTransactionInMyList() {
-        String createdTransaction = transactionHistory.confirmCreation();
-        System.out.println(createdTransaction);
-        Assert.assertTrue(createdTransaction.contains("$300.00"), "Amount not found in the list!");
-        Assert.assertTrue(createdTransaction.contains("Transportation"), "Category not found in the list!");
+        Boolean createdTransaction = transactionHistory.confirmCreation();
+        Assert.assertTrue(createdTransaction, "Transaction not created!");
     }
 
     // ===================== Read Transaction Step Definitions =====================

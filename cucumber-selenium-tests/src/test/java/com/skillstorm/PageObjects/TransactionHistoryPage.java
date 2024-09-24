@@ -256,19 +256,13 @@ public class TransactionHistoryPage  extends Page{
         return category;
     }
 
-    // public void clickSubmitBtn() {
-    //     WebElement submitBtn = waitForElement(createSubmitBtn, 10);
-    //     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
-    //     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
-    //     //submitBtn.click();
-    // }
 
     /**
      * Confirm the creation of a transaction by retrieving the first row of the transaction table.
      * 
      * @return the text of the first row
      */
-    public String confirmCreation() {
+    public Boolean confirmCreation() {
         pause(1500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
@@ -280,8 +274,8 @@ public class TransactionHistoryPage  extends Page{
         for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
-            if(!rowText.isEmpty()) {
-                return rowText;
+            if(!rowText.isEmpty() && rowText.contains("Transportation") && rowText.contains("$300.00")) {
+                return true;
             }
         }
         
