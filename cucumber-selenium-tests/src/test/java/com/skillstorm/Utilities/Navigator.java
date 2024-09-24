@@ -207,7 +207,7 @@ public class Navigator {
         //Login
         navigateToLogin();
         LoginPage loginPage = new LoginPage(driver);
-        User user = new User(UserType.PERSISTANT, "joseph.sam@gmail.com", "password1");
+        User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
         loginPage.login(user);
         //Navigate to Budget
