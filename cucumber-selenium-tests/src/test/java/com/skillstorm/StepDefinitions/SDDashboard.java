@@ -123,8 +123,8 @@ public class SDDashboard {
      * | Investments       | Investments   | Investments List |
      * 
      */
-    @When("I click on {string} option")
-    public void iClickOnOption (String accordianBtnName) {
+    @When("I click on the {string} option on Dashboard")
+    public void iClickOnTheOptionOnDashboard (String accordianBtnName) {
         //Load Dashboard page (check to make sure on correct page)
         wait.until(ExpectedConditions.urlMatches(Navigator.URL_DASHBOARD));
         page = new DashboardPage(driver);
@@ -149,8 +149,9 @@ public class SDDashboard {
      * | Investments       | Investments   | Investments List |
      * 
      */
-    @Then("I can see the {string}")
-    public void iCanSeeThe(String listName) {
+    @Then("I can see the {string} on Dashboard")
+    public void iCanSeeTheListOnDashboard(String listName) {
+        page = new DashboardPage(driver);
         wait.until(ExpectedConditions.visibilityOf(
             page.getWebElement(listName)
         ));
