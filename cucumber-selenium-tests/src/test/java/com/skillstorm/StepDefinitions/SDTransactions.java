@@ -62,7 +62,7 @@ public class SDTransactions {
     /**
      * General Scenario Definitions
      */
-    @Given("I am on the Transactions page")
+    @And("I am on the Transactions page")
     public void iAmOnTheTranactionsPage() {
         transactions.clickTab();
         String expectedUrl = Navigator.URL_TRANSACTIONS;
@@ -85,6 +85,7 @@ public class SDTransactions {
     @Then("I can see the new transaction in my list")
     public void iCanSeeTheNewTransactionInMyList() {
         String actualTransaction = this.transactions.verifyTransactionDetails();
+        System.out.println(actualTransaction);
         Assert.assertTrue(actualTransaction.contains("Skillstorm"));
         Assert.assertTrue(actualTransaction.contains("$10,087.99"));
         Assert.assertTrue(actualTransaction.contains("Income"));
