@@ -184,7 +184,7 @@ public class TransactionPage extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
-            categoryDropdown.sendKeys(Keys.ENTER);
+            pause(1000);
         }
         return category;
     }
@@ -200,7 +200,7 @@ public class TransactionPage extends Page{
             throw new NoSuchElementException("No transactions found.");
         }
 
-        for (int i = 1; i <= Math.min(rowCounter - 1, 4); i++) {
+        for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
             if(!rowText.isEmpty()) {
@@ -209,7 +209,7 @@ public class TransactionPage extends Page{
         }
         
         // If no valid information found in the first or second row
-        throw new NoSuchElementException("No valid transaction found in rows 1 - 4.");
+        throw new NoSuchElementException("No valid transaction found in any rows.");
     }
 
     // Read Transaction Methods
@@ -252,7 +252,7 @@ public class TransactionPage extends Page{
             waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
-            editTransactionCategoryField.sendKeys(Keys.ENTER);
+            //editTransactionCategoryField.sendKeys(Keys.ENTER);
         }
 
         return category;

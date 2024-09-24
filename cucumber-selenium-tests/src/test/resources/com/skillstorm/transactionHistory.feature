@@ -21,7 +21,7 @@ Feature: Features on the transaction history page
     And I am on the Transaction History page
     When I click the "addTransactionModal" button
     And I fill in the "<account>", "<amount>", and "<category>"
-    And I click the create submit button
+    And I click the "addTransactionBtn" button
     Then I can see the new transaction in my past history list
 
     Examples:

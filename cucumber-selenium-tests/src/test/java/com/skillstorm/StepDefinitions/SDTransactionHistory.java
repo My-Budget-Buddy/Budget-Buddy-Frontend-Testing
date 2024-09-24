@@ -113,10 +113,10 @@ public class SDTransactionHistory {
         transactionHistory.setCategory(category);
     }
 
-    @And("I click the create submit button")
-    public void clickCreateSubmitBtn() {
-        transactionHistory.clickSubmitBtn();
-    }
+    // @And("I click the create submit button")
+    // public void clickCreateSubmitBtn() {
+    //     transactionHistory.clickSubmitBtn();
+    // }
 
     /**
      * Verify that the new transaction is added to the list of past transactions.

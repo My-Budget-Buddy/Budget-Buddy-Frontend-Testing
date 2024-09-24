@@ -251,16 +251,17 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
-            categoryDropdown.sendKeys(Keys.ENTER);
+            pause(1000);
         }
         return category;
     }
 
-    public void clickSubmitBtn() {
-        WebElement submitBtn = waitForElement(createSubmitBtn, 10);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
-    }
+    // public void clickSubmitBtn() {
+    //     WebElement submitBtn = waitForElement(createSubmitBtn, 10);
+    //     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
+    //     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
+    //     //submitBtn.click();
+    // }
 
     /**
      * Confirm the creation of a transaction by retrieving the first row of the transaction table.
@@ -268,7 +269,7 @@ public class TransactionHistoryPage  extends Page{
      * @return the text of the first row
      */
     public String confirmCreation() {
-        pause(500);
+        pause(1500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
 
@@ -276,7 +277,7 @@ public class TransactionHistoryPage  extends Page{
             throw new NoSuchElementException("No transactions found.");
         }
 
-        for (int i = 1; i <= Math.min(rowCounter - 1, 4); i++) {
+        for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
             if(!rowText.isEmpty()) {
@@ -285,7 +286,7 @@ public class TransactionHistoryPage  extends Page{
         }
         
         // If no valid information found in the first or second row
-        throw new NoSuchElementException("No valid transaction found in rows 1 - 4.");
+        throw new NoSuchElementException("No valid transaction found in any rows.");
     }
 
     // ===================== Read Transaction Methods =====================
@@ -339,7 +340,7 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
-            editCategoryField.sendKeys(Keys.ENTER);
+            //editCategoryField.sendKeys(Keys.ENTER);
         }
         return category;
     }
