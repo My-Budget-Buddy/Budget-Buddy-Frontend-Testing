@@ -9,14 +9,15 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.skillstorm.PageObjects.AccountsPage;
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
-
 
 public class Navigator {
 //#region Static fields
@@ -25,7 +26,7 @@ public class Navigator {
     public static final String PGNAME_SIGNUP= "Signup";
     public static final String PGNAME_DASHBOARD= "Dashboard";
     public static final String PGNAME_ACCOUNTS= "Accounts";
-    public static final String PGNAME_BUDGET= "Budget";
+    public static final String PGNAME_BUDGET= "Budgets";
     public static final String PGNAME_SPENDING= "Spending";
     public static final String PGNAME_SPENDINGMONTH= "SpendingMonth";
     public static final String PGNAME_TRANSACTIONS= "Transactions";
@@ -41,12 +42,12 @@ public class Navigator {
     public static final String URL_SIGNUP= URL + "/register";
     public static final String URL_DASHBOARD= URL + "/dashboard";
     public static final String URL_ACCOUNTS= URL + "/dashboard/accounts";
-    public static final String URL_BUDGET= "";
+    public static final String URL_BUDGET= URL + "/dashboard/budgets";
     public static final String URL_SPENDING= URL + "/dashboard/spending";
     public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
-    public static final String URL_TAX= "";
+    public static final String URL_TAX= URL + "/dashboard/tax";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
     public static final String URL_ERROR= URL + "/error";
@@ -167,8 +168,7 @@ public class Navigator {
     }
 
     private void navigateToSignup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
+        driver.get(URL_SIGNUP);
     }
 
     private void navigateToLogin() {       
@@ -198,12 +198,16 @@ public class Navigator {
         }
         
         driver.get(URL_DASHBOARD);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardNavbar.BTN_DASHBOARD_ID)));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardPage.BTN_VIEW_ALL_TRANSACTIONS_ID)));
+        } catch (TimeoutException e) {
+            Assert.assertTrue( false, "Dashboard Not Loaded, Current Page: " + driver.getCurrentUrl());
+        }
+        
     }
 
     private void navigateToBudget() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToBudget'");
+        driver.get(URL_BUDGET);
     }
 
     private void navigateToAccounts() {

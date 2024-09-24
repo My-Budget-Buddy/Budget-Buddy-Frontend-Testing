@@ -56,7 +56,7 @@ public class SDTransactionHistory {
     /**
      * Navigate to the Transaction History page.
      */
-    @Given("I am on the Transaction History page")
+    @And("I am on the Transaction History page")
     public void iAmOnTheTransactionHistoryPage() {
         transactionHistory.getCurrentUrl();
         Assert.assertTrue(transactionHistory.bothTableAndGraphAreVisible());
@@ -78,7 +78,7 @@ public class SDTransactionHistory {
     /**
      * Navigate to the Transactions page.
      */
-    @Given("I start on the Transactions page")
+    @And("I start on the Transactions page")
     public void iStartOnTheTransactionPage() {
         transactionPage.clickTab();
     }
@@ -108,19 +108,23 @@ public class SDTransactionHistory {
      */
     @And("I fill in the {string}, {string}, and {string}")
     public void iFillInThe(String account, String amount, String category) {
-        transactionHistoryContent[0] = transactionHistory.setAccount(account);
-        transactionHistoryContent[1] = transactionHistory.setAmount(amount);
-        transactionHistoryContent[2] = transactionHistory.setCategory(category);
+        transactionHistory.setAccount(account);
+        transactionHistory.setAmount(amount);
+        transactionHistory.setCategory(category);
     }
+
+    // @And("I click the create submit button")
+    // public void clickCreateSubmitBtn() {
+    //     transactionHistory.clickSubmitBtn();
+    // }
 
     /**
      * Verify that the new transaction is added to the list of past transactions.
      */
     @Then("I can see the new transaction in my past history list")
     public void iCanSeeTheNewTransactionInMyList() {
-        String createdTransaction = transactionHistory.confirmCreation();
-        Assert.assertTrue(createdTransaction.contains(transactionHistoryContent[1]), "Amount not found in the list!");
-        Assert.assertTrue(createdTransaction.contains(transactionHistoryContent[2]), "Category not found in the list!");
+        Boolean createdTransaction = transactionHistory.confirmCreation();
+        Assert.assertTrue(createdTransaction, "Transaction not created!");
     }
 
     // ===================== Read Transaction Step Definitions =====================
