@@ -7,29 +7,30 @@ so I can limit and track my spending.
     Given I am on the "Budgets" page
     Then I can see the Budgets page web elements
 
-  # Assumes that the Groceries budget isn't already in the list
+  # Assumes that the Shopping budget isn't already in the list
   Scenario: Add a new budget
     Given I am on the "Budgets" page
     When I click the "Add-New-Budget" button
-    And I select "Groceries" from the "category" selection
+    And I select "Shopping" from the "category" selection
     And I enter "500" for the budget amount
     And I click the "Submit" button
-    Then I can see a "Groceries" budget of "$500.00" in the budget list
+    Then I can see a "Shopping" budget of "$500.00" in the budget list
 
   Scenario: Edit an existing budget
     Given I am on the "Budgets" page
-    And there is a "Groceries" budget of "$500.00" in the budget list
+    And there is a "Shopping" budget of "$500.00" in the budget list
     When I click the Edit Budget button
     And I enter "600" for new the budget amount
     And I save the new budget amount
-    Then I can see a "Groceries" budget of "$600.00" in the budget list
+    Then I can see a "Shopping" budget of "$600.00" in the budget list
 
+  # Assuemes there are other budgets in the list other than Shopping
   Scenario: Delete a budget
     Given I am on the "Budgets" page
-    And there is a "Groceries" budget of "$600.00" in the budget list
+    And there is a "Shopping" budget of "$600.00" in the budget list
     When I click the Delete Budget button
     And I click Delete on the delete budget confirmation dialog
-    Then I cannot see a "Groceries" budget in the budget list
+    Then I cannot see a "Shopping" budget in the budget list
 
   Scenario: Add a new Savings buckets
     Given I am on the "Budgets" page

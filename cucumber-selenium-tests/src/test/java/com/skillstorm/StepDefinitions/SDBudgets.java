@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -102,7 +103,7 @@ public class SDBudgets {
 
     @When("I click Delete on the delete budget confirmation dialog")
     public void iClickDeleteOnTheConfirmationDialog() {
-        page.setDeleteButtonForGroceriesBudget();
+        page.setDeleteButtonForShoppingBudget();
         //page.getWebElement("confirmDeleteButton").click();
         page.clickButton("confirmDeleteButton");
     }
@@ -123,7 +124,9 @@ public class SDBudgets {
 
     @When("I click the Edit Savings Bucket button")
     public void iClickTheEditSavingsBucketButton() {
-        //page.getWebElement("editSavingsBucketButton").click();
+        WebElement editSavingsBucketButton = page.getWebElement("editSavingsBucketButton");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", editSavingsBucketButton);
+        wait.until(ExpectedConditions.elementToBeClickable(editSavingsBucketButton));
         page.clickButton("editSavingsBucketButton");
         page.setEditSavingsBucketModalElements();
     }

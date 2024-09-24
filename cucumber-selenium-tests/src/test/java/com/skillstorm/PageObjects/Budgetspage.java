@@ -59,7 +59,7 @@ import com.skillstorm.PageObjects.Interfaces.Component;
  * - clickButton(String name): Clicks a button by name.
  * - setGroceryActionButtons(String budgetCategory, String budgetedAmount): Sets the action buttons for a grocery budget.
  * - setEditBudgetModalElements(): Sets the elements for the edit budget modal.
- * - setDeleteButtonForGroceriesBudget(): Sets the delete button for the groceries budget.
+ * - setDeleteButtonForShoppingBudget(): Sets the delete button for the Shopping budget.
  * - setSavingsBucketActionButtons(String bucketName, String amount): Sets the action buttons for a savings bucket.
  * - setEditSavingsBucketModalElements(): Sets the elements for the edit savings bucket modal.
  * - setDeleteButtonForHouseRepairsSavingsBucket(): Sets the delete button for the house repairs savings bucket.
@@ -223,7 +223,7 @@ public class BudgetsPage extends Page {
 
             if (h2 != null && "Edit Budget".equals(h2.getText().trim())) {
                 for (WebElement input : inputs) {
-                    if ("Groceries".equals(input.getAttribute("value"))) {
+                    if ("Shopping".equals(input.getAttribute("value"))) {
                         this.editedBudgetedInput = dialog.findElement(By.id("totalAmount"));
                         elementMap.put("editedBudgetedInput", editedBudgetedInput);
                         this.saveBudgetButton = dialog.findElement(By.xpath(".//button[text()='Save']"));
@@ -236,13 +236,13 @@ public class BudgetsPage extends Page {
         throw new IllegalArgumentException("No dialog found with the specified inputs.");
     }
 
-    public void setDeleteButtonForGroceriesBudget() {
+    public void setDeleteButtonForShoppingBudget() {
         List<WebElement> dialogs = driver.findElements(By.cssSelector("div[role='dialog']"));
 
         for (WebElement dialog : dialogs) {
             List<WebElement> divs = dialog.findElements(By.tagName("div"));
             for (WebElement div : divs) {
-                if ("Are you sure you want to delete the Groceries budget?".equals(div.getText().trim())) {
+                if ("Are you sure you want to delete the Shopping budget?".equals(div.getText().trim())) {
                     this.confirmDeleteButton = dialog.findElement(By.xpath(".//button[text()='Delete']"));
                     elementMap.put("confirmDeleteButton", confirmDeleteButton);
                     return;
