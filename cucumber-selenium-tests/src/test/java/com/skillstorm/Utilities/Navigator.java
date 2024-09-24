@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import com.skillstorm.PageObjects.AccountsPage;
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
