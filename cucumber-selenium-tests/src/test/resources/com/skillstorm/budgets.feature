@@ -67,4 +67,7 @@ so I can limit and track my spending.
     When I click the "Edit-Spending-Budget" button
     And I enter "6000" for the new Spending Budget
     And I click the "Submit-Spending-Budget" button
+    And I click the "Edit-Spending-Budget" button
+    And I enter "2" for the new Spending Budget
+    And I click the "Submit-Spending-Budget" button
     Then I can see a Spending Budget of "$6,000.00"
