@@ -3,8 +3,8 @@ Feature:
     Scenario: DB1 - looking at drop down options when logged in
         Given I have multiple "<objects>"
         And I am on the "Dashboard" page
-        When I click on "<option>" option
-        Then I can see the "<list>"
+        When I click on the "<option>" option on Dashboard
+        Then I can see the "<list>" on Dashboard
 
         Examples:
         | objects           | option        | list             |
