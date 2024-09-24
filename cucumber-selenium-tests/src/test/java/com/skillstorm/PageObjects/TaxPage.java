@@ -259,8 +259,11 @@ public class TaxPage extends Page {
 
     public boolean checkIfDeleteWorked(){
         driver.navigate().refresh();
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(),'SINGLE')]")));
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
     }
 
