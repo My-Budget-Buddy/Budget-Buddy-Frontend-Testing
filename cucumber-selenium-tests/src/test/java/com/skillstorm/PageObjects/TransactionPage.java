@@ -201,7 +201,6 @@ public class TransactionPage extends Page{
         for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
-            System.out.println(rowText);
             if(!rowText.isEmpty() && rowText.contains("Income") && rowText.contains("$10,087.99")) {
                 return true;
             }

@@ -256,12 +256,6 @@ public class TransactionHistoryPage  extends Page{
         return category;
     }
 
-    // public void clickSubmitBtn() {
-    //     WebElement submitBtn = waitForElement(createSubmitBtn, 10);
-    //     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
-    //     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
-    //     //submitBtn.click();
-    // }
 
     /**
      * Confirm the creation of a transaction by retrieving the first row of the transaction table.
