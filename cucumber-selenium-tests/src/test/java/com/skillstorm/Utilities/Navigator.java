@@ -166,8 +166,7 @@ public class Navigator {
     }
 
     private void navigateToSignup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
+        driver.get(URL_SIGNUP);
     }
 
     private void navigateToLogin() {       
