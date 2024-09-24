@@ -9,7 +9,10 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
+import com.skillstorm.PageObjects.AccountsPage;
+import com.skillstorm.PageObjects.DashboardPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
@@ -23,7 +26,7 @@ public class Navigator {
     public static final String PGNAME_SIGNUP= "Signup";
     public static final String PGNAME_DASHBOARD= "Dashboard";
     public static final String PGNAME_ACCOUNTS= "Accounts";
-    public static final String PGNAME_BUDGET= "Budget";
+    public static final String PGNAME_BUDGET= "Budgets";
     public static final String PGNAME_SPENDING= "Spending";
     public static final String PGNAME_SPENDINGMONTH= "SpendingMonth";
     public static final String PGNAME_TRANSACTIONS= "Transactions";
@@ -38,8 +41,8 @@ public class Navigator {
     public static final String URL_LOGIN= URL + "/login";
     public static final String URL_SIGNUP= URL + "/register";
     public static final String URL_DASHBOARD= URL + "/dashboard";
-    public static final String URL_ACCOUNTS= "";
-    public static final String URL_BUDGET= "";
+    public static final String URL_ACCOUNTS= URL + "/dashboard/accounts";
+    public static final String URL_BUDGET= URL + "/dashboard/budgets";
     public static final String URL_SPENDING= URL + "/dashboard/spending";
     public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
@@ -47,7 +50,7 @@ public class Navigator {
     public static final String URL_TAX= URL + "/dashboard/tax";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
-    public static final String URL_ERROR= "";
+    public static final String URL_ERROR= URL + "/error";
 //#endregion
 
     Map<String, String> pageUrlMap = new HashMap<>();
@@ -56,7 +59,7 @@ public class Navigator {
 
     public Navigator(WebDriver driver){
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         pageUrlMap.put(PGNAME_ACCOUNTS, URL_ACCOUNTS);
         pageUrlMap.put(PGNAME_LOGIN, URL_LOGIN);
         pageUrlMap.put(PGNAME_LANDING, URL_LANDING);
@@ -152,19 +155,8 @@ public class Navigator {
     }
 
     private void navigateToTax() {
-        driver.get(URL_LOGIN);
-        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST, Authenticator.PASSWORD_NONPERSIST);
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.login(user);
-        
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        driver.get(URL_TAX);
-        wait.until(ExpectedConditions.urlMatches(URL_TAX));
-        
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'navigateToTax'");
     }
 
     private void navigateToSpendingMonth() {
@@ -176,8 +168,7 @@ public class Navigator {
     }
 
     private void navigateToSignup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
+        driver.get(URL_SIGNUP);
     }
 
     private void navigateToLogin() {       
@@ -191,8 +182,7 @@ public class Navigator {
     }
 
     private void navigateToError() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToError'");
+        driver.get(URL_ERROR);
     }
 
     private void navigateToDashboard() {
@@ -208,16 +198,31 @@ public class Navigator {
         }
         
         driver.get(URL_DASHBOARD);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardNavbar.BTN_DASHBOARD_ID)));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(DashboardPage.BTN_VIEW_ALL_TRANSACTIONS_ID)));
+        } catch (TimeoutException e) {
+            Assert.assertTrue( false, "Dashboard Not Loaded, Current Page: " + driver.getCurrentUrl());
+        }
+        
     }
 
     private void navigateToBudget() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToBudget'");
+        driver.get(URL_BUDGET);
     }
 
     private void navigateToAccounts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToAccounts'");
+        try {
+            driver.get(URL_ACCOUNTS);
+            wait.until(ExpectedConditions.urlMatches(URL_ACCOUNTS));
+        } catch (TimeoutException e) {
+            //load user
+            navigateToLogin();
+            User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login(user);
+        }
+        
+        driver.get(URL_ACCOUNTS);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(AccountsPage.NETCASH_BAR_ID)));
     }
 }

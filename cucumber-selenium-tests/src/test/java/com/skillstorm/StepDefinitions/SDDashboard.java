@@ -2,15 +2,12 @@ package com.skillstorm.StepDefinitions;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.NoSuchElementException;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.bidi.log.Log;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.DashboardPage;
@@ -84,6 +81,7 @@ public class SDDashboard {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);       
         LoginPage loginPage = new LoginPage(driver); 
         loginPage.login(seasonedUser);
+
     }
 
     /**
@@ -97,6 +95,9 @@ public class SDDashboard {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(seasonedUser);
 
+        //Waiting for make sure budget items are loaded
+        page = new DashboardPage(driver);
+        Assert.assertTrue( page.getAllBudgetItems().size() > 0, "Budget Items are not loaded");
     }
 
     /**
@@ -110,6 +111,9 @@ public class SDDashboard {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(seasonedUser);
 
+        //Waiting for make sure transactions are loaded
+        page = new DashboardPage(driver);
+        Assert.assertTrue( page.getWebElement(DashboardPage.NAME_TRANSACTION_ARROW) != null, "Transactions are not loaded");
     }
 
     /**
@@ -123,10 +127,9 @@ public class SDDashboard {
      * | Investments       | Investments   | Investments List |
      * 
      */
-    @When("I click on {string} option")
-    public void iClickOnOption (String accordianBtnName) {
+    @When("I click on the {string} option on Dashboard")
+    public void iClickOnTheOptionOnDashboard (String accordianBtnName) {
         //Load Dashboard page (check to make sure on correct page)
-        wait.until(ExpectedConditions.urlMatches(Navigator.URL_DASHBOARD));
         page = new DashboardPage(driver);
 
         //check to make sure the accordian table is currently not displayed
@@ -149,8 +152,9 @@ public class SDDashboard {
      * | Investments       | Investments   | Investments List |
      * 
      */
-    @Then("I can see the {string}")
-    public void iCanSeeThe(String listName) {
+    @Then("I can see the {string} on Dashboard")
+    public void iCanSeeTheListOnDashboard(String listName) {
+        page = new DashboardPage(driver);
         wait.until(ExpectedConditions.visibilityOf(
             page.getWebElement(listName)
         ));
@@ -212,7 +216,7 @@ public class SDDashboard {
         List<WebElement> budgetItems = page.getAllBudgetItems();
         Assert.assertTrue(
             budgetItems.size() == NUM_BUDGET_ITEMS,
-            "Budget Breakdown cannot be found"
+            "Budget Breakdown not correct. Num of Budget Items Found:" + budgetItems.size()
         );
     }
 
