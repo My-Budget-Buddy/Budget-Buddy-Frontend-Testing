@@ -33,7 +33,7 @@ public class SDLogin {
         }
     }
 
-    @Given("Login: I am on the login page")
+    @Given("I am on the login page")
     public void iAmOnTheLoginPage() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
     }
@@ -43,13 +43,45 @@ public class SDLogin {
         loginPage.iEnterValidLoginInformation("frontend.tests@gmail.com", "password1");
     }
 
+    @And("I enter invalid information")
+    public void iEnterInvalidLoginInformation() {
+        loginPage.iEnterInvalidLoginInformation();
+    }
+
     @When("I click the Login submit button")
     public void iClickTheLoginSubmitButton() {
         loginPage.clickButton(LoginPage.BTN_SUBMIT_NAME);
     }
+    
+    @When("I click the Show Password button")
+    public void iClickTheShowPasswordButton() {
+        loginPage.clickButton(LoginPage.BTN_SHOW_PASSWORD_NAME);
+    }
+
+    @When("I click the Create Account button")
+    public void iClickTheCreateAccountButton() {
+        loginPage.clickButton(LoginPage.BTN_CREATE_ACCOUNT_NAME);
+    }
 
     @Then("I am logged in")
-    public void  iAmRedirectedToTheDashboardPage() {
+    public void iAmLoggedIn() {
+        loginPage.waitAfterValidLoginSubmit();
         Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/dashboard"));
+    }
+
+    @Then("I am not logged in")
+    public void iAmNotLoggedIn() {
+        Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/login"));
+    }
+
+    @Then("I can see the password")
+    public void iCanSeeThePassword() {
+        Assert.assertTrue(loginPage.isPasswordShown());
+    }
+
+    @Then("I am redirected to the Signup page")
+    public void iAmRedirectedToTheSignupPage() {
+        loginPage.waitAfterRedirectingToSignupPage();
+        Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/register"));
     }
 }

@@ -49,7 +49,12 @@ public class LoginPage extends Page{
     public static final String BTN_GOOGLE_SIGNIN_ID = "btnGoogleSignIn";
     public static final String BTN_CREATE_ACCOUNT_ID = "linkRegister";
     public static final String BTN_SHOW_PASSWORD_ID = "btnShowLoginPassword";
+
+    // Dashboard locator
     public static final String BTN_DASHBOARDNAVBAR_ID = "navbar-dashboard";
+
+    // Signup locator
+    public static final String BTN_REGISTERACCOUNT_ID = "create-account";
 
     public static final String ALT_LOGIN_ID = "loginAlert";
 //#endregion
@@ -71,6 +76,9 @@ public class LoginPage extends Page{
 
     @FindBy(id = BTN_DASHBOARDNAVBAR_ID)
     private WebElement btnDashboardNavbar;
+
+    @FindBy(id = BTN_REGISTERACCOUNT_ID)
+    private WebElement btnRegisterAccount;
 
     // Modal fields
     @FindBy(id = IN_USERNAME_ID)
@@ -126,9 +134,20 @@ public class LoginPage extends Page{
         return foundAlert;
     }
 
+    /**
+     * Sends valid login information to the email address and password fields
+     */
     public void iEnterValidLoginInformation(String username, String password) {
         waitForElement(loginField, 10).sendKeys(username);
         waitForElement(passwordField, 10).sendKeys(password);
+    }
+
+    /**
+     * Sends invalid login information to the email address and password fields
+     */
+    public void iEnterInvalidLoginInformation() {
+        waitForElement(loginField, 10).sendKeys("unregistered.user@gmail.com");
+        waitForElement(passwordField, 10).sendKeys("badpassword");
     }
 
     /**
@@ -149,8 +168,6 @@ public class LoginPage extends Page{
         
         if(button != null) {
             waitForElement(button, 10).click();
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOf(btnDashboardNavbar));
         }
         else {
             throw new IllegalArgumentException("Button '" + name + "' does not exist.");
@@ -212,8 +229,11 @@ public class LoginPage extends Page{
     public WebElement getWebElement(String name) {
         switch (name) {
             case BTN_SUBMIT_NAME:
-                System.out.println("Returning btnLoginSubmit");
                 return btnLoginSubmit;
+            case BTN_SHOW_PASSWORD_NAME:
+                return btnShowPassword;
+            case BTN_CREATE_ACCOUNT_NAME:
+                return btnCreateAccount;
             default:
                 for (Component component : getChildComponents()) {
                     WebElement webElement = component.getWebElement(name);
@@ -223,6 +243,23 @@ public class LoginPage extends Page{
         }
 
         return null;
+    }
+
+    // Checks if the password field is displayed on login page
+    public boolean isPasswordShown() {
+        return passwordField.isDisplayed();
+    }
+
+    // Helper method to wait for login submit to redirect to dashboard page
+    public void waitAfterValidLoginSubmit() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(btnDashboardNavbar));
+    }
+
+    // Helper method to wait for login submit to redirect to Signup page
+    public void waitAfterRedirectingToSignupPage() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(btnRegisterAccount));
     }
 
     // Helper method to wait for element visibility
