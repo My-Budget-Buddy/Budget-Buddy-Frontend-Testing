@@ -106,6 +106,7 @@ public class SDBudgets {
         page.setDeleteButtonForShoppingBudget();
         //page.getWebElement("confirmDeleteButton").click();
         page.clickButton("confirmDeleteButton");
+        driver.navigate().refresh();
     }
 
     @When("I enter {string} for the Budget Name")

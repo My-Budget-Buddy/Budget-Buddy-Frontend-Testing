@@ -24,7 +24,6 @@ so I can limit and track my spending.
     And I save the new budget amount
     Then I can see a "Shopping" budget of "$600.00" in the budget list
 
-  # Assuemes there are other budgets in the list other than Shopping
   Scenario: Delete a budget
     Given I am on the "Budgets" page
     And there is a "Shopping" budget of "$600.00" in the budget list
