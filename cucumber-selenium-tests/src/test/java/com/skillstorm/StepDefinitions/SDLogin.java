@@ -66,12 +66,12 @@ public class SDLogin {
     @Then("I am logged in")
     public void iAmLoggedIn() {
         loginPage.waitAfterValidLoginSubmit();
-        Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/dashboard"));
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(Navigator.PGNAME_DASHBOARD)));
     }
 
     @Then("I am not logged in")
     public void iAmNotLoggedIn() {
-        Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/login"));
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(Navigator.PGNAME_LOGIN)));
     }
 
     @Then("I can see the password")
@@ -82,6 +82,6 @@ public class SDLogin {
     @Then("I am redirected to the Signup page")
     public void iAmRedirectedToTheSignupPage() {
         loginPage.waitAfterRedirectingToSignupPage();
-        Assert.assertTrue(driver.getCurrentUrl().equals("http://localhost:5173/register"));
+        Assert.assertTrue(driver.getCurrentUrl().equals(navigator.getURL(Navigator.PGNAME_SIGNUP)));
     }
 }
