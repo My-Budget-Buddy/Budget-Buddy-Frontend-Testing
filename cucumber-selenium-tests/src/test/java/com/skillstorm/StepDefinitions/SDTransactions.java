@@ -62,7 +62,7 @@ public class SDTransactions {
     /**
      * General Scenario Definitions
      */
-    @Given("I am on the Transactions page")
+    @And("I am on the Transactions page")
     public void iAmOnTheTranactionsPage() {
         transactions.clickTab();
         String expectedUrl = Navigator.URL_TRANSACTIONS;

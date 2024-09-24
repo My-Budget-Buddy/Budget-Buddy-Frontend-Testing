@@ -4,7 +4,7 @@ Feature: Features on the transactions page
 
   Scenario Outline:
     Given I login
-    Given I am on the Transactions page
+    And I am on the Transactions page
     When I click the "addTransactionModal" button
     And I fill in the "<name>", "<account>", "<amount>", and "<category>"
     And I click the "addTransactionBtn" button
@@ -17,13 +17,13 @@ Feature: Features on the transactions page
 
   Scenario:
     Given I login
-    Given I am on the Transactions page
+    And I am on the Transactions page
     Then I can see the list of all my transactions
 #-----------------------------UPDATE---------------------------#
 
   Scenario Outline:
     Given I login
-    Given I am on the Transactions page
+    And I am on the Transactions page
     When I click the edit icon
     And I update the "<name>", "<account>", "<amount>", and "<category>"
     And I click the "editTransactionBtn" button
@@ -36,14 +36,14 @@ Feature: Features on the transactions page
 
   Scenario:
     Given I login
-    Given I am on the Transactions page
+    And I am on the Transactions page
     When I click the Trash Icon button
     Then the transaction is not in the list
 #-----------------------------CATEGORY---------------------------#
 
   Scenario:
     Given I login
-    Given I am on the Transactions page
+    And I am on the Transactions page
     When I click the "allCategoriesDropDown" button
     And I click a "<category>" to filter based on
     Then only transactions with that category should be visible

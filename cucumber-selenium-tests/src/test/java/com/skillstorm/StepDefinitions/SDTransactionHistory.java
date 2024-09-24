@@ -56,7 +56,7 @@ public class SDTransactionHistory {
     /**
      * Navigate to the Transaction History page.
      */
-    @Given("I am on the Transaction History page")
+    @And("I am on the Transaction History page")
     public void iAmOnTheTransactionHistoryPage() {
         transactionHistory.getCurrentUrl();
         Assert.assertTrue(transactionHistory.bothTableAndGraphAreVisible());
@@ -78,7 +78,7 @@ public class SDTransactionHistory {
     /**
      * Navigate to the Transactions page.
      */
-    @Given("I start on the Transactions page")
+    @And("I start on the Transactions page")
     public void iStartOnTheTransactionPage() {
         transactionPage.clickTab();
     }

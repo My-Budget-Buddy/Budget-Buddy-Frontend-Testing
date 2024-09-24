@@ -4,7 +4,7 @@ Feature: Features on the transaction history page
 
   Scenario:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
@@ -13,11 +13,12 @@ Feature: Features on the transaction history page
 
   Scenario Outline:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
-    Given I am on the Transaction History page
+
+    And I am on the Transaction History page
     When I click the "addTransactionModal" button
     And I fill in the "<account>", "<amount>", and "<category>"
     And I click the "addTransactionBtn" button
@@ -30,21 +31,23 @@ Feature: Features on the transaction history page
 
   Scenario:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
-    Given I am on the Transaction History page
+
+    And I am on the Transaction History page
     Then I can see the list of all my past transactions for a specific transaction
 #-----------------------------UPDATE---------------------------#
 
   Scenario Outline:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
-    Given I am on the Transaction History page
+
+    And I am on the Transaction History page
     When I click the edit button
     And I update the "<account>", "<amount>", and "<category>"
     And I click the edit submit button
@@ -57,20 +60,22 @@ Feature: Features on the transaction history page
 
   Scenario:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
-    Given I am on the Transaction History page
+
+    And I am on the Transaction History page
     When I click on the Trash Icon button
     Then the transaction is not in the list of past transactions
 #-----------------------------GRAPHICAL SUMMARY---------------------------#
 
   Scenario:
     Given I login into the webapp
-    Given I start on the Transactions page
+    And I start on the Transactions page
     When I click the "btnTransactionArrow" button
     And I can see Transaction Detailed Information
     And I click the "viewHistoryBtn" button
-    Given I am on the Transaction History page
+
+    And I am on the Transaction History page
     Then I can see a graphical summary of my transaction history
