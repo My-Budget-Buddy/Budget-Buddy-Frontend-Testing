@@ -172,7 +172,6 @@ public class Navigator {
 
     private void navigateToLogin() {       
         driver.get(URL_LOGIN);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LandingNavbar.BTN_LANDING_ID)));
     }
 
     private void navigateToLanding() {
