@@ -1,6 +1,11 @@
 package com.skillstorm.StepDefinitions;
 
+import java.time.Duration;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.skillstorm.WebDriverSingleton;
@@ -18,15 +23,15 @@ public class SDLogin {
     private WebDriver driver;
     private LoginPage loginPage;
     private Navigator navigator;
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    @Before("@login-page")
+    @Before
     public void setUp() {
         driver = WebDriverSingleton.getDriver();
         navigator = new Navigator(driver);
-        loginPage = new LoginPage(driver);
     }
 
-    @After("@login-page")
+    @After
     public void tearDown() {
         if(driver != null){
             driver.quit();
@@ -36,6 +41,8 @@ public class SDLogin {
     @Given("I am on the login page")
     public void iAmOnTheLoginPage() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
+        loginPage = new LoginPage(driver);
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(LoginPage.BTN_SUBMIT_ID)));
     }
 
     @And("I enter valid information")

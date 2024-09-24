@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -95,6 +96,10 @@ public class LoginPage extends Page{
 
         // Initialize form and add elements
         formLogin = new Form(driver);
+
+        formLogin.setInput(IN_USERNAME_ID, IN_USERNAME_NAME);
+        formLogin.setInput(IN_PASSWORD_ID, IN_PASSWORD_NAME);
+        formLogin.setBtnSubmit(driver.findElement(By.id(BTN_SUBMIT_ID)), BTN_SUBMIT_NAME);
 
         // Initialize Footer
         footer = new Footer(driver);
