@@ -189,12 +189,10 @@ public class TransactionPage extends Page{
         return category;
     }
 
-    public String verifyTransactionDetails() {
+    public Boolean verifyTransactionCreated() {
         pause(500);
         List<WebElement> rows = transactionsTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
-
-        
 
         if (rowCounter < 1){
             throw new NoSuchElementException("No transactions found.");
@@ -203,8 +201,9 @@ public class TransactionPage extends Page{
         for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
-            if(!rowText.isEmpty()) {
-                return rowText;
+            System.out.println(rowText);
+            if(!rowText.isEmpty() && rowText.contains("Income") && rowText.contains("$10,087.99")) {
+                return true;
             }
         }
         
@@ -256,6 +255,29 @@ public class TransactionPage extends Page{
         }
 
         return category;
+    }
+
+    public String verifyTransactionDetails() {
+        pause(500);
+        List<WebElement> rows = transactionsTable.findElements(By.tagName("tr"));
+        int rowCounter = rows.size();
+
+        
+
+        if (rowCounter < 1){
+            throw new NoSuchElementException("No transactions found.");
+        }
+
+        for (int i = 1; i < rowCounter; i++) {
+            WebElement row = rows.get(i);
+            String rowText = waitForElement(row, 10).getText();
+            if(!rowText.isEmpty()) {
+                return rowText;
+            }
+        }
+        
+        // If no valid information found in the first or second row
+        throw new NoSuchElementException("No valid transaction found in any rows.");
     }
 
         

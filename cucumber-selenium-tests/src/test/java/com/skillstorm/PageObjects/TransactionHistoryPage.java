@@ -268,7 +268,7 @@ public class TransactionHistoryPage  extends Page{
      * 
      * @return the text of the first row
      */
-    public String confirmCreation() {
+    public Boolean confirmCreation() {
         pause(1500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
@@ -280,8 +280,8 @@ public class TransactionHistoryPage  extends Page{
         for (int i = 1; i < rowCounter; i++) {
             WebElement row = rows.get(i);
             String rowText = waitForElement(row, 10).getText();
-            if(!rowText.isEmpty()) {
-                return rowText;
+            if(!rowText.isEmpty() && rowText.contains("Transportation") && rowText.contains("$300.00")) {
+                return true;
             }
         }
         
