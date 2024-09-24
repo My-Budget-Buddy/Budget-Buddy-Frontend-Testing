@@ -40,7 +40,7 @@ public class Navigator {
     public static final String URL_SIGNUP= URL + "/register";
     public static final String URL_DASHBOARD= URL + "/dashboard";
     public static final String URL_ACCOUNTS= "";
-    public static final String URL_BUDGET= "http://localhost:5173/dashboard/budgets";
+    public static final String URL_BUDGET= URL + "/dashboard/budgets";
     public static final String URL_SPENDING= "";
     public static final String URL_SPENDINGMONTH= "";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
