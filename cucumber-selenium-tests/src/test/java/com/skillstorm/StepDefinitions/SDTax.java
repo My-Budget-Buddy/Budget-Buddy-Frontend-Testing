@@ -18,7 +18,7 @@ import static org.testng.Assert.assertFalse;;
  * This class represents the step definitions for the TaxPage feature.
  * It contains the implementation of the test steps related to the TaxPage functionality.
  */
-public class TaxPageSteps {
+public class SDTax {
     private WebDriver driver;
     private TaxPage taxPage;
     
@@ -34,19 +34,6 @@ public void tearDown() {
 }
     
 
-
-
-//     @Given("I am on the {string} page")
-// public void i_am_on_the_tax_page(String page) {
-//     taxPage.getMain();
-//     taxPage.login();
-//     taxPage.NavigateToTaxPage();
-//     System.out.print(driver.getCurrentUrl());
-// }
-// @When("I click the {string} button")
-// public void i_click_the_main_button_button(String button) {
-//     taxPage.clickDeleteOrEdit(button);
-// }
 @Then("I should see the tax estimation form deleted")
 public void i_should_see_the_tax_estimation_form_deleted() {
     assertFalse(taxPage.checkIfDeleteWorked());

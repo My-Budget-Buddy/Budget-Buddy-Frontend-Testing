@@ -6,9 +6,7 @@ package com.skillstorm.PageObjects;
 import java.time.Duration;
 import java.util.List;
 
-
-
-
+import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 
 import org.openqa.selenium.By;
@@ -19,15 +17,20 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TaxPage extends Page {
     private WebDriver driver;
 
+    // Child Component
+    private DashboardNavbar dashboardNavbar;
+
     public TaxPage(WebDriver driver) {
         super(driver); // Explicitly invoke the constructor of the superclass
         this.driver = driver;
+        navbar = new DashboardNavbar(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         PageFactory.initElements(driver, this);
     }
@@ -203,41 +206,6 @@ public class TaxPage extends Page {
 
 
 
-    //Login Page
-    // private static final String url = "http://localhost:5173/login";
-
-    // public void getMain() {
-    //     try {
-    //         Thread.sleep(1000);
-    //     } catch (InterruptedException e) {
-    //         e.printStackTrace();
-    //     }
-    //     this.driver.get(url);
-    // }
-
-    //login to site
-    // public void login() {
-    //     try {
-    //         Thread.sleep(1000);
-    //     } catch (InterruptedException e) {
-    //         e.printStackTrace();
-    //     }
-    //     emailField.sendKeys("joseph.sam@gmail.com");
-    //     passwordField.sendKeys("password1");
-    //     loginButton.click();
-
-    // }
-    // //Navigate to tax page
-    // public void NavigateToTaxPage() {
-    //     try {
-    //         Thread.sleep(1000);
-    //     } catch (InterruptedException e) {
-    //         e.printStackTrace();
-    //     }
-        
-    //     taxLink.click();
-    // }
-
     public boolean checkForListOfExistingTaxEstimationRecords() {
         try {
             Thread.sleep(1000);
@@ -289,6 +257,11 @@ public class TaxPage extends Page {
     }
 
 
+    /*The following method is used to check if the delete button worked. 
+    It will return true if the record is still there.
+     It will return false if the record is not there.
+     meaning false is a successful deletion and true is a failed deletion.
+     */
 
     public boolean checkIfDeleteWorked(){
         driver.navigate().refresh();
@@ -424,8 +397,7 @@ public class TaxPage extends Page {
     
     @Override
     public List<Component> getChildComponents() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponents'");
+        return Arrays.asList(dashboardNavbar);
     }
 
     @Override
