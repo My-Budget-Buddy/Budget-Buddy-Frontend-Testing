@@ -14,6 +14,7 @@ import org.testng.Assert;
 import com.skillstorm.WebDriverSingleton;
 import com.skillstorm.PageObjects.BudgetsPage;
 import com.skillstorm.PageObjects.LoginPage;
+import com.skillstorm.Utilities.Authenticator;
 import com.skillstorm.Utilities.Navigator;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
@@ -43,6 +44,15 @@ public class SDBudgets {
     public void tearDown() {
         WebDriverSingleton.quitDriver();
     }
+
+    @Given("Budgets: I am logged in")
+    public void iAmLoggedIn() {
+        navigator.navigateTo(Navigator.PGNAME_LOGIN);
+        LoginPage loginPage = new LoginPage(driver);
+        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST, Authenticator.PASSWORD_NONPERSIST);
+        loginPage.login(user);
+    }
+
 
     @Given("there is a {string} budget of {string} in the budget list")
     public void thereIsABudgetInTheBudgetList(String budgetCategory, String budgetedAmount) {
@@ -187,6 +197,7 @@ public class SDBudgets {
     public void iCanSeeABudgetInTheBudgetListWithTheNewInformation(String budgetCategory, String budgetedAmount) {
         WebElement budgetTable = page.getWebElement("budgetsTable");
         wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        //pause(1000);
 
         List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -211,6 +222,7 @@ public class SDBudgets {
     public void iCannotSeeABudgetInTheBudgetList(String budgetCategory) {
         WebElement budgetTable = page.getWebElement("budgetsTable");
         wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        //pause(1000);
 
         List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -233,6 +245,7 @@ public class SDBudgets {
     public void thenICanSeeASavingsBucketInTheSavingsBucketTable(String budgetName, String amountRequired) {
         WebElement savingsBucketTable = page.getWebElement("savingsBucketTable");
         wait.until(ExpectedConditions.visibilityOf(savingsBucketTable));
+        //pause(1000);
 
         List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -257,6 +270,7 @@ public class SDBudgets {
     public void iCannotSeeASavingsBucketInTheSavingsBucketTable(String bucketName) {
         WebElement savingsBucketTable = page.getWebElement("savingsBucketTable");
         wait.until(ExpectedConditions.visibilityOf(savingsBucketTable));
+        //pause(1000);
 
         List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -282,6 +296,14 @@ public class SDBudgets {
         boolean budgetUpdated = wait.until(ExpectedConditions.textToBePresentInElement(spendingBudgetDiv, amount));
         Assert.assertTrue(budgetUpdated, "The spending budget is not updated to " + amount + ". Instead, it is "
                 + spendingBudgetDiv.getText());
+    }
+
+    private void pause(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
