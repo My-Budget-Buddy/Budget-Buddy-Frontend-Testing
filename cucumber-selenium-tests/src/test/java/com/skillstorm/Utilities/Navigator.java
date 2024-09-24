@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.skillstorm.PageObjects.AccountsPage;
 import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
@@ -38,7 +39,7 @@ public class Navigator {
     public static final String URL_LOGIN= URL + "/login";
     public static final String URL_SIGNUP= URL + "/register";
     public static final String URL_DASHBOARD= URL + "/dashboard";
-    public static final String URL_ACCOUNTS= "";
+    public static final String URL_ACCOUNTS= URL + "/dashboard/accounts";
     public static final String URL_BUDGET= "";
     public static final String URL_SPENDING= URL + "/dashboard/spending";
     public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
@@ -56,7 +57,7 @@ public class Navigator {
 
     public Navigator(WebDriver driver){
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         pageUrlMap.put(PGNAME_ACCOUNTS, URL_ACCOUNTS);
         pageUrlMap.put(PGNAME_LOGIN, URL_LOGIN);
         pageUrlMap.put(PGNAME_LANDING, URL_LANDING);
@@ -165,8 +166,7 @@ public class Navigator {
     }
 
     private void navigateToSignup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
+        driver.get(URL_SIGNUP);
     }
 
     private void navigateToLogin() {       
@@ -206,7 +206,18 @@ public class Navigator {
     }
 
     private void navigateToAccounts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToAccounts'");
+        try {
+            driver.get(URL_ACCOUNTS);
+            wait.until(ExpectedConditions.urlMatches(URL_ACCOUNTS));
+        } catch (TimeoutException e) {
+            //load user
+            navigateToLogin();
+            User user = new User(UserType.PERSISTANT, Authenticator.USERNAME_PERSISTENT, Authenticator.PASSWORD_PERSISTENT);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login(user);
+        }
+        
+        driver.get(URL_ACCOUNTS);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(AccountsPage.NETCASH_BAR_ID)));
     }
 }
