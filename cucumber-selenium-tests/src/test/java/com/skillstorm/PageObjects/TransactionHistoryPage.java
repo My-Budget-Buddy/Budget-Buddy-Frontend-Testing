@@ -249,6 +249,7 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
+            waitForElement(option, 10).click();
         }
         return category;
     }
@@ -329,6 +330,7 @@ public class TransactionHistoryPage  extends Page{
         if (category != null && !category.isEmpty()) {
             waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
+            waitForElement(option, 10).click();
             waitForElement(option, 10).click();
         }
         return category;
