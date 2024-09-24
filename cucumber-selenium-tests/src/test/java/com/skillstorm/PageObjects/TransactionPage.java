@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -183,7 +184,7 @@ public class TransactionPage extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
-            option.click();
+            categoryDropdown.sendKeys(Keys.ENTER);
         }
         return category;
     }
@@ -251,7 +252,7 @@ public class TransactionPage extends Page{
             waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
-            option.click();
+            editTransactionCategoryField.sendKeys(Keys.ENTER);
         }
 
         return category;

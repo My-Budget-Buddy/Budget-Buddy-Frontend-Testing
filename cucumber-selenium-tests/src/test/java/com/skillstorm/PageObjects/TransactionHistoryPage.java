@@ -1,5 +1,6 @@
 package com.skillstorm.PageObjects;
 
+import java.security.Key;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,7 +63,7 @@ public class TransactionHistoryPage  extends Page{
     private WebElement categoryDropdown;
 
     @FindBy(id = "addTransactionBtn")
-    private WebElement submitBtn;
+    private WebElement createSubmitBtn;
 
     // Filter Dropdowns (for filtering transactions)
     @FindBy(id = "allCategoriesDropDown")
@@ -249,9 +251,15 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
-            waitForElement(option, 10).click();
+            categoryDropdown.sendKeys(Keys.ENTER);
         }
         return category;
+    }
+
+    public void clickSubmitBtn() {
+        WebElement submitBtn = waitForElement(createSubmitBtn, 10);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
     }
 
     /**
@@ -331,7 +339,7 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
-            waitForElement(option, 10).click();
+            editCategoryField.sendKeys(Keys.ENTER);
         }
         return category;
     }
