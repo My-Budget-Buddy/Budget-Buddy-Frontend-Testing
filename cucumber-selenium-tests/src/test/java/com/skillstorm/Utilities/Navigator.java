@@ -11,9 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.skillstorm.PageObjects.AccountsPage;
-import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.PageObjects.Components.Navbar.DashboardNavbar;
 import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
+import com.skillstorm.PageObjects.LoginPage;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
 
@@ -35,7 +35,7 @@ public class Navigator {
     public static final String PGNAME_TAXRESULTS= "TaxResults";
     public static final String PGNAME_ERROR= "Error";
 
-    public static final String URL = "http://localhost:5173";
+    public static final String URL = System.getProperty("frontendUrl", "http://localhost:5173");
     public static final String URL_LANDING= URL;
     public static final String URL_LOGIN= URL + "/login";
     public static final String URL_SIGNUP= URL + "/register";
