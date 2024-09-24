@@ -103,7 +103,6 @@ public class BudgetsPage extends Page {
     @FindBy(id = "Spending-Budget-Div")
     private WebElement spendingBudgetDiv;
 
-    @FindBy(css = "div.nav-container.bg-\\[\\#005ea2\\].px-6.h-screen.min-w-64.max-w-min-w-64.flex.flex-col.pt-6")
     private Navbar navbar;
 
     // Edit and Delete Budget Modal Elements
@@ -165,8 +164,7 @@ public class BudgetsPage extends Page {
 
     @Override
     public List<WebElement> getWebElements() {
-        List<WebElement> webElements = Arrays.asList(summaryComponentDiv, addNewBudgetButton,
-                budgetsTable, savingsBucketTable);
+        List<WebElement> webElements = new ArrayList<>(elementMap.values());
 
         System.out.println("Web elements: " + webElements);
 
@@ -235,6 +233,7 @@ public class BudgetsPage extends Page {
                 }
             }
         }
+        throw new IllegalArgumentException("No dialog found with the specified inputs.");
     }
 
     public void setDeleteButtonForGroceriesBudget() {
