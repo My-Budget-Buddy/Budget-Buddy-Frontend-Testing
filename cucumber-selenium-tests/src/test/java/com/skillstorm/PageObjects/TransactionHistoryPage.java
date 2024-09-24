@@ -359,6 +359,9 @@ public class TransactionHistoryPage  extends Page{
     public void clickTrashIcon() {
         pause(500);
         transactionHistoryTableBeforeDeletion = waitForElement(transactionHistoryTable, 10).findElements(By.tagName("tr")).size();
+        if (transactionHistoryTableBeforeDeletion == 0){
+            throw new NoSuchElementException("No transactions found.");
+        }
         waitForElement(deleteBtn, 10).click();
     }
 
