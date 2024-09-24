@@ -183,6 +183,7 @@ public class TransactionPage extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
+            option.click();
         }
         return category;
     }
@@ -249,6 +250,7 @@ public class TransactionPage extends Page{
         if (category != null && !category.isEmpty()) {
             waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
+            option.click();
             option.click();
         }
 
