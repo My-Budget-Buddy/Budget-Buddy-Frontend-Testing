@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -207,12 +208,8 @@ public class TaxPage extends Page {
 
 
     public boolean checkForListOfExistingTaxEstimationRecords() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(d -> driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0);
         return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
 
     }
@@ -234,11 +231,8 @@ public class TaxPage extends Page {
     }
 
     public void clickDeleteOrEdit(String button){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id(button)));
         clickButton(button);
 
     }
@@ -265,11 +259,8 @@ public class TaxPage extends Page {
 
     public boolean checkIfDeleteWorked(){
         driver.navigate().refresh();
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//td[contains(text(),'SINGLE')]")));
         return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
     }
 
@@ -402,21 +393,36 @@ public class TaxPage extends Page {
 
     @Override
     public Component getChildComponent(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getChildComponent'");
+        switch (name) {
+            case "dashboardNavbar":
+            return dashboardNavbar;
+            default:
+            throw new IllegalArgumentException("No child component found with name: " + name);
+        }
     }
 
 
     @Override
     public List<WebElement> getButtons() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getButtons'");
+        return Arrays.asList(
+            MainEditButton, MainDeleteButton, nextButton, previousButton, PISaveButton, w2AddButton, w2SubmitButton,
+            w2EditButton, w2DeleteButton, w2SaveButton, OISaveButton, deductSaveButton, deductEditButton, deductDeleteButton,
+            deductAddButton, deductSubmitButton, reviewW2PreviousButton, reviewW2NextButton, reviewDeductPreviousButton,
+            reviewDeductNextButton, reviewSubmitButton, fileTaxesButton, estimateRefundButton, documentChecklistButton,
+            refundPlanningButton
+        );
     }
 
     @Override
     public List<WebElement> getWebElements() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getWebElements'");
+        List<WebElement> elements = Arrays.asList(
+            MainEditButton, MainDeleteButton, nextButton, previousButton, PISaveButton, w2AddButton, w2SubmitButton,
+            w2EditButton, w2DeleteButton, w2SaveButton, OISaveButton, deductSaveButton, deductEditButton, deductDeleteButton,
+            deductAddButton, deductSubmitButton, reviewW2PreviousButton, reviewW2NextButton, reviewDeductPreviousButton,
+            reviewDeductNextButton, reviewSubmitButton, fileTaxesButton, estimateRefundButton, documentChecklistButton,
+            refundPlanningButton
+        );
+        return elements;
     }
 
     
