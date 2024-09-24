@@ -1,5 +1,6 @@
 package com.skillstorm.PageObjects;
 
+import java.security.Key;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,7 +63,7 @@ public class TransactionHistoryPage  extends Page{
     private WebElement categoryDropdown;
 
     @FindBy(id = "addTransactionBtn")
-    private WebElement submitBtn;
+    private WebElement createSubmitBtn;
 
     // Filter Dropdowns (for filtering transactions)
     @FindBy(id = "allCategoriesDropDown")
@@ -249,9 +251,17 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='create-transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
+            pause(1000);
         }
         return category;
     }
+
+    // public void clickSubmitBtn() {
+    //     WebElement submitBtn = waitForElement(createSubmitBtn, 10);
+    //     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
+    //     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
+    //     //submitBtn.click();
+    // }
 
     /**
      * Confirm the creation of a transaction by retrieving the first row of the transaction table.
@@ -259,14 +269,24 @@ public class TransactionHistoryPage  extends Page{
      * @return the text of the first row
      */
     public String confirmCreation() {
+        pause(1500);
         List<WebElement> rows = transactionHistoryTable.findElements(By.tagName("tr"));
         int rowCounter = rows.size();
 
-        if(rowCounter >= 2) {
-            WebElement secondToLastRow = rows.get(rowCounter - 2);
-            return waitForElement(secondToLastRow, 10).getText();
+        if (rowCounter < 1){
+            throw new NoSuchElementException("No transactions found.");
         }
-        return waitForElement(transactionHistoryTableFirstRow, 10).getText();
+
+        for (int i = 1; i < rowCounter; i++) {
+            WebElement row = rows.get(i);
+            String rowText = waitForElement(row, 10).getText();
+            if(!rowText.isEmpty()) {
+                return rowText;
+            }
+        }
+        
+        // If no valid information found in the first or second row
+        throw new NoSuchElementException("No valid transaction found in any rows.");
     }
 
     // ===================== Read Transaction Methods =====================
@@ -320,6 +340,7 @@ public class TransactionHistoryPage  extends Page{
             waitForElement(editCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             waitForElement(option, 10).click();
+            //editCategoryField.sendKeys(Keys.ENTER);
         }
         return category;
     }
@@ -349,6 +370,9 @@ public class TransactionHistoryPage  extends Page{
     public void clickTrashIcon() {
         pause(500);
         transactionHistoryTableBeforeDeletion = waitForElement(transactionHistoryTable, 10).findElements(By.tagName("tr")).size();
+        if (transactionHistoryTableBeforeDeletion == 0){
+            throw new NoSuchElementException("No transactions found.");
+        }
         waitForElement(deleteBtn, 10).click();
     }
 

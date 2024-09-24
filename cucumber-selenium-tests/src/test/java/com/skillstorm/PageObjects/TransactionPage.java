@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -115,6 +116,7 @@ public class TransactionPage extends Page{
 
     //child component
     DashboardNavbar navbar;
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     // Constructor
     public TransactionPage(WebDriver driver) {
@@ -143,10 +145,10 @@ public class TransactionPage extends Page{
 
 
     public void clickTab() {
-        //pause(500);
+        pause(500);
         navbar = new DashboardNavbar(driver);
         navbar.clickButton(DashboardNavbar.BTN_TRANSACTIONS_NAME);
-        //pause(500);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("btnTransactionArrow")));
     }
 
 
@@ -182,13 +184,32 @@ public class TransactionPage extends Page{
             waitForElement(categoryDropdown, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='transaction-category']/option[text()='" + category + "']"));
             option.click();
+            pause(1000);
         }
         return category;
     }
 
     public String verifyTransactionDetails() {
-        //pause(1000);
-        return waitForElement(transactionsTableFirstRow, 30).getText();
+        pause(500);
+        List<WebElement> rows = transactionsTable.findElements(By.tagName("tr"));
+        int rowCounter = rows.size();
+
+        
+
+        if (rowCounter < 1){
+            throw new NoSuchElementException("No transactions found.");
+        }
+
+        for (int i = 1; i < rowCounter; i++) {
+            WebElement row = rows.get(i);
+            String rowText = waitForElement(row, 10).getText();
+            if(!rowText.isEmpty()) {
+                return rowText;
+            }
+        }
+        
+        // If no valid information found in the first or second row
+        throw new NoSuchElementException("No valid transaction found in any rows.");
     }
 
     // Read Transaction Methods
@@ -231,6 +252,7 @@ public class TransactionPage extends Page{
             waitForElement(editTransactionCategoryField, 10).click();
             WebElement option = driver.findElement(By.xpath("//*[@id='edit-transaction-category']/option[text()='" + category + "']"));
             option.click();
+            //editTransactionCategoryField.sendKeys(Keys.ENTER);
         }
 
         return category;
@@ -242,7 +264,7 @@ public class TransactionPage extends Page{
 
     // Delete Transaction Methods
     public void clickDeleteBtn() {
-        //pause(2000);
+        pause(500);
         tableSizeBeforeDeletion = transactionsTable.getText().length();
         waitForElement(deleteBtn, 10).click();
     }

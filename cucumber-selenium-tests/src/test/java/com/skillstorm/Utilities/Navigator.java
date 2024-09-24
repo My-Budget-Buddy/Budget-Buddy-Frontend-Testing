@@ -19,7 +19,6 @@ import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.Utilities.UserData.User;
 import com.skillstorm.Utilities.UserData.UserType;
 
-
 public class Navigator {
 //#region Static fields
     public static final String PGNAME_LANDING= "Landing";
@@ -48,7 +47,7 @@ public class Navigator {
     public static final String URL_SPENDINGMONTH= URL + "/dashboard/spending/May";
     public static final String URL_TRANSACTIONS= URL + "/dashboard/transactions";
     public static final String URL_TRANSACTIONSHISTORY= "";
-    public static final String URL_TAX= "";
+    public static final String URL_TAX= URL + "/dashboard/tax";
     public static final String URL_TAXEDITVIEW= "";
     public static final String URL_TAXRESULTS= "";
     public static final String URL_ERROR= "";
@@ -169,8 +168,7 @@ public class Navigator {
     }
 
     private void navigateToSignup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'navigateToSignup'");
+        driver.get(URL_SIGNUP);
     }
 
     private void navigateToLogin() {       
