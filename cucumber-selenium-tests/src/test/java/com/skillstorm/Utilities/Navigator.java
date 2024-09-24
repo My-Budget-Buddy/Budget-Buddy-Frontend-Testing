@@ -152,19 +152,8 @@ public class Navigator {
     }
 
     private void navigateToTax() {
-        driver.get(URL_LOGIN);
-        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST, Authenticator.PASSWORD_NONPERSIST);
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage.login(user);
-        
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        driver.get(URL_TAX);
-        wait.until(ExpectedConditions.urlMatches(URL_TAX));
-        
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'navigateToTax'");
     }
 
     private void navigateToSpendingMonth() {
