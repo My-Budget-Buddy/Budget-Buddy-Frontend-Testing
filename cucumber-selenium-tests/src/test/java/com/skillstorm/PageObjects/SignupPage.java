@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -38,6 +39,7 @@ public class SignupPage extends Page {
     public static final String BTN_CREATEACCOUNT_ID = "create-account";
     public static final String BTN_GOOGLESIGNIN_ID = "google-sign-in";
     public static final String BTN_LOGIN_ID = "link-login";
+    public static final String BTN_LOGINPAGELOGINSUBMIT_ID = "btnLoginSubmit";
 
     // Names
     public static final String FORM_SIGNUP_NAME = "Signup Form";
@@ -59,12 +61,30 @@ public class SignupPage extends Page {
     private Footer footer;
 
     // WebElements
-    @FindBy(id=BTN_SHOWPASSWORD_ID)
+    @FindBy(id = BTN_SHOWPASSWORD_ID)
     private WebElement btnShowPassword;
-    @FindBy(id=BTN_GOOGLESIGNIN_ID)
+
+    @FindBy(id = BTN_GOOGLESIGNIN_ID)
     private WebElement btnGoogleSignIn;
-    @FindBy(id=BTN_LOGIN_ID)
+
+    @FindBy(id = BTN_LOGIN_ID)
     private WebElement btnLogin;
+
+    @FindBy(id = BTN_CREATEACCOUNT_ID)
+    private WebElement btnCreateAccountSubmit;
+
+    @FindBy(id = BTN_LOGINPAGELOGINSUBMIT_ID)
+    private WebElement btnLoginSubmit;
+
+    // Modal fields
+    @FindBy(id = IN_USERNAME_ID)
+    private WebElement emailField;
+
+    @FindBy(id = IN_PASSWORD_ID)
+    private WebElement passwordField;
+
+    @FindBy(id = IN_CONFIRMPASSWORD_ID)
+    private WebElement confirmPasswordField;
 
     // --- CONSTRUCTORS ---
 
@@ -94,6 +114,34 @@ public class SignupPage extends Page {
     }
 
     // --- UNIQUE METHODS ---
+
+    /**
+     * Sends valid signup information to the email address, password, and confirm password fields
+     */
+    public void iEnterValidSignupInformation() {
+        String randomizedEmail = generateRandomString() + "@gmail.com";
+        waitForElement(emailField,10).sendKeys(randomizedEmail);
+        waitForElement(passwordField,10).sendKeys("password1");
+        waitForElement(confirmPasswordField,10).sendKeys("password1");
+    }
+
+    /**
+     * Sends invalid signup information to the email address, password, and confirm password fields
+     */
+    public void iEnterInvalidSignupInformation() {
+        waitForElement(emailField,10).sendKeys("notAnEmail");
+        waitForElement(passwordField,10).sendKeys("password1");
+        waitForElement(confirmPasswordField,10).sendKeys("password1");
+    }
+
+    /**
+     * Sends existing signup information to the email address, password, and confirm password fields
+     */
+    public void iEnterExistingSignupInformation() {
+        waitForElement(emailField,10).sendKeys("joseph.sam@gmail.com");
+        waitForElement(passwordField,10).sendKeys("password1");
+        waitForElement(confirmPasswordField,10).sendKeys("password1");
+    }
 
     /**
      * Performs the process of signing up.
@@ -180,8 +228,8 @@ public class SignupPage extends Page {
     @Override
     public WebElement getWebElement(String name) {
         switch (name) {
-            case BTN_GOOGLESIGNIN_NAME:
-                return btnGoogleSignIn;
+            case BTN_CREATEACCOUNT_NAME:
+                return btnCreateAccountSubmit;
             case BTN_LOGIN_NAME:
                 return btnLogin;
             case BTN_SHOWPASSWORD_NAME:
@@ -202,7 +250,7 @@ public class SignupPage extends Page {
      */
     @Override
     public List<WebElement> getButtons() {
-        return Arrays.asList(btnGoogleSignIn, btnLogin, btnShowPassword);
+        return Arrays.asList(btnCreateAccountSubmit, btnGoogleSignIn, btnLogin, btnShowPassword);
     }
 
     /**
@@ -212,7 +260,41 @@ public class SignupPage extends Page {
     public void clickButton(String name) {
         WebElement button = getWebElement(name);
         
-        if(button != null) button.click();
-        else throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        if(button != null) {
+            waitForElement(button, 10).click();
+        }
+        else {
+            throw new IllegalArgumentException("Button '" + name + "' does not exist.");
+        }
+    }
+
+    // Checks if the password field is displayed on signup page
+    public boolean isSignupPasswordShown() {
+        return passwordField.isDisplayed() && confirmPasswordField.isDisplayed();
+    }
+
+    // Helper method to wait for signup submit to redirect to login page
+    public void waitForLoginPageNavigation() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(btnLoginSubmit));
+    }
+
+    // Helper method to generate a random string for email registration
+    private String generateRandomString() {
+        String validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder stringBuilder = new StringBuilder();
+        Random rnd = new Random();
+        while (stringBuilder.length() < 6) {
+            int index = (int) (rnd.nextFloat() * validChars.length());
+            stringBuilder.append(validChars.charAt(index));
+        }
+        return stringBuilder.toString();
+
+    }
+
+    // Helper method to wait for element visibility
+    private WebElement waitForElement(WebElement element, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 }
