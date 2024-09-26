@@ -281,6 +281,8 @@ public class SignupPage extends Page {
             wait.until(ExpectedConditions.urlContains("login"));
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
     }
 
