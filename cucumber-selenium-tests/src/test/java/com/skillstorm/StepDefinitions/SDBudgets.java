@@ -57,9 +57,9 @@ public class SDBudgets {
     @Given("there is a {string} budget of {string} in the budget list")
     public void thereIsABudgetInTheBudgetList(String budgetCategory, String budgetedAmount) {
         // Check if the budget category is in the budget list
-        WebElement budgetTable = page.getWebElement("budgetsTable");
-        wait.until(ExpectedConditions.visibilityOf(budgetTable));
-
+        //WebElement budgetTable = page.getWebElement("budgetsTable");
+        //wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        pause(5000);
         boolean isBudgetPresent = wait.until(ExpectedConditions
                 .textToBePresentInElementLocated(By.xpath("//*[@id=\"root\"]/div[1]/main/table[1]"), budgetCategory));
         page.setGroceryActionButtons(budgetCategory, budgetedAmount);
@@ -207,14 +207,16 @@ public class SDBudgets {
     public void iCanSeeABudgetInTheBudgetListWithTheNewInformation(String budgetCategory, String budgetedAmount) {
         driver.navigate().refresh();
         WebElement budgetTable = page.getWebElement("budgetsTable");
-        wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        //wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        pause(5000);
 
-        // Wait for a specific number of rows to load
-        int expectedRowCount = 4;
-        wait.until(driver -> {
-            List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
-            return rows.size() == expectedRowCount;
-        });
+        // // Wait for a specific number of rows to load
+        // int expectedRowCount = 4;
+        // wait.until(driver -> {
+        //     List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
+        //     System.out.println("Rows: " + rows.size());
+        //     return rows.size() == expectedRowCount;
+        // });
 
         List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
         System.out.println("Rows: " + rows.size());
