@@ -275,8 +275,13 @@ public class SignupPage extends Page {
 
     // Helper method to wait for signup submit to redirect to login page
     public void waitForLoginPageNavigation() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(btnLoginSubmit));
+        try {
+            Thread.sleep(1000);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.urlContains("login"));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // Helper method to generate a random string for email registration

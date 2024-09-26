@@ -208,10 +208,8 @@ public class TaxPage extends Page {
 
 
     public boolean checkForListOfExistingTaxEstimationRecords() {
-        Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(d -> driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
-
     }
 
     @Override
@@ -238,11 +236,18 @@ public class TaxPage extends Page {
     }
 
     public void assureTaxRecordAppears(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         clickButton("fileTaxesButton");
         clickButton("estimateRefundButton");
         clickButton("documentChecklistButton");
         clickButton("refundPlanningButton");
         driver.navigate().refresh();
+        
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
