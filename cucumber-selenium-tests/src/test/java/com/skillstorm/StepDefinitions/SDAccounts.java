@@ -35,6 +35,7 @@ public class SDAccounts {
     public void scenarioSetUp() {
         driver = WebDriverSingleton.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         navigator = new Navigator(driver);
 
         //make sure user is logged out to start with
