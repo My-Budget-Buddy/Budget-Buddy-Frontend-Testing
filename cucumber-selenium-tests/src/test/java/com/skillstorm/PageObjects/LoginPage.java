@@ -27,8 +27,8 @@ import com.skillstorm.PageObjects.Components.Navbar.LandingNavbar;
 import com.skillstorm.PageObjects.Interfaces.Component;
 import com.skillstorm.Utilities.UserData.User;
 
-public class LoginPage extends Page{
-//#region Static fields
+public class LoginPage extends Page {
+    // #region Static fields
     // Names
     public static final String FORM_LOGIN_NAME = "Login form";
     public static final String FOOTER_NAME = "Footer";
@@ -58,7 +58,7 @@ public class LoginPage extends Page{
     public static final String BTN_REGISTERACCOUNT_ID = "create-account";
 
     public static final String ALT_LOGIN_ID = "loginAlert";
-//#endregion
+    // #endregion
 
     private Form formLogin;
     private Footer footer;
@@ -84,7 +84,7 @@ public class LoginPage extends Page{
     // Modal fields
     @FindBy(id = IN_USERNAME_ID)
     private WebElement loginField;
-    
+
     @FindBy(id = IN_PASSWORD_ID)
     private WebElement passwordField;
 
@@ -110,14 +110,30 @@ public class LoginPage extends Page{
 
     /**
      * Enters information for a given user into the login form and submits it.
-     * @param user  User data to put into the form.
-     * @return      Success rate of the login attempt.
+     * 
+     * @param user User data to put into the form.
+     * @return Success rate of the login attempt.
      */
-    public boolean login(User user){
+    public boolean login(User user) {
         // Complete the form
         formLogin.sendInput(IN_USERNAME_NAME, user.getUsername());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         formLogin.sendInput(IN_PASSWORD_NAME, user.getPassword());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         formLogin.submit();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // Check for success
         return !checkForAlerts();
@@ -125,9 +141,10 @@ public class LoginPage extends Page{
 
     /**
      * Checks if an alert pops up within 10ms
-     * @return  Alert presence status.
+     * 
+     * @return Alert presence status.
      */
-    public boolean checkForAlerts(){
+    public boolean checkForAlerts() {
         boolean foundAlert = false;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10));
         try {
@@ -165,19 +182,19 @@ public class LoginPage extends Page{
 
     /**
      * Maps the button names in the static fields to a click action.
+     * 
      * @param name Name of the button to click.
      */
     @Override
     public void clickButton(String name) {
         WebElement button = getWebElement(name);
-        
-        if(button != null) {
+
+        if (button != null) {
             waitForElement(button, 10).click();
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Button '" + name + "' does not exist.");
         }
-       
+
     }
 
     /**
@@ -190,13 +207,16 @@ public class LoginPage extends Page{
 
     /**
      * Retrieves a component given a name. Does not search child components.
-     * @param name  Name of the component to retrieve.
-     * @return      Component tied to that name, or null if not found.
+     * 
+     * @param name Name of the component to retrieve.
+     * @return Component tied to that name, or null if not found.
      */
     @Override
     public Component getChildComponent(String name) {
-        if(name.equals(FORM_LOGIN_NAME)) return formLogin;  // Directly exists here
-        if(name.equals(FOOTER_NAME)) return footer;
+        if (name.equals(FORM_LOGIN_NAME))
+            return formLogin; // Directly exists here
+        if (name.equals(FOOTER_NAME))
+            return footer;
 
         // Couldn't find.
         return null;
@@ -227,8 +247,9 @@ public class LoginPage extends Page{
 
     /**
      * Retrieves a WebElement given a name. Searches child components as well.
-     * @param name  Name of the WebElement to search for.
-     * @return      WebElement tied to that name, or null if not found.
+     * 
+     * @param name Name of the WebElement to search for.
+     * @return WebElement tied to that name, or null if not found.
      */
     @Override
     public WebElement getWebElement(String name) {
@@ -242,7 +263,8 @@ public class LoginPage extends Page{
             default:
                 for (Component component : getChildComponents()) {
                     WebElement webElement = component.getWebElement(name);
-                    if(webElement != null) return webElement;
+                    if (webElement != null)
+                        return webElement;
                 }
                 break;
         }
