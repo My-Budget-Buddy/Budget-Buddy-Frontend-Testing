@@ -223,7 +223,7 @@ public class BudgetsPage extends Page {
 
             if (h2 != null && "Edit Budget".equals(h2.getText().trim())) {
                 for (WebElement input : inputs) {
-                    if ("Shopping".equals(input.getAttribute("value"))) {
+                    if ("Groceries".equals(input.getAttribute("value"))) {
                         this.editedBudgetedInput = dialog.findElement(By.id("totalAmount"));
                         elementMap.put("editedBudgetedInput", editedBudgetedInput);
                         this.saveBudgetButton = dialog.findElement(By.xpath(".//button[text()='Save']"));
@@ -236,13 +236,13 @@ public class BudgetsPage extends Page {
         throw new IllegalArgumentException("No dialog found with the specified inputs.");
     }
 
-    public void setDeleteButtonForShoppingBudget() {
+    public void setDeleteButtonForDiningBudget() {
         List<WebElement> dialogs = driver.findElements(By.cssSelector("div[role='dialog']"));
 
         for (WebElement dialog : dialogs) {
             List<WebElement> divs = dialog.findElements(By.tagName("div"));
             for (WebElement div : divs) {
-                if ("Are you sure you want to delete the Shopping budget?".equals(div.getText().trim())) {
+                if ("Are you sure you want to delete the Dining budget?".equals(div.getText().trim())) {
                     this.confirmDeleteButton = dialog.findElement(By.xpath(".//button[text()='Delete']"));
                     elementMap.put("confirmDeleteButton", confirmDeleteButton);
                     return;
@@ -286,9 +286,9 @@ public class BudgetsPage extends Page {
 
                 for (WebElement input : inputs) {
                     String value = input.getAttribute("value");
-                    if ("House Repairs".equals(value)) {
+                    if ("Emergency Fund".equals(value)) {
                         nameInputCandidate = input;
-                    } else if ("700".equals(value)) {
+                    } else if ("1000".equals(value)) {
                         amountRequiredInputCandidate = input;
                     }
                 }
@@ -305,13 +305,13 @@ public class BudgetsPage extends Page {
         throw new IllegalArgumentException("No dialog found with the specified inputs.");
     }
 
-    public void setDeleteButtonForHouseRepairsSavingsBucket() {
+    public void setDeleteButtonForVacationFundSavingsBucket() {
         List<WebElement> dialogs = driver.findElements(By.cssSelector("div[role='dialog']"));
 
         for (WebElement dialog : dialogs) {
             List<WebElement> divs = dialog.findElements(By.tagName("div"));
             for (WebElement div : divs) {
-                if ("Are you sure you want to delete the House Repairs bucket?".equals(div.getText().trim())) {
+                if ("Are you sure you want to delete the Vacation Fund bucket?".equals(div.getText().trim())) {
                     this.confirmDeleteSavingsBucketButton = dialog.findElement(By.xpath(".//button[text()='Delete']"));
                     elementMap.put("confirmDeleteSavingsBucketButton", confirmDeleteSavingsBucketButton);
                     return;

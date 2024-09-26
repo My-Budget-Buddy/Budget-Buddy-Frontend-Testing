@@ -49,17 +49,17 @@ public class SDBudgets {
     public void iAmLoggedIn() {
         navigator.navigateTo(Navigator.PGNAME_LOGIN);
         LoginPage loginPage = new LoginPage(driver);
-        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST, Authenticator.PASSWORD_NONPERSIST);
+        User user = new User(UserType.NONPERSISTANT, Authenticator.USERNAME_NONPERSIST,
+                Authenticator.PASSWORD_NONPERSIST);
         loginPage.login(user);
     }
-
 
     @Given("there is a {string} budget of {string} in the budget list")
     public void thereIsABudgetInTheBudgetList(String budgetCategory, String budgetedAmount) {
         // Check if the budget category is in the budget list
-        WebElement budgetTable = page.getWebElement("budgetsTable");
-        wait.until(ExpectedConditions.visibilityOf(budgetTable));
-
+        //WebElement budgetTable = page.getWebElement("budgetsTable");
+        //wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        pause(5000);
         boolean isBudgetPresent = wait.until(ExpectedConditions
                 .textToBePresentInElementLocated(By.xpath("//*[@id=\"root\"]/div[1]/main/table[1]"), budgetCategory));
         page.setGroceryActionButtons(budgetCategory, budgetedAmount);
@@ -80,6 +80,11 @@ public class SDBudgets {
                 "The savings bucket " + bucketName + " is not present in the savings bucket table.");
     }
 
+    @Given("I wait for web elements to load")
+    public void iWaitForWebElementsToLoad() {
+        pause(1000);
+    }
+
     @When("I enter {string} for the budget amount")
     public void iEnterForTheBudgetAmount(String amount) {
         page.getWebElement("budgetedInput").sendKeys(amount);
@@ -87,14 +92,14 @@ public class SDBudgets {
 
     @When("I click the Edit Budget button")
     public void iClickTheEditBudgetButton() {
-        //page.getWebElement("editBudgetButton").click();
+        // page.getWebElement("editBudgetButton").click();
         page.clickButton("editBudgetButton");
         page.setEditBudgetModalElements();
     }
 
     @When("I click the Delete Budget button")
     public void iClickTheDeleteBudgetButton() {
-        //page.getWebElement("deleteBudgetButton").click();
+        // page.getWebElement("deleteBudgetButton").click();
         page.clickButton("deleteBudgetButton");
     }
 
@@ -107,14 +112,14 @@ public class SDBudgets {
 
     @When("I save the new budget amount")
     public void iSaveTheNewBudgetAmount() {
-        //page.getWebElement("saveBudgetButton").click();
+        // page.getWebElement("saveBudgetButton").click();
         page.clickButton("saveBudgetButton");
     }
 
     @When("I click Delete on the delete budget confirmation dialog")
     public void iClickDeleteOnTheConfirmationDialog() {
-        page.setDeleteButtonForShoppingBudget();
-        //page.getWebElement("confirmDeleteButton").click();
+        page.setDeleteButtonForDiningBudget();
+        // page.getWebElement("confirmDeleteButton").click();
         page.clickButton("confirmDeleteButton");
         driver.navigate().refresh();
     }
@@ -151,20 +156,20 @@ public class SDBudgets {
 
     @When("I save the new Required Amount")
     public void iSaveTheNewRequiredAmount() {
-        //page.getWebElement("saveSavingsBucketButton").click();
+        // page.getWebElement("saveSavingsBucketButton").click();
         page.clickButton("saveSavingsBucketButton");
     }
 
     @When("I click the Delete Savings Bucket button")
     public void iClickTheDeleteSavingsBucketButton() {
-        //page.getWebElement("deleteSavingsBucketButton").click();
+        // page.getWebElement("deleteSavingsBucketButton").click();
         page.clickButton("deleteSavingsBucketButton");
     }
 
     @When("I click Delete on the delete savings bucket confirmation dialog")
     public void iClickDeleteOnTheDeleteSavingsBucketConfirmationDialog() {
-        page.setDeleteButtonForHouseRepairsSavingsBucket();
-        //page.getWebElement("confirmDeleteSavingsBucketButton").click();
+        page.setDeleteButtonForVacationFundSavingsBucket();
+        // page.getWebElement("confirmDeleteSavingsBucketButton").click();
         page.clickButton("confirmDeleteSavingsBucketButton");
     }
 
@@ -173,6 +178,11 @@ public class SDBudgets {
         WebElement inputField = page.getWebElement("totalBudgetAmountInput");
         inputField.clear();
         inputField.sendKeys(amount);
+    }
+
+    @When("I wait for the Submit-Spending-Budget button is not visible")
+    public void iWaitForTheSubmitSpendingBudgetButtonIsNotVisible() {
+        wait.until(ExpectedConditions.invisibilityOf(page.getWebElement("submitSpendingBudgetButton")));
     }
 
     @Then("I can see the Budgets page web elements")
@@ -195,11 +205,21 @@ public class SDBudgets {
 
     @Then("I can see a {string} budget of {string} in the budget list")
     public void iCanSeeABudgetInTheBudgetListWithTheNewInformation(String budgetCategory, String budgetedAmount) {
+        driver.navigate().refresh();
         WebElement budgetTable = page.getWebElement("budgetsTable");
-        wait.until(ExpectedConditions.visibilityOf(budgetTable));
-        //pause(1000);
+        //wait.until(ExpectedConditions.visibilityOf(budgetTable));
+        pause(5000);
+
+        // // Wait for a specific number of rows to load
+        // int expectedRowCount = 4;
+        // wait.until(driver -> {
+        //     List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
+        //     System.out.println("Rows: " + rows.size());
+        //     return rows.size() == expectedRowCount;
+        // });
 
         List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
+        System.out.println("Rows: " + rows.size());
         boolean found = false;
 
         for (WebElement row : rows) {
@@ -207,6 +227,7 @@ public class SDBudgets {
             if (cells.size() > 1) {
                 String category = cells.get(0).getText();
                 String amount = cells.get(1).getText();
+                System.out.println("Category: " + category + " Amount: " + amount);
                 if (budgetCategory.equals(category) && budgetedAmount.equals(amount)) {
                     found = true;
                     break;
@@ -215,14 +236,20 @@ public class SDBudgets {
         }
 
         Assert.assertTrue(found,
-                "The budget table does not contain a row with" + budgetCategory + " and " + budgetedAmount);
+                "The budget table does not contain a row with " + budgetCategory + " and " + budgetedAmount);
     }
 
     @Then("I cannot see a {string} budget in the budget list")
     public void iCannotSeeABudgetInTheBudgetList(String budgetCategory) {
         WebElement budgetTable = page.getWebElement("budgetsTable");
         wait.until(ExpectedConditions.visibilityOf(budgetTable));
-        //pause(1000);
+
+        // Wait for a specific number of rows to load
+        int expectedRowCount = 3;
+        wait.until(driver -> {
+            List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
+            return rows.size() == expectedRowCount;
+        });
 
         List<WebElement> rows = budgetTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -243,9 +270,17 @@ public class SDBudgets {
 
     @Then("I can see a {string} savings bucket of {string} in the savings bucket table")
     public void thenICanSeeASavingsBucketInTheSavingsBucketTable(String budgetName, String amountRequired) {
+        driver.navigate().refresh();
         WebElement savingsBucketTable = page.getWebElement("savingsBucketTable");
         wait.until(ExpectedConditions.visibilityOf(savingsBucketTable));
-        //pause(1000);
+        
+        // Wait for a specific number of rows to load
+        int expectedRowCount = 4;
+        wait.until(driver -> {
+            List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
+            System.out.println("Rows: " + rows.size());
+            return rows.size() == expectedRowCount;
+        });
 
         List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -270,7 +305,14 @@ public class SDBudgets {
     public void iCannotSeeASavingsBucketInTheSavingsBucketTable(String bucketName) {
         WebElement savingsBucketTable = page.getWebElement("savingsBucketTable");
         wait.until(ExpectedConditions.visibilityOf(savingsBucketTable));
-        //pause(1000);
+
+        // Wait for a specific number of rows to load
+        int expectedRowCount = 3;
+        wait.until(driver -> {
+            List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
+            System.out.println("Rows: " + rows.size());
+            return rows.size() == expectedRowCount;
+        });
 
         List<WebElement> rows = savingsBucketTable.findElements(By.tagName("tr"));
         boolean found = false;
@@ -298,12 +340,11 @@ public class SDBudgets {
                 + spendingBudgetDiv.getText());
     }
 
-    private void pause(long milliseconds) {
+    public void pause(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 }
