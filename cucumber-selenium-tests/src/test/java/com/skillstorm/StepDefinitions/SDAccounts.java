@@ -272,11 +272,16 @@ public class SDAccounts {
     @And("my net cash bar is green")
     public void myNetCashBarIsGreen() {
         page = new AccountsPage(driver);
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //Check if the net cash is positive
         Assert.assertTrue(page.getNetCash() > 0.0);
         //Check if the net cash bar is green
         Assert.assertEquals(page.getNetCashBarColor(), AccountsPage.NETCASH_BAR_GREEN);
+        page = new AccountsPage(driver);
     }
 
 
