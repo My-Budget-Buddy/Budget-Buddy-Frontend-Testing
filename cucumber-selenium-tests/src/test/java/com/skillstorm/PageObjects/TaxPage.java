@@ -257,9 +257,9 @@ public class TaxPage extends Page {
 
 
     /*The following method is used to check if the delete button worked. 
-    It will return true if the record is still there.
-     It will return false if the record is not there.
-     meaning false is a successful deletion and true is a failed deletion.
+    It will return false if the record is still there.
+     It will return true if the record is not there.
+     meaning true is a successful deletion and false is a failed deletion.
      */
 
     public boolean checkIfDeleteWorked(){
@@ -269,7 +269,7 @@ public class TaxPage extends Page {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).size() > 0;
+        return driver.findElements(By.xpath("//td[contains(text(),'SINGLE')]")).isEmpty();
     }
 
     public void clickMainEditButton(String buttonName){
