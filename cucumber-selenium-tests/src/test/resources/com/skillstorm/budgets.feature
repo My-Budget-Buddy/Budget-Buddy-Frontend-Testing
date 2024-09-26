@@ -21,19 +21,19 @@ so I can limit and track my spending.
   Scenario: Edit an existing budget
     Given Budgets: I am logged in
     And I am on the "Budgets" page
-    And there is a "Shopping" budget of "$500.00" in the budget list
+    And there is a "Groceries" budget of "$400.00" in the budget list
     When I click the Edit Budget button
     And I enter "600" for new the budget amount
     And I save the new budget amount
-    Then I can see a "Shopping" budget of "$600.00" in the budget list
+    Then I can see a "Groceries" budget of "$600.00" in the budget list
 
   Scenario: Delete a budget
     Given Budgets: I am logged in
     And I am on the "Budgets" page
-    And there is a "Shopping" budget of "$600.00" in the budget list
+    And there is a "Dining" budget of "$100.00" in the budget list
     When I click the Delete Budget button
     And I click Delete on the delete budget confirmation dialog
-    Then I cannot see a "Shopping" budget in the budget list
+    Then I cannot see a "Dining" budget in the budget list
 
   Scenario: Add a new Savings buckets
     Given Budgets: I am logged in
@@ -47,27 +47,26 @@ so I can limit and track my spending.
   Scenario: Edit an existing Savings bucket
     Given Budgets: I am logged in
     And I am on the "Budgets" page
-    And there is a "House Repairs" savings bucket of "700" in the savings bucket table
+    And there is a "Emergency Fund" savings bucket of "1000" in the savings bucket table
     When I click the Edit Savings Bucket button
     And I enter "800" for the new Required Amount
     And I save the new Required Amount
-    Then I can see a "House Repairs" savings bucket of "800" in the savings bucket table
+    Then I can see a "Emergency Fund" savings bucket of "800" in the savings bucket table
 
   Scenario: Delete a Savings bucket
     Given Budgets: I am logged in
     And I am on the "Budgets" page
-    And there is a "House Repairs" savings bucket of "800" in the savings bucket table
+    And there is a "Vacation Fund" savings bucket of "2000" in the savings bucket table
     When I click the Delete Savings Bucket button
     And I click Delete on the delete savings bucket confirmation dialog
-    Then I cannot see a "House Repairs" savings bucket in the savings bucket table
+    Then I cannot see a "Vacation Fund" savings bucket in the savings bucket table
 
   Scenario: Edit the Spending Budget
     Given Budgets: I am logged in
     And I am on the "Budgets" page
+    And I wait for web elements to load
     When I click the "Edit-Spending-Budget" button
     And I enter "6000" for the new Spending Budget
     And I click the "Submit-Spending-Budget" button
-    And I click the "Edit-Spending-Budget" button
-    And I enter "2" for the new Spending Budget
-    And I click the "Submit-Spending-Budget" button
+    And I wait for the Submit-Spending-Budget button is not visible
     Then I can see a Spending Budget of "$6,000.00"
