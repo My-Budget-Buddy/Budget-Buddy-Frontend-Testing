@@ -322,7 +322,24 @@ public class TransactionPage extends Page{
         for (String value : categoryValues) {
             Assert.assertEquals(value, expectedCategory);
         }
-    }   
+    } 
+
+    // Sort by Amount Methods
+    public void clickSortByAmount() {
+        waitForElement(sortByDropdown, 10).click();
+        WebElement option = driver.findElement(By.xpath("//*[@id='sortByDropdown']/option[text()='Sort by amount']"));
+        option.click();
+    }
+
+    public void assertAmountSort() {
+        // Locate all amount cells
+        List<WebElement> amountColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[5]"));
+
+        for (WebElement cell : amountColumnValues) {
+            System.out.println(cell.getText());
+        }
+        
+    }
 
 
 

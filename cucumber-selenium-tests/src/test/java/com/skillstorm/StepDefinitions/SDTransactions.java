@@ -18,6 +18,7 @@ import org.openqa.selenium.WebDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
+import io.cucumber.java.en_scouse.An;
 
 public class SDTransactions {
 
@@ -150,4 +151,95 @@ public class SDTransactions {
         transactions.getCategoryColumnValues();
         transactions.assertCategorySelection(selectedCategory);
     }
+
+    /**
+     * Sort by amount descending Scenario Definitions
+     */
+
+    @And("I click the sort by amount option")
+    public void iClickTheSortByAmountOption() {
+        transactions.clickSortByAmount();
+    }
+
+    @Then("the transactions should be sorted by amount")
+    public void theTransactionsShouldBeSortedByAmount() {
+        transactions.assertAmountSort();
+    }
+
+    /**
+     * Sort by amount ascending Scenario Definitions
+     */
+
+    @And("I click the ascending option")
+    public void iClickTheAscendingOption() {
+        //transactions.clickAscending();
+    }
+
+    @Then("the transactions should be sorted by amount in ascending order")
+    public void theTransactionsShouldBeSortedByAmountInAscendingOrder() {
+        //transactions.assertAmountSortAscending();
+    }
+
+    /**
+     * Sort by date ascending Scenario Definitions
+     */
+
+    @And("I click a the sort by date option")
+    public void iClickTheSortByDateOption() {
+        //transactions.clickSortByDate();
+    }
+
+    @Then("the transactions should be sorted by date in ascending order")
+    public void theTransactionsShouldBeSortedByDateInAscendingOrder() {
+        //transactions.assertDateSort();
+    }
+
+    /**
+     * Clear filter button Scenario Definitions
+     */
+
+    @Then("all transactions should be visible")
+    public void allTransactionsShouldBeVisible() {
+        //transactions.getCategoryColumnValues();
+        //transactions.assertCategorySelection("All");
+    }
+
+    /**
+     * Amount range filter Scenario Definitions
+     */
+
+    @And("I select the amount range option")
+    public void iSelectTheAmountRangeOption() {
+        //transactions.selectAmountRange();
+    }
+
+    @And("And I fill in the {string} and {string} fields")
+    public void andIFillInTheAndFields(String min, String max) {
+        //transactions.setAmountRange(min, max);
+    }
+
+    @Then("only transactions within that amount range should be visible")
+    public void onlyTransactionsWithinThatRangeShouldBeVisible() {
+        //transactions.assertAmountRange();
+    }
+
+    /**
+     * Date range filter Scenario Definitions
+     */
+
+    @And("I select the date range option")
+    public void iSelectTheDateRangeOption() {
+        //transactions.selectDateRange();
+    }
+
+    @And("And I fill in the {string} and {string} fields")
+    public void andIFillInTheFields(String start, String end) {
+        //transactions.setDateRange(start, end);
+    }
+
+    @Then("only transactions within that date range should be visible")
+    public void onlyTransactionsWithinThatDateRangeShouldBeVisible() {
+        //transactions.assertDateRange();
+    }   
+    
 }
