@@ -172,12 +172,12 @@ public class SDTransactions {
 
     @And("I click the ascending option")
     public void iClickTheAscendingOption() {
-        //transactions.clickAscending();
+        transactions.clickAscending();
     }
 
     @Then("the transactions should be sorted by amount in ascending order")
     public void theTransactionsShouldBeSortedByAmountInAscendingOrder() {
-        //transactions.assertAmountSortAscending();
+        transactions.assertAmountSortAscending();
     }
 
     /**
@@ -186,12 +186,12 @@ public class SDTransactions {
 
     @And("I click a the sort by date option")
     public void iClickTheSortByDateOption() {
-        //transactions.clickSortByDate();
+        transactions.clickSortByDate();
     }
 
     @Then("the transactions should be sorted by date in ascending order")
     public void theTransactionsShouldBeSortedByDateInAscendingOrder() {
-        //transactions.assertDateSort();
+        transactions.assertDateSort();
     }
 
     /**
@@ -200,8 +200,7 @@ public class SDTransactions {
 
     @Then("all transactions should be visible")
     public void allTransactionsShouldBeVisible() {
-        //transactions.getCategoryColumnValues();
-        //transactions.assertCategorySelection("All");
+        transactions.assertCategorySelection();
     }
 
     /**
@@ -210,17 +209,17 @@ public class SDTransactions {
 
     @And("I select the amount range option")
     public void iSelectTheAmountRangeOption() {
-        //transactions.selectAmountRange();
+        transactions.selectAmountRange();
     }
 
-    @And("And I fill in the {string} and {string} fields")
-    public void andIFillInTheAndFields(String min, String max) {
-        //transactions.setAmountRange(min, max);
+    @And("I fill in the amount {string} and {string} fields")
+    public void andIFillInTheAmountFields(String min, String max) {
+        transactions.setAmountRange(min, max);
     }
 
     @Then("only transactions within that amount range should be visible")
     public void onlyTransactionsWithinThatRangeShouldBeVisible() {
-        //transactions.assertAmountRange();
+        transactions.assertAmountRange();
     }
 
     /**
@@ -229,17 +228,17 @@ public class SDTransactions {
 
     @And("I select the date range option")
     public void iSelectTheDateRangeOption() {
-        //transactions.selectDateRange();
+        transactions.selectDateRange();
     }
 
-    @And("And I fill in the {string} and {string} fields")
-    public void andIFillInTheFields(String start, String end) {
-        //transactions.setDateRange(start, end);
+    @And("I fill in the date {string} and {string} fields")
+    public void andIFillInTheDateFields(String start, String end) {
+        transactions.setDateRange(start, end);
     }
 
     @Then("only transactions within that date range should be visible")
     public void onlyTransactionsWithinThatDateRangeShouldBeVisible() {
-        //transactions.assertDateRange();
+        transactions.assertDateRange();
     }   
     
 }

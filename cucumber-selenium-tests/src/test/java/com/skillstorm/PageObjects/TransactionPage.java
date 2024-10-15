@@ -1,6 +1,8 @@
 package com.skillstorm.PageObjects;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -324,7 +327,7 @@ public class TransactionPage extends Page{
         }
     } 
 
-    // Sort by Amount Methods
+    // Sort by Amount Descending Methods
     public void clickSortByAmount() {
         waitForElement(sortByDropdown, 10).click();
         WebElement option = driver.findElement(By.xpath("//*[@id='sortByDropdown']/option[text()='Sort by amount']"));
@@ -334,12 +337,164 @@ public class TransactionPage extends Page{
     public void assertAmountSort() {
         // Locate all amount cells
         List<WebElement> amountColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[5]"));
-
-        for (WebElement cell : amountColumnValues) {
-            System.out.println(cell.getText());
+    
+        // Skip the first row and only compare subsequent rows.
+        double previousAmount = Double.NEGATIVE_INFINITY; // Start with the lowest possible value
+    
+        for (int i = 1; i < amountColumnValues.size(); i++) { // Start from the second row (index 1)
+            String amountText = amountColumnValues.get(i).getText();
+    
+            // Clean the text by removing dollar sign and commas
+            String cleanedAmountText = amountText.replace("$", "").replace(",", "");
+    
+            // Convert to double
+            double currentAmount = Double.parseDouble(cleanedAmountText);
+    
+            try {
+                Assert.assertTrue(currentAmount >= previousAmount, 
+                    "Amounts are not in increasing order at row " + (i + 1) + 
+                    ". Previous: " + previousAmount + ", Current: " + currentAmount);
+            } catch (AssertionError e) {
+                System.err.println(e.getMessage());
+                throw e; // Rethrow the error to mark the test as failed
+            }
+    
+            // Update previousAmount to the current value for the next iteration
+            previousAmount = currentAmount;
         }
         
     }
+
+    // Sort by Amount Ascending Methods
+    public void clickAscending() {
+        waitForElement(directionDropdown, 10).click();
+        WebElement option = driver.findElement(By.xpath("//*[@id='directionDropdown']/option[text()='Ascending']"));
+        option.click();
+    }
+
+    public void assertAmountSortAscending() {
+        // Locate all amount cells
+        List<WebElement> amountColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[5]"));
+
+                // Skip the first row and only compare subsequent rows.
+        double previousAmount = Double.POSITIVE_INFINITY; // Start with the lowest possible value
+
+        for (int i = amountColumnValues.size(); i < 1; i--) { // Start from the last row
+            String amountText = amountColumnValues.get(i).getText();
+    
+            // Clean the text by removing dollar sign and commas
+            String cleanedAmountText = amountText.replace("$", "").replace(",", "");
+    
+            // Convert to double
+            double currentAmount = Double.parseDouble(cleanedAmountText);
+    
+            try {
+                Assert.assertTrue(currentAmount <= previousAmount, 
+                    "Amounts are not in increasing order at row " + (i + 1) + 
+                    ". Previous: " + previousAmount + ", Current: " + currentAmount);
+            } catch (AssertionError e) {
+                System.err.println(e.getMessage());
+                throw e; // Rethrow the error to mark the test as failed
+            }
+    
+            // Update previousAmount to the current value for the next iteration
+            previousAmount = currentAmount;
+        }
+    }
+
+    //Sort by Date Ascending Methods
+    public void clickSortByDate() {
+        waitForElement(sortByDropdown, 10).click();
+        WebElement option = driver.findElement(By.xpath("//*[@id='sortByDropdown']/option[text()='Sort by date']"));
+        option.click();
+    }
+
+    public void assertDateSort() {
+        // Locate all date cells
+        List<WebElement> dateColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[1]"));
+    
+        // Define the date format (MM/dd/yyyy)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+    
+        // Initialize the previous date to the minimum possible value
+        LocalDate previousDate = LocalDate.MIN;
+    
+        for (int i = 1; i < dateColumnValues.size(); i++) { 
+            String dateText = dateColumnValues.get(i).getText();
+    
+            // Parse the date string to LocalDate
+            LocalDate currentDate = LocalDate.parse(dateText, formatter);
+    
+            // Assert that the current date is not before the previous date
+            try {
+                Assert.assertTrue(!currentDate.isBefore(previousDate),
+                    "Dates are not in ascending order at row " + (i + 1) +
+                    ". Previous: " + previousDate + ", Current: " + currentDate);
+            } catch (AssertionError e) {
+                System.err.println(e.getMessage());
+                throw e; // Rethrow the error to mark the test as failed
+            }
+    
+            // Update previousDate for the next iteration
+            previousDate = currentDate;
+        }
+    }
+    
+
+    // Clear Filter Method
+    public void assertCategorySelection() {
+        WebElement categoryDropdown = driver.findElement(By.id("allCategoriesDropDown"));
+        Select categorySelect = new Select(categoryDropdown);
+        String selectedOption = categorySelect.getFirstSelectedOption().getText();
+        assert selectedOption.equals("All Categories");
+    }
+
+    //Amount range filter methods
+    public void selectAmountRange() {
+        WebElement option = driver.findElement(By.xpath("//*[@id='allAmountsDropDown']/option[text()='Amount Range']"));
+        option.click();
+    }
+
+    public void setAmountRange(String min, String max) {
+        WebElement minField = driver.findElement(By.id("min-amount"));
+        WebElement maxField = driver.findElement(By.id("max-amount"));
+        minField.clear();
+        minField.sendKeys(min);
+        maxField.clear();
+        maxField.sendKeys(max);
+    }
+
+    public void assertAmountRange() {
+        List<WebElement> amountColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[5]"));
+        for (WebElement cell : amountColumnValues) {
+            System.out.println(cell.getText());
+        }
+        System.out.println("HERE1");
+
+    }
+
+    //Date range filter methods
+    public void selectDateRange() {
+        WebElement option = driver.findElement(By.xpath("//*[@id='allDatesDropDown']/option[text()='Date Range']"));
+        option.click();
+    }
+
+    public void setDateRange(String startDate, String endDate) {
+        WebElement startDateField = driver.findElement(By.id("min-date"));
+        WebElement endDateField = driver.findElement(By.id("max-date"));
+        startDateField.clear();
+        startDateField.sendKeys(startDate);
+        endDateField.clear();
+        endDateField.sendKeys(endDate);
+    }
+
+    public void assertDateRange() {
+        List<WebElement> dateColumnValues = driver.findElements(By.xpath("//*[@id='root']/div[1]/main/div/div[3]/div/table//tr/td[1]"));
+        for (WebElement cell : dateColumnValues) {
+            System.out.println(cell.getText());
+        }
+    }
+
 
 
 
