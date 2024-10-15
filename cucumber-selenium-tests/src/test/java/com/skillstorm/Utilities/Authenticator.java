@@ -12,6 +12,10 @@ public class Authenticator {
     public static final String USERNAME_NONPERSIST = "joseph.sam@gmail.com";
     public static final String PASSWORD_NONPERSIST = "password1";
 
+    // used in settings modal tests to change name/password
+    public static final String USERNAME_NONPERSIST_TWO = "david.melanson@gmail.com";
+    public static final String PASSWORD_NONPERSIST_TWO = "password2";
+
     public static final String USERNAME_WRONG = "wrongformat!";
     public static final String PASSWORD_WRONG = "";
 
